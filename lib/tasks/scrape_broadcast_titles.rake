@@ -3,6 +3,7 @@
 require './lib/tasks/scrape_broadcast_titles'
 
 # lib/tasks/scrape_titles.rake
+# Usage: rake scrape:broadcast_titles
 namespace :scrape do
   desc 'Check the website for new broadcast titles and populate the database with them ' \
        'with minimal info from the broadcasts index.'
