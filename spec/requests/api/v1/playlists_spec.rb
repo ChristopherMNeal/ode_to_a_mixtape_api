@@ -10,9 +10,9 @@ RSpec.describe 'Api::V1::Playlists', type: :request do
     end
   end
 
-  describe 'GET /show' do
+  describe 'GET /broadcast' do
     it 'returns http success' do
-      get '/api/v1/playlists/show'
+      get '/api/v1/playlists/broadcast'
       expect(response).to have_http_status(:success)
     end
   end
