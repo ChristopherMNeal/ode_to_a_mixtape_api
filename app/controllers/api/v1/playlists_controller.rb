@@ -5,7 +5,7 @@ module Api
     class PlaylistsController < ApplicationController
       def index; end
 
-      def show; end
+      def broadcast; end
     end
   end
 end

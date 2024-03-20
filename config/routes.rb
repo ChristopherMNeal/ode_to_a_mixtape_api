@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       # get 'playlists/index'
-      # get 'playlists/show'
-      resources :playlists, only: %i[index show]
+      # get 'playlists/broadcast'
+      resources :playlists, only: %i[index broadcast]
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
