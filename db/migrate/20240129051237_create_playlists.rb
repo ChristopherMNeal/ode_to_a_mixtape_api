@@ -5,8 +5,8 @@ class CreatePlaylists < ActiveRecord::Migration[7.1]
     create_table :playlists do |t|
       t.string :title
       t.datetime :air_date
-      t.integer :dj_id
-      t.integer :station_id
+      t.references :station, foreign_key: true
+      t.references :broadcast, foreign_key: true
       t.string :playlist_url
       t.integer :original_playlist_id
       t.string :download_url_1
@@ -15,5 +15,7 @@ class CreatePlaylists < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
+
+    add_foreign_key :playlists, :playlists, column: :original_playlist_id, primary_key: :id
   end
 end

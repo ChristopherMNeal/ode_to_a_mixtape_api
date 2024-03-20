@@ -1,0 +1,2975 @@
+<!-- *****************************
+This document is commented to help volunteer and less experienced users navigate the site code. 
+If you have experience with web design / development, XRAY would love your help! :]
+Contact us at: http://xray.fm/info/get-involved
+***************************** -->
+
+<!-- Don't touch any of the stuff in this <head> section unless you know what you're doing -->
+<!DOCTYPE html>  
+<html lang="en">
+<head>
+  <title>Programs /// XRAY.fm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
+  <meta name="google-site-verification" content="IWwHQzWD4ImumsQMOl_3NK0IDzmkGOuBFsw3xDN6FoQ" />
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!--<link href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css' rel='stylesheet' type='text/css'>-->
+  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <link href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+  <meta name="description" content="XRAY.fm aims to hold a boom mic up to the best and most distinctive of Portland." />
+  <link rel="shortcut icon" type="image/png" href="/theme/107/favicon.ico"/>
+  <meta property="og:title" content="Programs /// XRAY.fm" />
+<meta property="og:url" content="http://xray.fm/shows/all?url=shows%2Fall" />
+<meta property="og:image" content="http://s31.postimg.cc/gvngbyezf/unnamed.png" />
+
+  <script src="/components/jquery/dist/jquery.min.js?x=1437796891"></script>
+
+<!-- Initialize Creek.fm JS -->
+<script src="/js/cfm-head.js?x=1437796891" type="text/javascript"></script>
+<script type="text/javascript">
+
+  Creek.signedIn = false;
+  Creek.station.id = "xray";
+  Creek.streamPlayer.flashByDefault = 0;
+
+  //Check for Internet Explorer
+  if(window.ActiveXObject || "ActiveXObject" in window){
+
+    //Defalt to Flash for stream player
+    Creek.streamPlayer.flashByDefault = 1;
+
+  }
+</script>
+
+<script type="text/javascript" src="/packages/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+<script src="/packages/soundmanager/script/soundmanager2-nodebug-jsmin.js?x=1498244286"></script>
+<style> #sm2-container {position:absolute; top:-10000px; left:-10000px} </style>
+<script src="/js/sm2-settings.js?x=1437796891"></script>
+<link rel="stylesheet" type="text/css" href="/packages/soundmanager/demo/bar-ui/css/bar-ui.css?x=1437796891" />
+<script src="/js/creek-sm2-bar-ui.js?x=1441826410"></script><link href="/css/creekfm-public.css?x=1500320125" rel="stylesheet" type='text/css'>
+<link href="/packages/magnific-popup/magnific-popup.css?x=1437796891" rel="stylesheet" type='text/css'>
+<link href="/css/playlist.css?x=1455040699" rel="stylesheet" type='text/css'>
+
+  <script src="/theme/107/js/js-settings.js?x=1460258951" type="text/javascript"></script>
+  <script type="text/javascript"> 
+    var playlistInterval = new Object;
+    console.log(
+      '***************************** \nThis document is commented to help volunteer and less experienced users navigate the site code. \nIf you have experience with web design / development, XRAY would love your help! :] \nContact us at: http://xray.fm/info/get-involved \n*****************************'  
+    )
+  </script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
+<script src="/js/cfm-api-templates.js?x=1437796891" type="text/javascript"></script>
+  
+<!-- Initialize Creek.fm Stream Player -->
+<script type="text/javascript">Creek.streamPlayer.streamUrl = 'https://listen.xray.fm/stream';</script>
+<script type="text/javascript" src="/packages/jplayer/jquery.jplayer.min.js"></script>
+
+  <link href="/theme/107/css/css-main.css?x=1707418509" rel="stylesheet" type='text/css'>
+  <link href="/theme/107/css/css-pages.css?x=1450993017" rel="stylesheet" type='text/css'>
+  <link href="/theme/107/css/css-tools.css?x=1450993017" rel="stylesheet" type='text/css'>
+  <link href="/theme/107/css/css-responsive.css?x=1617048386" rel="stylesheet" type='text/css'>
+  <link href="/theme/107/css/css-fixes.css?x=1450993017" rel="stylesheet" type='text/css'>
+  <script src="/theme/107/js/readmore.min.js" type="text/javascript"></script>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-139695561-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-139695561-1');
+</script>
+
+<script data-ad-client="ca-pub-8693591481625598" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+<!-- This section contains the visible content of the main page -->
+<body class="shows-all ">
+
+  <!-- Why is this here at the top of the <body>? Why can't we run this from the end of the document? -->
+  <script type="text/javascript">
+    $(function(){
+      var doMenu = function(){
+        $('#mobile-menu').toggleClass('open');
+        //alert(1);
+      }
+      $('body').on('click', '#mobile-menu a.button', function(){
+        doMenu();
+      })
+      $('body').on('click', '#mobile-menu .inner a', function(){
+        doMenu()
+      })
+    })
+  </script>
+  
+  <!-- Add anchor tags to this section in order to populate the hamburger style drop down menu on mobile views. Given the current organization, links are duplicated between this mobile menu and the wide-screen navbar. -->
+  <div id="mobile-menu">
+    <!-- This anchor tag is the hamburger logo that users click to show the hidden link menu -->
+    <a href="javascript:" class="button"><img src="/theme/107/img/menu-button3_2.png" alt="menu-button3_2" /></a>
+    
+    <div id="mobile-menu-inner" class="inner cfm-sp-load">
+      <a href="/" class="home ">HOME</a>
+      <a href="/about" class="about" target="_blank">ABOUT</a>
+      <a href="/shows" class="shows  ">SHOWS</a>
+      <a href="/playlist" class="plsylist ">PLAYLIST</a>
+      <a href="/events" class="events">EVENTS</a>
+      <a href="/partners" class="podcasts" target="_blank">PARTNERS</a>
+      <a href="http://xrayfm.wordpress.com/" target="_blank" class="news">BLOG</a>
+      <a href="/membership" class='membership'>MEMBERSHIP</a>
+      <a href="/get-involved" class="about" target="_blank">GET INVOLVED!</a>
+      <a href="/users/sign-in">Sign In</a>
+      <a href="/donate" class="donate">Donate</a>
+    </div>
+  </div>
+  
+  <!-- This sections contains the navigation elements for wide-screen views. If you add a link to this section, make sure you duplicate it in the preceeding mobile menu as well, since this section is hidden from users with small screens -->
+  <div id="top-toolbar" class="cfm-sp-load">
+  
+    <div class="top-user-panel clearfix">
+      <div class="container"><div class="cfm-user-panel user-panel not-signed-in">
+    <div class="sign-in">
+    <a href="/users/sign-in?return_url=">Sign in</a>
+  </div>
+  </div></div>
+    </div>
+    
+    <div id="trycholeranit" class="cfm-sp-load container">
+      <div class="logo">
+        <a href="/">
+          <img src="/theme/107/img/logo1_white-on-black_399.png" alt="logo1_white-on-black_399" class="img-responsive"/>
+        </a>
+      </div>
+      
+      <!-- Here are the wide-screen links, add and remove them from this <div> section -->
+     <div class="links">
+        <a href="/" class="home ">HOME</a>
+        <a href="/about" class="about" target="_blank">ABOUT</a>
+        <a href="/shows" class="shows  ">SHOWS</a>
+        <a href="/playlist" class="playlist ">PLAYLIST</a>
+        <a href="/events" class=" events">EVENTS</a>
+        <a href="https://xrayfm.wordpress.com/" class=" news" target="_blank">BLOG</a>
+        <a href="/info/partners" class="partners">PARTNERS</a>
+        <a href="/info/get-involved" class="get-involved">GET INVOLVED!</a>
+        <a href="/membership" class='membership'>MEMBERSHIP</a>
+        <!--<a href="https://xraypod.com" class="tv">PODCASTS</a>
+        <!--<a href="https://xraypod.com" class="tv">PODCASTS</a>
+        
+        <!-- You can always comment out links you're not using anymore, but that you think you might use again in the future. This BLOG link below is an example -->
+        <!--<a href="/news" class=" news">BLOG</a>-->
+      </div>
+      
+      <div class="donate">
+        <a href="/donate">DONATE &raquo;</a>
+      </div>
+      
+      <div class="cfm-user-panel user-panel not-signed-in">
+    <div class="sign-in">
+    <a href="/users/sign-in?return_url=">Sign in</a>
+  </div>
+  </div>
+    </div>
+  </div>
+  
+  <!-- 
+  
+  Notice that there are no closing tags for most of the <div>'s below this point. 
+  
+  This is because this is the opening "header" template of the layout. The rest of the closing </div>'s are inside the footer template.
+  
+  So, for example, DON'T do this: 
+    
+    <div id="main" class="clearfix"> 
+    ...
+    </div> <============== BAD
+    
+  -->
+  <div id="outer-container" class="clearfix">
+    <!--Shows an animated "loading" indicator between interactions. Don't touch this. -->
+    <div id="loader">
+      <i class="fa fa-spinner fa-spin"></i>
+    </div>
+    
+    <!-- This nested <div> structure is for styling hook purposes. You should never need to change this unless you are making major changes to the general layout of the page. Change the individual pages instead -->
+    <div id="main" class="clearfix">
+      <div id="main-inner" class="clearfix">
+        <div id="cfm-sp-container" class="clearfix">
+          <div id="page-container" class="page-shows-all clearfix">
+
+<div class="header-image">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-8">
+        <h1>Shows</h1>
+      </div>
+      <div class="social-container col-xs-12 col-sm-4">
+<div class="social-media clearfix"><a href="https://facebook.com/xrayfm" target="blank" title="Facebook"><i class="fa fa-facebook"></i></a><a href="https://twitter.com/xrayfm" target="blank" title="Twitter"><i class="fa fa-twitter"></i></a><a href="https://instagram.com/xrayfm" target="blank" title="Instagram"><i class="fa fa-instagram"></i></a><a href="https://www.youtube.com/channel/UCzLnrs7EirGCpL88TXhvYEw" target="blank" title="YouTube"><i class="fa fa-youtube"></i></a><a href="http://bit.ly/xraynewsletter" target="blank" title="Newsletter"><i class="fa fa-envelope"></i></a><a href="http://linktr.ee/xrayfm" target="blank" title="Linktree"><i class="fa fa-link"></i></a></div></div>
+    </div>
+  </div>
+</div>
+<div class="page-content clearfix">
+  <div class="container">
+    <div class="schedule-links"><a href="/shows"><span class="glyphicon glyphicon-th-list"></span> By Weekday</a><a href="/shows/schedule"><span class="glyphicon glyphicon-th"></span> Full Schedule</a></div>
+    <div class="show-genres">
+      <h4>Browse by genre</h4><div id="show-categories" class="block-categories">
+  <ul>
+    <li class="active selected"><a href="/shows/all">All</a></li>
+      <li><a href="/shows/all/local-news">Local News</a></li>
+      <li><a href="/shows/all/artist-interviews">Artist Interviews</a></li>
+      <li><a href="/shows/all/podcast">Podcasts</a></li>
+      <li><a href="/shows/all/local-artists">Local Artists</a></li>
+      <li><a href="/shows/all/post-punk">Post-punk</a></li>
+      <li><a href="/shows/all/20thcenturycomposers">20th Century composers</a></li>
+      <li><a href="/shows/all/50spop">50's Pop</a></li>
+      <li><a href="/shows/all/doowop">50's Vocal Harmony / Doowop</a></li>
+      <li><a href="/shows/all/60s-girl-groups">60's Girl Groups</a></li>
+      <li><a href="/shows/all/60spop">60's Pop</a></li>
+      <li><a href="/shows/all/70s-power-pop">70's Power Pop</a></li>
+      <li><a href="/shows/all/80s-new-wave">80's New Wave</a></li>
+      <li><a href="/shows/all/african">African</a></li>
+      <li><a href="/shows/all/ambient">Ambient</a></li>
+      <li><a href="/shows/all/AmStan">American Standards</a></li>
+      <li><a href="/shows/all/americanaroots">Americana/Roots</a></li>
+      <li><a href="/shows/all/asian">Asian</a></li>
+      <li><a href="/shows/all/blues">Blues</a></li>
+      <li><a href="/shows/all/Bollywood">Bollywood</a></li>
+      <li><a href="/shows/all/central-s-american">Central / S. American</a></li>
+      <li><a href="/shows/all/CC">Classic Country</a></li>
+      <li><a href="/shows/all/cocktails">Cocktail Jazz</a></li>
+      <li><a href="/shows/all/country">Country</a></li>
+      <li><a href="/shows/all/dance">Dance</a></li>
+      <li><a href="/shows/all/disco-boogie">Disco/Boogie</a></li>
+      <li><a href="/shows/all/eclectic">Eclectic</a></li>
+      <li><a href="/shows/all/electronic">Electronic</a></li>
+      <li><a href="/shows/all/european">European</a></li>
+      <li><a href="/shows/all/exotica-novelty">Exotica/Novelty</a></li>
+      <li><a href="/shows/all/experimental">Experimental</a></li>
+      <li><a href="/shows/all/Scoring">Film Score</a></li>
+      <li><a href="/shows/all/folk">Folk</a></li>
+      <li><a href="/shows/all/garage-psych">Garage / Psych</a></li>
+      <li><a href="/shows/all/gospel">Gospel</a></li>
+      <li><a href="/shows/all/goth-industrial">Goth / Industrial</a></li>
+      <li><a href="/shows/all/hawaiian">Hawaiian</a></li>
+      <li><a href="/shows/all/hip-hop">Hip-Hop</a></li>
+      <li><a href="/shows/all/HTonk">Honky Tonk</a></li>
+      <li><a href="/shows/all/house">House</a></li>
+      <li><a href="/shows/all/indie">Indie</a></li>
+      <li><a href="/shows/all/Instro">Instrumentals</a></li>
+      <li><a href="/shows/all/jazz">Jazz</a></li>
+      <li><a href="/shows/all/JumpBlues">Jump Blues</a></li>
+      <li><a href="/shows/all/latin">Latin</a></li>
+      <li><a href="/shows/all/metal">Metal</a></li>
+      <li><a href="/shows/all/mexican">Mexican</a></li>
+      <li><a href="/shows/all/music">Music</a></li>
+      <li><a href="/shows/all/new-age">New Age</a></li>
+      <li><a href="/shows/all/new-releases">New Releases</a></li>
+      <li><a href="/shows/all/news">News</a></li>
+      <li><a href="/shows/all/noise">Noise</a></li>
+      <li><a href="/shows/all/oldies">Oldies</a></li>
+      <li><a href="/shows/all/pop">Pop</a></li>
+      <li><a href="/shows/all/prog-krautrock">Prog / Krautrock</a></li>
+      <li><a href="/shows/all/punk">Punk</a></li>
+      <li><a href="/shows/all/r-b">R&B</a></li>
+      <li><a href="/shows/all/reggae-dub">Reggae / Dub</a></li>
+      <li><a href="/shows/all/retired">Retired</a></li>
+      <li><a href="/shows/all/rock">Rock</a></li>
+      <li><a href="/shows/all/Rockabilly">Rockabilly</a></li>
+      <li><a href="/shows/all/ska">Ska</a></li>
+      <li><a href="/shows/all/soul-funk">Soul / Funk</a></li>
+      <li><a href="/shows/all/Sndtrks">Soundtracks</a></li>
+      <li><a href="/shows/all/SouthAsian">South Asian</a></li>
+      <li><a href="/shows/all/Surf">Surf</a></li>
+      <li><a href="/shows/all/synth-pop">Synth-Pop</a></li>
+      <li><a href="/shows/all/VN">Vintage Novelty</a></li>
+      <li><a href="/shows/all/vinyl">Vinyl</a></li>
+      <li><a href="/shows/all/WS">Western Swing</a></li>
+      <li><a href="/shows/all/zydeco-cajun">Zydeco / Cajun</a></li>
+      <li><a href="/shows/all/localevents">Local Events</a></li>
+      <li><a href="/shows/all/Talk">Talk</a></li>
+      <li><a href="/shows/all/politics">Political Talk</a></li>
+    </ul>
+</div>
+
+    </div><div class="programs-container">
+  <div class="program cfm-show melted-radio clearfix">
+            <div class="image-container">
+      <a href="/shows/melted-radio"><img src="https://cdn.xray.fm/image/small/tumblr_l12acsOnOo1qaqh4xo1_1280.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/melted-radio"> // Melted Radio //</a></div>
+            <div class="short-description">Melted Radio Melted Radio explores “the space between taste", a hazy zone where 60's psych & country co-exist peacefully alongside 80's synth, weirdo folk, and international pop hits.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show amplifywomen2020 clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/amplifywomen2020">#AmplifyWomen2020</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show buked-scorned-the-gospel-radio-hour clearfix">
+            <div class="image-container">
+      <a href="/shows/buked-scorned-the-gospel-radio-hour"><img src="https://cdn.xray.fm/image/small/pops-staples-08.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/buked-scorned-the-gospel-radio-hour">'Buked & Scorned: The Gospel Radio Hour</a></div>
+            <div class="short-description">DJ YETI AKA Mike McGonigal plays a selection of killer rare, raw gospel music from his collection of thousands of records. He’s overseen reissues of gospel for Tompkins Square, Mississippi, Penniman, City Hall, Honest Jons and his own Social Music label.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show 503-house-party clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/503-house-party">(503)House-Party</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show 12-steps-beyond clearfix">
+            <div class="image-container">
+      <a href="/shows/12-steps-beyond"><img src="https://cdn.xray.fm/image/small/xray_12steps3_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/12-steps-beyond">12 Steps Beyond Prog</a></div>
+            <div class="short-description">Progressive rock over 4.5 decades. Or a 12 step addiction program? Your choice and your fix.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show 2022-candidate-debates clearfix">
+            <div class="image-container">
+      <a href="/shows/2022-candidate-debates"><img src="https://cdn.xray.fm/image/small/xray_logo_blade_horizontal.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/2022-candidate-debates">2022 Election: Issues & Candidates</a></div>
+            <div class="short-description">A compilation of forums and debates from City Club of Portland, PDX Forward, and community creators leading up to the 2022 elections in both November and May 2022.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show 80lb-cardstock clearfix">
+            <div class="image-container">
+      <a href="/shows/80lb-cardstock"><img src="https://cdn.xray.fm/image/small/Red_Skull_Logo.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/80lb-cardstock">80lb. Cardstock</a></div>
+            <div class="short-description">Often intergalactic and mostly subterranean. 80lb. Cardstock explores electronic and experimental sounds, tones, and frequencies. Electro-Acoustic Enthusiasts Unite! Hosted by Scott Rutherford aka DJ Ruth R. Ford.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show a-century-of-slang clearfix">
+            <div class="image-container">
+      <a href="/shows/a-century-of-slang"><img src="https://cdn.xray.fm/image/small/ACenturyOfSlang_ProfileArt.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/a-century-of-slang">A Century of Slang</a></div>
+            <div class="short-description">The weird, the interesting, the psychedelic and the sublime. Tune in, turn on, slip into airplane mode.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show alive-with-pleasure clearfix">
+            <div class="image-container">
+      <a href="/shows/alive-with-pleasure"><img src="https://cdn.xray.fm/image/small/Alive_With_Pleasure-DJ_Ross.JPG" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/alive-with-pleasure">Alive With Pleasure</a></div>
+            <div class="short-description">Tune in to Alive With Pleasure, Friday afternoons from 2-4pm as PDX Pop Now! co-founder Ross Beach previews upcoming concerts, spins all eras of Portland/Pacific Northwest music, and takes you on an exploration of our rapidly changing musical landscape.
+
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show all-things-in-between clearfix">
+            <div class="image-container">
+      <a href="/shows/all-things-in-between"><img src="https://cdn.xray.fm/image/small/WIN_20201003_11_59_37_Pro.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/all-things-in-between">All Things In Between</a></div>
+            <div class="short-description">A journey into all things relative, jazz funk soul disco R&B deep house along with a lot more. Guest dj & producers from abroad,will be interviewed in their expertise of fine music. Local talent will also be featured.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show amplify-women-2020 clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/amplify-women-2020">Amplify Women 2020</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show amplify-women-2020-on-xray clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/amplify-women-2020-on-xray">Amplify Women 2020 on XRAY</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show amplify-women clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/amplify-women">Amplify Women!</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show amplify-women clearfix">
+            <div class="image-container">
+      <a href="/shows/amplify-women"><img src="https://cdn.xray.fm/image/small/22-XRAY-podcasttile-2000x2000-R2b.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/amplify-women">Annual Amplify Women Teach-In</a></div>
+            <div class="short-description">Year 7 of our Teach-In celebrating International Women's Day. Regular programming is preempted from 7am-8pm to platform conversations centering women, with particular focus on BIPOC, trans, queer, immigrant, poor, working-class, & disabled women.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show archive-of-the-soul clearfix">
+            <div class="image-container">
+      <a href="/shows/archive-of-the-soul"><img src="https://cdn.xray.fm/image/small/Archive_of_the_Soul_App_Icon.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/archive-of-the-soul">Archive of the Soul</a></div>
+            <div class="short-description">A local music show focused on musicians and the stories behind songs.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show authenticity-matters clearfix">
+            <div class="image-container">
+      <a href="/shows/authenticity-matters"><img src="https://cdn.xray.fm/image/small/Authenticity_Matters_App_Icon.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/authenticity-matters">Authenticity Matters</a></div>
+            <div class="short-description">Jen Coyne hosts the show about living an authentic life.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show awkward-interruptions-with-interstate clearfix">
+            <div class="image-container">
+      <a href="/shows/awkward-interruptions-with-interstate"><img src="https://cdn.xray.fm/image/small/AIWI_Cover.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/awkward-interruptions-with-interstate">Awkward Interruptions with Interstate</a></div>
+            <div class="short-description">Awkward Interruptions with Interstate, where we keep the beat local and the conversations candid. Join hosts Dominic Bianchini, James Davenport, Chris McGuire, and Josh Potwin as they explore the sound and soul of our community.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-diasporadio-show clearfix">
+            <div class="image-container">
+      <a href="/shows/the-diasporadio-show"><img src="https://cdn.xray.fm/image/small/E8363D19-C2E4-462A-856A-37AB8279791D.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-diasporadio-show">✨ The DiaspoRADiO Show (TDRS) 🌍</a></div>
+            <div class="short-description">Join us on a world wide tour in the form of sounds and voices. School is in session; time to do some learning/unlearning/relearning.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show backroad-to-nowhere clearfix">
+            <div class="image-container">
+      <a href="/shows/backroad-to-nowhere"><img src="https://cdn.xray.fm/image/small/Db_aPRrVwAA_-wa.jpg-large_-_Tom_Humphrey.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/backroad-to-nowhere">Backroad To Nowhere</a></div>
+            <div class="short-description">Unvarnished sounds, unsung singers, demo obscurities, vanguard traditionalists, buried history.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show backseatdj clearfix">
+            <div class="image-container">
+      <a href="/shows/backseatdj"><img src="https://cdn.xray.fm/image/small/BSDJ_blue.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/backseatdj">Backseat DJ</a></div>
+            <div class="short-description">DJ David Schilling brings you a variety mix of music from artists you know and love, as well as introducing you to some you don't. New releases/sneak peeks/local artists/classics/b-sides/interviews with artists. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show beaches clearfix">
+            <div class="image-container">
+      <a href="/shows/beaches"><img src="https://cdn.xray.fm/image/small/IMG_2382.PNG" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/beaches">Beaches </a></div>
+            <div class="short-description">The sound of the streets. Low and slow. Lost highway. Beach tracks worldwide.  </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-darkest-hour clearfix">
+            <div class="image-container">
+      <a href="/shows/the-darkest-hour"><img src="https://cdn.xray.fm/image/small/tapies.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-darkest-hour">Beats & Pieces</a></div>
+            <div class="short-description">A two-hour mix designed to feature a wide variety of styles and flavors.  Hope you enjoy the ride!!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show pdx-mandem clearfix">
+            <div class="image-container">
+      <a href="/shows/pdx-mandem"><img src="https://cdn.xray.fm/image/small/IMG_0281.JPG" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/pdx-mandem">Beats, Bass & Beyond</a></div>
+            <div class="short-description">Playing some of the latest in dubstep, grime, jungle, footwork, hip hop, and more from PDX and around the globe.  Featuring guest mixes from local and international DJ's/Producers.  </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show beautiful-music clearfix">
+            <div class="image-container">
+      <a href="/shows/beautiful-music"><img src="https://cdn.xray.fm/image/small/6E2D524B-41BF-4866-9433-B3EDA8170B53.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/beautiful-music">Beautiful Music</a></div>
+            <div class="short-description">A (potentially controversial?) redefinition of the Adult Contemporary radio format, expanding the number of lanes in the “Middle Of The Road” while questioning what “Adult-Oriented” might even possibly mean to a radio listener these days</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show beervana clearfix">
+            <div class="image-container">
+      <a href="/shows/beervana"><img src="https://cdn.xray.fm/image/small/vert.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/beervana">Beervana</a></div>
+            <div class="short-description">About the art, culture, economics and business of beer and brewing with hosts Jeff Alworth (The Beer Bible, The Secrets of Master Brewers) and Oregon State University economics professor Patrick Emerson.
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show big-city-radio-show clearfix">
+            <div class="image-container">
+      <a href="/shows/big-city-radio-show"><img src="https://cdn.xray.fm/image/small/swagicon.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/big-city-radio-show">Big City Radio Show</a></div>
+            <div class="short-description">Punk, New Wave, No Wave and other rich wholesome cherry goodness from the Golden Era</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show big-green-jones-show clearfix">
+            <div class="image-container">
+      <a href="/shows/big-green-jones-show"><img src="https://cdn.xray.fm/image/small/cj_manequin_scan_1.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/big-green-jones-show">Big Green Jones Show</a></div>
+            <div class="short-description">80s & 90s Alternative
+
+*rock, grunge, new wave, 
+dance, pop, aud, goth</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show blazers-edge clearfix">
+            <div class="image-container">
+      <a href="/shows/blazers-edge"><img src="https://cdn.xray.fm/image/small/blazers_edge_tuesday_1pm.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/blazers-edge">Blazer's Edge Radio</a></div>
+            <div class="short-description">Blazer's Edge Radio brings you the best in local Portland Trail Blazers talk, as well as other hot topics around the NBA. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show going-to-bed-with-morning-remorse clearfix">
+            <div class="image-container">
+      <a href="/shows/going-to-bed-with-morning-remorse"><img src="https://cdn.xray.fm/image/small/FF87D17D-44CC-4EB0-8E78-021920096628.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/going-to-bed-with-morning-remorse">Blind Dates With Morning Remorse</a></div>
+            <div class="short-description">All original vinyl, from all over the world. Player of places from parts unknown, from Fuzz to Handclaps all come together in the hands of MorningRemorse .</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show borrowed-time clearfix">
+            <div class="image-container">
+      <a href="/shows/borrowed-time"><img src="https://cdn.xray.fm/image/small/Wes_Party_Boy_1.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/borrowed-time">Borrowed Time</a></div>
+            <div class="short-description">A West Coast-centric blend of tunes yr going to hear tomorrow, but heard today. One part local + one part national with a twist. Brewed in yr garage + aged in yr hippy uncle's record cabinet, THIS IS BORROWED TIME. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show brine-time clearfix">
+            <div class="image-container">
+      <a href="/shows/brine-time"><img src="https://cdn.xray.fm/image/small/Artboard_11400_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/brine-time">Brine Time</a></div>
+            <div class="short-description">A podcast about the Portland Pickles.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show chances clearfix">
+            <div class="image-container">
+      <a href="/shows/chances"><img src="https://cdn.xray.fm/image/small/wolfhead.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/chances">Chances With Wolves</a></div>
+            <div class="short-description">Warning..this is not a Radio Show. It's a state of mind.
+
+Repping hard for haunting beauty, magic, and the weird.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show chasing-shadows clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/chasing-shadows">Chasing Shadows</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show chauncy-pops clearfix">
+            <div class="image-container">
+      <a href="/shows/chauncy-pops"><img src="https://cdn.xray.fm/image/small/8.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/chauncy-pops">Chauncy Pops</a></div>
+            <div class="short-description">Ear inserts (may affect balance), exhumations and curios.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show chor_bazaar clearfix">
+            <div class="image-container">
+      <a href="/shows/chor_bazaar"><img src="https://cdn.xray.fm/image/small/desimod-650.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/chor_bazaar">Chor Bazaar</a></div>
+            <div class="short-description">Anjali and The Kid present International classics & unknown pop gems from their vintage vinyl collections. With a focus on retro Bollywood & the Latin diaspora, you can also expect to hear Panjabi folk, Qawwali, South Asian filmi (Lollywood, Tollywood & Kollywood) as well as 60's Pop (French, Thai, etc.)</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show cinemaniacs clearfix">
+            <div class="image-container">
+      <a href="/shows/cinemaniacs"><img src="https://cdn.xray.fm/image/small/cinemaniacs_xray_bumper.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/cinemaniacs">Cinemaniacs</a></div>
+            <div class="short-description">Movies, music and madness! With your host, Jesus Trincado.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show circarad clearfix">
+            <div class="image-container">
+      <a href="/shows/circarad"><img src="https://cdn.xray.fm/image/small/14430013.JPG" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/circarad">Circa Rad</a></div>
+            <div class="short-description">Rad music (or close enough). Join the hunt for lost gems and new treasures every Wednesday at 7pm.  We serve indie rock, global psychedelica, lo-fi, art punk, a particular sort of americana, Portland-centric, international pop, folkishness, and real rock and good radio. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show citizen-411 clearfix">
+            <div class="image-container">
+      <a href="/shows/citizen-411"><img src="https://cdn.xray.fm/image/small/Citizen411_Show-APP-SQ-copy-300x300.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/citizen-411">Citizen 411</a></div>
+            <div class="short-description">Tracy Reilly Kelly and Teresa Torres, from the Clark County (WA) League of Women Voters, host a show aimed at ensuring that everyone is equipped to participate in our democratic republic. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show cityclub clearfix">
+            <div class="image-container">
+      <a href="/shows/cityclub"><img src="https://cdn.xray.fm/image/small/Copy_of_Copy_of_City_Club_of_Portland_2.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/cityclub">City Club of Portland</a></div>
+            <div class="short-description">A 101-year old discussion on the topics that affect Portlanders and Oregonians.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show climate-change-ate-my-homework clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/climate-change-ate-my-homework">Climate Change Ate My Homework</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show climate-change-ate-my-homework-1 clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/climate-change-ate-my-homework-1">Climate Change Ate My Homework</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show cold-ones-and-rolled-ones clearfix">
+            <div class="image-container">
+      <a href="/shows/cold-ones-and-rolled-ones"><img src="https://cdn.xray.fm/image/small/314E9F6F-8339-4C4A-8D6F-7D3CF8E8009E.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/cold-ones-and-rolled-ones">Cold Ones & Rolled Ones</a></div>
+            <div class="short-description">All things loud that ultimately will piss off yr neighbors when turned to 11! Punk, metal, goth, power violence, garage, crust, grind, h/c, Noise,thrash, rap, industrial  coming straight out the underground. Local and international DIY and independent label releases.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show country-dog-city-dog clearfix">
+            <div class="image-container">
+      <a href="/shows/country-dog-city-dog"><img src="https://cdn.xray.fm/image/small/Kev_and_Don.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/country-dog-city-dog">Country Dog City Dog</a></div>
+            <div class="short-description">Country Dog City Dog is a show about helping to bridge a gap between the urban and rural divide. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show dark-night-of-the-soul clearfix">
+            <div class="image-container">
+      <a href="/shows/dark-night-of-the-soul"><img src="https://cdn.xray.fm/image/small/DJ_Billy_Shears.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/dark-night-of-the-soul">Dark Night Of The Soul</a></div>
+            <div class="short-description">A small hour of electronic music from the last four decades. All vinyl, with an emphasis on melody over mayhem whenever possible. Classics, gems, and oddities abound.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show democracy-now clearfix">
+            <div class="image-container">
+      <a href="/shows/democracy-now"><img src="https://cdn.xray.fm/image/small/DN_300_2.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/democracy-now">Democracy Now!</a></div>
+            <div class="short-description">A live broadcast of Democracy Now's daily global, independent news hour, hosted by award-winning journalists Amy Goodman and Juan González. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show dickenbock-report clearfix">
+            <div class="image-container">
+      <a href="/shows/dickenbock-report"><img src="https://cdn.xray.fm/image/small/dickreport.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/dickenbock-report">Dickenbock Report</a></div>
+            <div class="short-description">The Dickenbock Report is a weekly news & entertainment radio magazine hosted by famed news anchor Dick Dickenbock.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show dave_depper clearfix">
+            <div class="image-container">
+      <a href="/shows/dave_depper"><img src="https://cdn.xray.fm/image/small/Butterfly_with_Briefs.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/dave_depper">Dive Deeper with Dave Depper</a></div>
+            <div class="short-description">A weekly journey into the musical psyche of Portland's hardest working sideman. Each week's show will be structured according to a specific theme. Expect a very eclectic musical selection, frequent guest co-hosts, and plenty of geeked-out commentary.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show what-i-like-with-dj-flash-gordon-quarterback-new-york-jets clearfix">
+            <div class="image-container">
+      <a href="/shows/what-i-like-with-dj-flash-gordon-quarterback-new-york-jets"><img src="https://cdn.xray.fm/image/small/IMG_6937.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/what-i-like-with-dj-flash-gordon-quarterback-new-york-jets">DJFGQBNYJs Presents: What I Like</a></div>
+            <div class="short-description">A music and laughter based show, playing a variety of genres of music from country to hip hop, with funny rants and clips.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show double-bummer clearfix">
+            <div class="image-container">
+      <a href="/shows/double-bummer"><img src="https://cdn.xray.fm/image/small/IMG_20180612_004257_-_Robert_Ham.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/double-bummer">Double Bummer</a></div>
+            <div class="short-description">A two hour exploration of the current experimental music scene.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show down-the-rabbit-hole clearfix">
+            <div class="image-container">
+      <a href="/shows/down-the-rabbit-hole"><img src="https://cdn.xray.fm/image/small/DTRH.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/down-the-rabbit-hole">Down the Rabbit Hole</a></div>
+            <div class="short-description">Psychotronic Classics meet the Mutant Wave Hits of Today</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show dragonfly-1 clearfix">
+            <div class="image-container">
+      <a href="/shows/dragonfly-1"><img src="https://cdn.xray.fm/image/small/Dragonfly_App_Ico.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/dragonfly-1">Dragonfly</a></div>
+            <div class="short-description">Dragonfly explores stories, examining how they work, interviews with local storytellers and an installment of an original story series. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show dragonfly clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/dragonfly">Dragonfly!</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show est clearfix">
+            <div class="image-container">
+      <a href="/shows/est"><img src="https://cdn.xray.fm/image/small/Screen_Shot_2017-12-04_at_1.25.40_PM.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/est">Eastern Standard Time</a></div>
+            <div class="short-description">Head nodding, jansport backpack rocking, army fatigues wearing, chew stick bitting, fang clenching, bubble vest flossing, t-shirt wrapped around the head hip hop. This is not hip hop for the casual listener. we will be taking deep dives into classic ra</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show electric-avenue clearfix">
+            <div class="image-container">
+      <a href="/shows/electric-avenue"><img src="https://cdn.xray.fm/image/small/ELECTRIC_AVENUE-avatar.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/electric-avenue">Electric Avenue</a></div>
+            <div class="short-description">Welcome to the back half of the week!
+
+Jimbo and Vern play modern, classic and in-between.
+International and domestic jams.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show ever-present-past clearfix">
+            <div class="image-container">
+      <a href="/shows/ever-present-past"><img src="https://cdn.xray.fm/image/small/everpresentpast.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/ever-present-past">Ever Present Past</a></div>
+            <div class="short-description">Host Michael Sarno explores music that's been forgotten, but shouldn't have been. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show everyday-mixtapes clearfix">
+            <div class="image-container">
+      <a href="/shows/everyday-mixtapes"><img src="https://cdn.xray.fm/image/small/Screen_Shot_2017-04-09_at_4.00.36_PM.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/everyday-mixtapes">Everyday Mixtapes </a></div>
+            <div class="short-description">Music that makes you feel some type a way. R&B, hip hop, throwbacks, funk, vintage + modern international gems for your Saturday night pre-funk.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show everyone-is-interesting clearfix">
+            <div class="image-container">
+      <a href="/shows/everyone-is-interesting"><img src="https://cdn.xray.fm/image/small/Everyone_is_Interesting.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/everyone-is-interesting">Everyone is Interesting</a></div>
+            <div class="short-description">A PDX talk show about big curiosities in small bites.
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show featured-monthly-playlist clearfix">
+            <div class="image-container">
+      <a href="/shows/featured-monthly-playlist"><img src="https://cdn.xray.fm/image/small/D547655C-3CFD-4EED-A262-94D2F1CF4AA2.gif" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/featured-monthly-playlist">Featured Playlist of the Month</a></div>
+            <div class="short-description">Monthly Playlists from XRAY Partners featuring the best of Portland and the folks who make up this vibrant community. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show filibusters clearfix">
+            <div class="image-container">
+      <a href="/shows/filibusters"><img src="https://cdn.xray.fm/image/small/Filibusters.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/filibusters">Filibusters</a></div>
+            <div class="short-description">John Oberg and Dr. Donna Sinclair team up to bring Vancouver a unique political show.  The go-to platform for all candidates from both sides of the aisle in Washington.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show find-the-others clearfix">
+            <div class="image-container">
+      <a href="/shows/find-the-others"><img src="https://cdn.xray.fm/image/small/Find_The_Others_1_.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/find-the-others">Find The Others</a></div>
+            <div class="short-description">Anthony Alvarado author of DIY Magic talks with counter culture creators, outside the box thinkers, and creative spirits about the mind, psyche, art, and the future. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show flannel-flag clearfix">
+            <div class="image-container">
+      <a href="/shows/flannel-flag"><img src="https://cdn.xray.fm/image/small/Flannel_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/flannel-flag">Flannel Flag</a></div>
+            <div class="short-description">Rock music of the 90s, its influences, and the aftermath.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show flick-fix clearfix">
+            <div class="image-container">
+      <a href="/shows/flick-fix"><img src="https://cdn.xray.fm/image/small/FlickFixLogo.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/flick-fix">Flick Fix</a></div>
+            <div class="short-description">Host Austin Read gives passionate reviews and in-depth analyses of both contemporary and classic films</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show flying-saucer-safari clearfix">
+            <div class="image-container">
+      <a href="/shows/flying-saucer-safari"><img src="https://cdn.xray.fm/image/small/Artboard_3-20_2_1_.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/flying-saucer-safari">Flying Saucer Safari!</a></div>
+            <div class="short-description">Hear local Portland music, plus interviews with artists about upcoming music, albums, shows, + music they love. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show bande clearfix">
+            <div class="image-container">
+      <a href="/shows/bande"><img src="https://cdn.xray.fm/image/small/IMG_1972_-_Ben_Hubbird.JPG" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/bande">Forever Now</a></div>
+            <div class="short-description">Getting you through your Friday afternoon with new songs, local music, and awesome sounds from artists coming through Portland.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show friends-of-noise-presents clearfix">
+            <div class="image-container">
+      <a href="/shows/friends-of-noise-presents"><img src="https://cdn.xray.fm/image/small/FoNturntablelogo1440.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/friends-of-noise-presents">Friends Of Noise Presents</a></div>
+            <div class="short-description">A weekly rotation of youth DJs playing a diversity of genres, sharing what the  youth of the PNW are listening to.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show fusebox clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/fusebox">Fusebox</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show futureforecast clearfix">
+            <div class="image-container">
+      <a href="/shows/futureforecast"><img src="https://cdn.xray.fm/image/small/daniel_trainer_FutureForcast_xrayfm_1400px_sqr_soundcloud.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/futureforecast">FutureForecast</a></div>
+            <div class="short-description">A show about technology releases, AI machine learning & the rest… Anchored by Daniel Trainer, Future Forecast promises its listeners a tantalizing take on technology. Covering media news, and of course, all the latest in matters of gadgetry. This show is marked by triumphs, failures, serendipity and insight into the 2020s.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show galaxy-my-dear clearfix">
+            <div class="image-container">
+      <a href="/shows/galaxy-my-dear"><img src="https://cdn.xray.fm/image/small/apres-galaxy.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/galaxy-my-dear">Galaxy My Dear</a></div>
+            <div class="short-description">Otherworldly sounds to deep dance madness brought to you by Jason U.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show gender-reveal clearfix">
+            <div class="image-container">
+      <a href="/shows/gender-reveal"><img src="https://cdn.xray.fm/image/small/GR.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/gender-reveal">Gender Reveal</a></div>
+            <div class="short-description">Gender Reveal is a podcast for nonbinary folks, for people who don't know what "nonbinary" means, and everyone in between. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show get-outta-town clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/get-outta-town">Get Outta Town</a></div>
+            <div class="short-description">Exciting sounds from all over the world. Covering a new country every week.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show ghost-chapel clearfix">
+            <div class="image-container">
+      <a href="/shows/ghost-chapel"><img src="https://cdn.xray.fm/image/small/IMG_0544.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/ghost-chapel">Ghost Chapel</a></div>
+            <div class="short-description">A mixed bag of nutz with indie rock jams, shoegaze, folk, unreleased tracks, concert previews and festival favorites. We’ll bring you up high and light, and then down low and gloomy when you’re in the Ghost Chapel.  
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show glory-mundo clearfix">
+            <div class="image-container">
+      <a href="/shows/glory-mundo"><img src="https://cdn.xray.fm/image/small/GM_logo.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/glory-mundo">Glory Mundo</a></div>
+            <div class="short-description">Late night musings with Glory playing Latin (usually) sounds. With all your favorite flavors of Punk, Psych, Garage, Goth, Surf, Hip Hop, Metal, Cumbia etc. Not your tio's music from the taco truck but even tastier. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show good-ship-earth clearfix">
+            <div class="image-container">
+      <a href="/shows/good-ship-earth"><img src="https://cdn.xray.fm/image/small/GoodShipEarth_Show_APP_SQ.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/good-ship-earth">Good Ship Earth</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show gordon-greens-music-planet clearfix">
+            <div class="image-container">
+      <a href="/shows/gordon-greens-music-planet"><img src="https://cdn.xray.fm/image/small/GGMP_Logo_eWQUt.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/gordon-greens-music-planet">Gordon Green's Music Planet</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show gothique-boutique clearfix">
+            <div class="image-container">
+      <a href="/shows/gothique-boutique"><img src="https://cdn.xray.fm/image/small/wunderkammer.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/gothique-boutique">Gothique Boutique</a></div>
+            <div class="short-description">Purveyors of night music, offering vast selections of industrial noise, grave-wave, goth melodies, heavy riffs, big bass, and dark ambiance, with a touch of witchy folk and horror classics.    </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show grand-nationxl-radio clearfix">
+            <div class="image-container">
+      <a href="/shows/grand-nationxl-radio"><img src="https://cdn.xray.fm/image/small/IMG_3786.JPG" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/grand-nationxl-radio">Grand Nationxl Radio</a></div>
+            <div class="short-description">Bay Area Hip Hop Collective Grand Nationxl's Brookfield Duece hosts Grand Nationxl Radio playing New, Classic & Underground Hip Hop, R&B, and Classic Funk & Soul.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show gks clearfix">
+            <div class="image-container">
+      <a href="/shows/gks"><img src="https://cdn.xray.fm/image/small/harmoHotDog-6clr_copy_1.JPG" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/gks">Greasy Kid Stuff</a></div>
+            <div class="short-description">Radio that stays crunchy - even in milk! Music for kids, but not kid music. Tune in to your childhood, or bridge the gap and turn a kid on to the wonders of radio. Greasy grooves, strange stories, birthday hollers and pancakes! </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show group-therapy clearfix">
+            <div class="image-container">
+      <a href="/shows/group-therapy"><img src="https://cdn.xray.fm/image/small/Group_Therapy.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/group-therapy">Group Therapy</a></div>
+            <div class="short-description">Amplifying voices in progress of social justice issues to support our community and beyond. Hosted by Andre Middleton every Monday.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show guitar-other-machines clearfix">
+            <div class="image-container">
+      <a href="/shows/guitar-other-machines"><img src="https://cdn.xray.fm/image/small/GuitarMachine_Show-APP-SQ-copy-300x300.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/guitar-other-machines">Guitar & Other Machines</a></div>
+            <div class="short-description">A WEEKLY SHOW THAT FOCUSES ON GUITAR AND OTHER MACHINES, SOUNDS, EXPERIMENTS, INNOVATIONS. TRADITIONAL INSTRUMENTS USED IN NEW WAYS, NEW INSTRUMENTS USED IN WHAT ARE CONSIDERED TRADITIONAL WAYS. EXPLORATIONS, IMPROVISATIONS, ALWAYS ERRING ON THE EXPERIMENTAL.
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show hard-reset clearfix">
+            <div class="image-container">
+      <a href="/shows/hard-reset"><img src="https://cdn.xray.fm/image/small/HardReset_color_RBG_podcast_AYGyX.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/hard-reset">Hard Reset</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show hassling-the-paranormal clearfix">
+            <div class="image-container">
+      <a href="/shows/hassling-the-paranormal"><img src="https://cdn.xray.fm/image/small/Hassling_The_Paranormal_App_Icon.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/hassling-the-paranormal">Hassling The Paranormal</a></div>
+            <div class="short-description">Jason Hassler explores the world of the paranormal</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show head-east clearfix">
+            <div class="image-container">
+      <a href="/shows/head-east"><img src="https://cdn.xray.fm/image/small/headeast-rough-bkgd.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/head-east">HEAD EAST</a></div>
+            <div class="short-description">Drawing broadly from world interpretations of rock, soul, and punk, HEAD EAST brings you thee grooves, beats, riffs, and bleeps that matter to defining heaviness. Shaking up genres from the mid-60s thru the 80s with occasional newer jams, let's head east.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show heart-2-heart clearfix">
+            <div class="image-container">
+      <a href="/shows/heart-2-heart"><img src="https://cdn.xray.fm/image/small/Heart-2-heart_Logo.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/heart-2-heart">Heart 2 Heart</a></div>
+            <div class="short-description">Heart-2-Heart: The Reality of Relationships explores the hard and easy realities of relationships, why these realities exist, and relationship solutions to help us more healthily interact with those whom we interact with.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show heavy-metal-sewing-circle clearfix">
+            <div class="image-container">
+      <a href="/shows/heavy-metal-sewing-circle"><img src="https://cdn.xray.fm/image/small/DJ.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/heavy-metal-sewing-circle">Heavy Metal Sewïng Cïrcle</a></div>
+            <div class="short-description">Classic rock and heavy metal collide on the Heavy Metal Sewïng Cïrcle. Great singing and songwriting in loud and heavy music will help the faint of heart ease into things, and killer nuggets will be unearthed for the initiated. No earplugs required. \m/</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show hellocruelworld clearfix">
+            <div class="image-container">
+      <a href="/shows/hellocruelworld"><img src="https://cdn.xray.fm/image/small/hcw4_-_John_B_Jones.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/hellocruelworld">Hello Cruel World</a></div>
+            <div class="short-description">Hello Cruel World brings the worlds of singer/songwriters and acoustic music to you every Thursday from 3-4pm with conversations and in-studio performances as often as possible.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show hipsters-suck clearfix">
+            <div class="image-container">
+      <a href="/shows/hipsters-suck"><img src="https://cdn.xray.fm/image/small/mesmall.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/hipsters-suck">Hipsters Suck</a></div>
+            <div class="short-description">Hipsters Suck = postpunksynthpsychnoisewhatever; punctuated with pretentiousness (See, I used a semi-colon!).</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show home-of-space-paranoid clearfix">
+            <div class="image-container">
+      <a href="/shows/home-of-space-paranoid"><img src="https://cdn.xray.fm/image/small/Nightfly.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/home-of-space-paranoid">Home Of Space Paranoids</a></div>
+            <div class="short-description">The nineteen-eighties.  Electro - new wave - old school.  Presented by Portland's very own DJ Triple M.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show hooray clearfix">
+            <div class="image-container">
+      <a href="/shows/hooray"><img src="https://cdn.xray.fm/image/small/jeremyxrayeazy.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/hooray">Hooray for Tuesday</a></div>
+            <div class="short-description">An eclectic, indie-populist mix with a focus on new and local and a healthy respect for the canon. Johnny Cash to The Clash, Nico to Neko Case, Yo La Tengo to Y La Bamba, and beyond.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show hoot-n-howl-with-dj-am-gold clearfix">
+            <div class="image-container">
+      <a href="/shows/hoot-n-howl-with-dj-am-gold"><img src="https://cdn.xray.fm/image/small/2019_NEW_HNH_Show_Image.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/hoot-n-howl-with-dj-am-gold">Hoot 'N Howl with DJ AM Gold</a></div>
+            <div class="short-description">Since 2014, Hoot 'N Howl is XRAY FM's original oldies radio show!  Tune in every Sunday for real, rare, and rockin' vinyl of the 1940's thru late 1960's in a cross genre blend of scratchy classics and hidden gems! </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show hot-fudge-sunday clearfix">
+            <div class="image-container">
+      <a href="/shows/hot-fudge-sunday"><img src="https://cdn.xray.fm/image/small/HFS_IMAGE.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/hot-fudge-sunday">Hot Fudge Sundazzze!</a></div>
+            <div class="short-description">Wild, weird, psych, soul, country jammers, easy on the ears, rock n' roll.
+No genre exclusions, just quality control.
+
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show im-with-her-shes-with-me clearfix">
+            <div class="image-container">
+      <a href="/shows/im-with-her-shes-with-me"><img src="https://cdn.xray.fm/image/small/IMG_9773_4.JPG" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/im-with-her-shes-with-me">I'm With Her, She's With Me</a></div>
+            <div class="short-description">Renee and Amy Wilson talk about everything under the sun from their unique perspective</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show in-between-daze clearfix">
+            <div class="image-container">
+      <a href="/shows/in-between-daze"><img src="https://cdn.xray.fm/image/small/DazeCover.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/in-between-daze">In Between Daze</a></div>
+            <div class="short-description">Existential mood music to soothe the midnight malaise.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show in-search-of-portland clearfix">
+            <div class="image-container">
+      <a href="/shows/in-search-of-portland"><img src="https://cdn.xray.fm/image/small/xray_content_6B3F59B5-39A3-4638-B71D-37C5A8C26359.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/in-search-of-portland">In Search of Portland</a></div>
+            <div class="short-description">In Search of Portland is a continuing journey through the city we love: a celebration of old and new landmarks, and the dreamers who populate them.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show in-these-streetz clearfix">
+            <div class="image-container">
+      <a href="/shows/in-these-streetz"><img src="https://cdn.xray.fm/image/small/image1_2.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/in-these-streetz">In These STREETZ</a></div>
+            <div class="short-description">In These Streets is a curation of music that thrives from listeners ... The Streetz!. Hosted by Portland's own DJ O.G.ONE. Want to know what's poppin' in urban music? Tune Into These Streetz!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show inside-the-wizards-hat clearfix">
+            <div class="image-container">
+      <a href="/shows/inside-the-wizards-hat"><img src="https://cdn.xray.fm/image/small/97547202-0761-4981-B246-6F58177A21F8_-_Lisa_Beyer.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/inside-the-wizards-hat">Inside the Wizard's Hat</a></div>
+            <div class="short-description">A variety of vintage music anchored in 1950s/1960s rock ‘n’ roll and soul music, occasionally extending backward or forward in time. Step Inside the Wizard’s Hat!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show inside-washington-county clearfix">
+            <div class="image-container">
+      <a href="/shows/inside-washington-county"><img src="https://cdn.xray.fm/image/small/brand-graphic-white-bg.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/inside-washington-county">Inside Washington County with Rob Solomon</a></div>
+            <div class="short-description">Weekly interviews with key people on key issues and topics in Washington County.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show internal-chatter clearfix">
+            <div class="image-container">
+      <a href="/shows/internal-chatter"><img src="https://cdn.xray.fm/image/small/IC_LT_square_Color_F_Med-01.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/internal-chatter">Internal Chatter</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show intuitive-navigation clearfix">
+            <div class="image-container">
+      <a href="/shows/intuitive-navigation"><img src="https://cdn.xray.fm/image/small/S0013921-2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/intuitive-navigation">Intuitive Navigation</a></div>
+            <div class="short-description">The latest in electronic pop, R&B, and other soulful music. Always brand new music! Feels-talk, moon-talk, and sultry jams. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show its-fine clearfix">
+            <div class="image-container">
+      <a href="/shows/its-fine"><img src="https://cdn.xray.fm/image/small/_It_s_Fine_logo.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/its-fine">It's Fine</a></div>
+            <div class="short-description">Long time collaborators and performers Faith Spencer, Amanda Lynn Deal, Scotty Still, Zane Thomas, and Steven Glickman talk about everything from movies to personal relationships to food, sometimes all at the same time. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show jazz-in-portland clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/jazz-in-portland">Jazz in Portland</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show jazz-in-the-new-millenium clearfix">
+            <div class="image-container">
+      <a href="/shows/jazz-in-the-new-millenium"><img src="https://cdn.xray.fm/image/small/Correct-Cover.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/jazz-in-the-new-millenium">Jazz In The New Millennium</a></div>
+            <div class="short-description">Jazz In the New Millennium is a one-hour program focusing in-depth on an individual living jazz artist each week.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show juneteenth-teach-in-2020 clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/juneteenth-teach-in-2020">Juneteenth Teach-In 2020</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show kate-kaye-reporting-for-xrayfm clearfix">
+            <div class="image-container">
+      <a href="/shows/kate-kaye-reporting-for-xrayfm"><img src="https://cdn.xray.fm/image/small/KateKayeHeadshot2018bw.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/kate-kaye-reporting-for-xrayfm">Kate Kaye Reporting for XRAY.fm</a></div>
+            <div class="short-description">Kate Kaye is a longtime tech reporter currently based in Portland, OR who has dabbled in reporting, podcasting and lots of record-spinning as her alter ego, Calamity Kate, on the XRAY.fm airwaves. Look for more of Kate's reporting at her site RedTail</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show kbps-student-hour clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/kbps-student-hour">KBPS Student Hour</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show keep-alive-the-dream clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/keep-alive-the-dream">Keep Alive the Dream</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show kevin-berry-s-old-school-jam-extravaganza clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/kevin-berry-s-old-school-jam-extravaganza">Kevin Berry's Old School Jam Extravaganza</a></div>
+            <div class="short-description">Spinning from 1 - 7 while you get your turkey on!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show kevin-berrys-old-school-show clearfix">
+            <div class="image-container">
+      <a href="/shows/kevin-berrys-old-school-show"><img src="https://cdn.xray.fm/image/small/KB_Old_School_Show.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/kevin-berrys-old-school-show">Kevin Berry's Old School Show</a></div>
+            <div class="short-description">Kevin Berry takes you on a weekly walk down memory lane.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show kxrw-original-reporting clearfix">
+            <div class="image-container">
+      <a href="/shows/kxrw-original-reporting"><img src="https://cdn.xray.fm/image/small/IMG_7734_2.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/kxrw-original-reporting">KXRW Original Reporting</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show kxrw-vancouver clearfix">
+            <div class="image-container">
+      <a href="/shows/kxrw-vancouver"><img src="https://cdn.xray.fm/image/small/unnamed_qrWaA.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/kxrw-vancouver">KXRW Vancouver</a></div>
+            <div class="short-description">Content from KXRW Vancouver, featuring rotating shows highlighting content by, for, and about Vancouver and the people who live there.... or just come to visit.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show leopardus-pardalis clearfix">
+            <div class="image-container">
+      <a href="/shows/leopardus-pardalis"><img src="https://cdn.xray.fm/image/small/Ocelot-2_copy.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/leopardus-pardalis">Leopardus Pardalis</a></div>
+            <div class="short-description">Guten Morgen/Nacht, mein Kaetschien! Listen to an eclectic mix of the avant garde and absurd, and things in between. Minimal and maximalist electronics, dark ambient, post punk, noise, rock and noisy rock.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show let-s-talk clearfix">
+            <div class="image-container">
+      <a href="/shows/let-s-talk"><img src="https://cdn.xray.fm/image/small/Square_Let_s_Talk_logo.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/let-s-talk">Let's Talk! </a></div>
+            <div class="short-description">Let’s Talk! is a podcast created by and for students at PCC. We explore cultural and social justice issues in academia and the wider community from the lens of people experiencing disabilities.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show liquid-beat-radio clearfix">
+            <div class="image-container">
+      <a href="/shows/liquid-beat-radio"><img src="https://cdn.xray.fm/image/small/LBR-03-17-17.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/liquid-beat-radio">Liquid Beat Radio</a></div>
+            <div class="short-description">Best in beat based music.  Hip-Hop, House, Funk, Soul, Disco, Beats.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show solar-powered-flight clearfix">
+            <div class="image-container">
+      <a href="/shows/solar-powered-flight"><img src="https://cdn.xray.fm/image/small/IMG_0366.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/solar-powered-flight">Long Distance Call </a></div>
+            <div class="short-description">(F.K.A. Solar Powered Flight) International pop and off-world funk every Thursday 02:00 (PST) 午後7時（日本時間）
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show coping-and-connecting clearfix">
+            <div class="image-container">
+      <a href="/shows/coping-and-connecting"><img src="https://cdn.xray.fm/image/small/Making-Connections_Show-APP-SQ.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/coping-and-connecting">Making Connections</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show mating-calls clearfix">
+            <div class="image-container">
+      <a href="/shows/mating-calls"><img src="https://cdn.xray.fm/image/small/Show_Photo-New.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/mating-calls">Mating Calls</a></div>
+            <div class="short-description">Exploring the species of sound, from classic to contemporary, domestic to international - rock, pop, soul, psychedelia, and everything in between.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show mazes clearfix">
+            <div class="image-container">
+      <a href="/shows/mazes"><img src="https://cdn.xray.fm/image/small/IMG_0016.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/mazes">MAZES</a></div>
+            <div class="short-description">MAZES amplifies emerging + underrepresented global music creators. Humans>algorithms.
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show mod-lang clearfix">
+            <div class="image-container">
+      <a href="/shows/mod-lang"><img src="https://cdn.xray.fm/image/small/IMG_0029_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/mod-lang">Mod Lang</a></div>
+            <div class="short-description">All manner of guitar oriented pop/punk/rock/soul/garage with a local emphasis served here!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show mr-ghost-goes-to-town clearfix">
+            <div class="image-container">
+      <a href="/shows/mr-ghost-goes-to-town"><img src="https://cdn.xray.fm/image/small/mrghoatsquare.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/mr-ghost-goes-to-town">Mr. Ghost Goes To Town</a></div>
+            <div class="short-description">Wild, weird and dirty pop, novelty and dance tunes from the '20s, '30s and beyond!
+Black string bands, hillbilly blues, hot jazz, sweet vocal groups and more.  </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show much-finer clearfix">
+            <div class="image-container">
+      <a href="/shows/much-finer"><img src="https://cdn.xray.fm/image/small/muchfiner_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/much-finer">Much Finer</a></div>
+            <div class="short-description">A Mostly-Vinyl Eclectic mix of Rarities and Old School Gems, spanning Post-Punk, New Wave, Electronic, Experimental, Prog, Psych, Soul, Garage, Library Music, Soundtracks, and local Portland bands. Every 2nd and 4th Monday with DJ Womb Service.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show mudd-club clearfix">
+            <div class="image-container">
+      <a href="/shows/mudd-club"><img src="https://cdn.xray.fm/image/small/MuddClub.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/mudd-club">Mudd Club</a></div>
+            <div class="short-description">What would the Mudd Club sound like if it was still open 40 years later?
+
+The Mudd Club creates a dialogue between songs. The Mudd Club does not shy away from abrasive atonal sounds, nor from melodic sweet productions. It’s the juxtaposition of these sounds that creates the most compelling story for the audience.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show neighbors clearfix">
+            <div class="image-container">
+      <a href="/shows/neighbors"><img src="https://cdn.xray.fm/image/small/m4n_cookout_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/neighbors">Music For Neighbors</a></div>
+            <div class="short-description">Kristin B. spins new and old favorites from the wide worlds of pop, indie, psych, soul, strum and drum, drone, twang, and lo-fi for your hi-fi. Special emphasis on the News (Zealand, Jersey and York).</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show music-medieval clearfix">
+            <div class="image-container">
+      <a href="/shows/music-medieval"><img src="https://cdn.xray.fm/image/small/musicmedieval-profile.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/music-medieval">Music Medieval</a></div>
+            <div class="short-description">Medieval / early music / dungeon synth / fantasy film OSTs</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show new-music-mondays clearfix">
+            <div class="image-container">
+      <a href="/shows/new-music-mondays"><img src="https://cdn.xray.fm/image/small/IMG_1152.JPG" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/new-music-mondays">New Music Mondays</a></div>
+            <div class="short-description">We believe in the freedom of music, we also believe in the discussion and critique of
+
+music, but most importantly we believe in the power that music has with bringing us all together.
+
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show new-waves-nw clearfix">
+            <div class="image-container">
+      <a href="/shows/new-waves-nw"><img src="https://cdn.xray.fm/image/small/NWwaves_Show_APP_SQ.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/new-waves-nw">New Waves NW</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show news-with-my-fiance clearfix">
+            <div class="image-container">
+      <a href="/shows/news-with-my-fiance"><img src="https://cdn.xray.fm/image/small/nwmf_podcast_image.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/news-with-my-fiance">News With My Fiancé</a></div>
+            <div class="short-description">Morgan Jones and DJ Ambush's weekly news commentary. Tune in live every Thursday Morning at 7:30am on XRAY.FM! </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show nightschool clearfix">
+            <div class="image-container">
+      <a href="/shows/nightschool"><img src="https://cdn.xray.fm/image/small/13612404_10154302544761115_8274414876143454357_n.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/nightschool">Night School </a></div>
+            <div class="short-description">The finest in Portland soul, jazz, disco & outsider funk. Lost tapes rediscovered. Interviews with local musicians. Presented by Bobby D, the program has become the oral history platform for the Albina Music Trust label & arts education entity.
+www.nightschool.us 
+Instagram: @albinamusictrust</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show nocturnal-emissions clearfix">
+            <div class="image-container">
+      <a href="/shows/nocturnal-emissions"><img src="https://cdn.xray.fm/image/small/pdx-tom-henz-01_reframe_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/nocturnal-emissions">Nocturnal Emissions</a></div>
+            <div class="short-description">Nocturnal Emissions plays a mix of indie, underground, noisy stuff, local, national, international, girls, guys... All of that presented with a French twist and non-faked French accents but understandable for the American ear… hopefully!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show northbank-jamdown clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/northbank-jamdown">Northbank Jamdown</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show numberz-community-playlists clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/numberz-community-playlists">Numberz Community Playlists</a></div>
+            <div class="short-description">xml base for porting playlists to the app</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show nw-book-talk clearfix">
+            <div class="image-container">
+      <a href="/shows/nw-book-talk"><img src="https://cdn.xray.fm/image/small/Podcast-Cover-Patty-Grasher-5-jpg.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/nw-book-talk">NW Book Talk</a></div>
+            <div class="short-description">Patty Grasher hosts a show about books with a Northwest connection. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show only-in-clark-county clearfix">
+            <div class="image-container">
+      <a href="/shows/only-in-clark-county"><img src="https://cdn.xray.fm/image/small/OnlyinClarkCounty_Show_APP_SQ_copy.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/only-in-clark-county">Only in Clark County</a></div>
+            <div class="short-description">Host Brandon Heimbigner is a show that seeks to tell the unique stories of the people and places that can only be found in Clark County, WA</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show optic-echo-presents clearfix">
+            <div class="image-container">
+      <a href="/shows/optic-echo-presents"><img src="https://cdn.xray.fm/image/small/OEP.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/optic-echo-presents">Optic Echo Presents</a></div>
+            <div class="short-description">Live mixes of ambient, experimental, & modern classical vinyl with downtempo roots. Highlights of current music in these genres, with some old favorites snuck in.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show our-backyard clearfix">
+            <div class="image-container">
+      <a href="/shows/our-backyard"><img src="https://cdn.xray.fm/image/small/Our_Backyard_App_Icon.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/our-backyard">Our Backyard</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show echos-answer clearfix">
+            <div class="image-container">
+      <a href="/shows/echos-answer"><img src="https://cdn.xray.fm/image/small/PastHaunts_Template_V2_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/echos-answer">Past Haunts</a></div>
+            <div class="short-description">A lost and found of shadowed sounds from past and present, Past Haunts focuses on both the seedy and ethereal side of the contemporary underground. 
+
+For more show info visit: www.pasthaunts.com</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show pdx-pop-now clearfix">
+            <div class="image-container">
+      <a href="/shows/pdx-pop-now"><img src="https://cdn.xray.fm/image/small/PPN_Logo_hi-res_-_square.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/pdx-pop-now">PDX Pop Now!</a></div>
+            <div class="short-description">The PDX Pop Now! show is dedicated to celebrating Portland’s vital and diverse music community with a focus on upcoming all ages shows and Portland releases. Learn more about our organization at www.pdxpopnow.org </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show pdxpopnow clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/pdxpopnow">PDXPopNow!</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show peace-portal clearfix">
+            <div class="image-container">
+      <a href="/shows/peace-portal"><img src="https://cdn.xray.fm/image/small/Peace_Portal_Logo.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/peace-portal">Peace Portal</a></div>
+            <div class="short-description">2-hours of underground dance music selected by host Feu du Camp and featured guests from PNW, West Coast, and beyond.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show phenomenal-disco clearfix">
+            <div class="image-container">
+      <a href="/shows/phenomenal-disco"><img src="https://cdn.xray.fm/image/small/phnm1.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/phenomenal-disco">Phenomenal Disco </a></div>
+            <div class="short-description">Your host @PHNM presents a dive into the depths of disco and surrounding sounds of the 70's. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show mutant-pop clearfix">
+            <div class="image-container">
+      <a href="/shows/mutant-pop"><img src="https://cdn.xray.fm/image/small/PH-Radio-Stacked-BlueGray-180x180-72DPI.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/mutant-pop">PNKHSE Radio</a></div>
+            <div class="short-description">Welcome to the working week. Every Monday we dust out the darker corners of vinyl, from the 1960's onward. Focusing on post-punk, its blueprints and enduring influence; a full two hours dedicated to the back covers of the back of the back of the crates. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show podcast-du-jour clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/podcast-du-jour">Podcast du Jour</a></div>
+            <div class="short-description">The hottest new podcasts from XRAY.fm.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show policy-for-the-people clearfix">
+            <div class="image-container">
+      <a href="/shows/policy-for-the-people"><img src="https://cdn.xray.fm/image/small/Screen_Shot_2022-10-03_at_5.39.50_PM.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/policy-for-the-people">Policy for the People</a></div>
+            <div class="short-description">Welcome to Policy for the People, a show that explores the public policies that can lift up all Oregonians.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show portland-politica clearfix">
+            <div class="image-container">
+      <a href="/shows/portland-politica"><img src="https://cdn.xray.fm/image/small/Copy_of_Portland_Politica.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/portland-politica">Portland Política</a></div>
+            <div class="short-description">A mini-series by Candace Avalos featuring conversations with candidates and advocates leading up to the November 2022 election.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show radio-bandolero clearfix">
+            <div class="image-container">
+      <a href="/shows/radio-bandolero"><img src="https://cdn.xray.fm/image/small/RadioBan_4RYAN.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/radio-bandolero">Radio Bandolero</a></div>
+            <div class="short-description">Secret music, unsung masterpieces, rarities and obscure ear worms. Vintage and new African, Kraut, Caribbean, psychedelic, dub, soul, jazz and beyond!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show radio-noche-libre clearfix">
+            <div class="image-container">
+      <a href="/shows/radio-noche-libre"><img src="https://cdn.xray.fm/image/small/NLsquare.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/radio-noche-libre">Radio Noche Libre!</a></div>
+            <div class="short-description">A weekly show hosted by Portland's own Noche Libre DJ Collective</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show radioroulette clearfix">
+            <div class="image-container">
+      <a href="/shows/radioroulette"><img src="https://cdn.xray.fm/image/small/XRAY_RR_2018.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/radioroulette">Radio Roulette</a></div>
+            <div class="short-description">Talk Programming selections curated by XRAY.fm.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show radio-roulette clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/radio-roulette">Radio Roulette</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show radio-survivor clearfix">
+            <div class="image-container">
+      <a href="/shows/radio-survivor"><img src="https://cdn.xray.fm/image/small/Radio_Survivor.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/radio-survivor">Radio Survivor</a></div>
+            <div class="short-description">The Radio Survivor podcast is a weekly show that explores the future of radio that matters, with a focus on community, college and low-power FM, along with podcasting and internet radio. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show radio-uwu clearfix">
+            <div class="image-container">
+      <a href="/shows/radio-uwu"><img src="https://cdn.xray.fm/image/small/269696870_498349134800430_9200258969733956345_n.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/radio-uwu">Radio UwU</a></div>
+            <div class="short-description">UwU is a transgender and gender non-conforming artist collective committed to prioritizing QTPoC and uplifting our community through art, action, and advocacy. Catch us every Friday night from 11p.m.-12a.m. where every week will make you want to get up and dance to your heart's content! </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show raise-a-glass clearfix">
+            <div class="image-container">
+      <a href="/shows/raise-a-glass"><img src="https://cdn.xray.fm/image/small/raiseaglass_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/raise-a-glass">Raise a Glass</a></div>
+            <div class="short-description">The show that pays tribute to musical figures we've recently lost.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show ralph-nader-radio-hour clearfix">
+            <div class="image-container">
+      <a href="/shows/ralph-nader-radio-hour"><img src="https://cdn.xray.fm/image/small/ralph-nader.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/ralph-nader-radio-hour">Ralph Nader Radio Hour</a></div>
+            <div class="short-description">The Ralph Nader Radio Hour is a weekly talk show. Nader is joined by co-hosts Steve Skrovan and David Feldman for a lively informative hour of interviews and thought-provoking discussions of the week's news.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show reimagined-radio clearfix">
+            <div class="image-container">
+      <a href="/shows/reimagined-radio"><img src="https://cdn.xray.fm/image/small/Re-Imagined_Radio_App_Icon.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/reimagined-radio">Re-Imagined Radio</a></div>
+            <div class="short-description">Re-Imagined Radio produces and shares sound-based storytelling as live performances, radio broadcasts, listening events, live stream and on demand audio, and beyond. All these outcomes are undertaken as literary-media art and performance for contemporary audiences.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show record-lections clearfix">
+            <div class="image-container">
+      <a href="/shows/record-lections"><img src="https://cdn.xray.fm/image/small/Record_Lections_Hell_Books.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/record-lections">Record Lections</a></div>
+            <div class="short-description">Record Lections is a weekly zine where DJ hell books extrapolates vinyl gems that have influenced him as a devotee to the music idiom.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show rescue-road clearfix">
+            <div class="image-container">
+      <a href="/shows/rescue-road"><img src="https://cdn.xray.fm/image/small/RescueRoad_Show_APP_SQ_copy.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/rescue-road">Rescue Road</a></div>
+            <div class="short-description">Rescue Road, with host Rebecca Rodriguez, explores the complexities of the human/animal bond and investigates our responsibilities, short-comings, and obsessions with our animal friends. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show reverse-couple-skate clearfix">
+            <div class="image-container">
+      <a href="/shows/reverse-couple-skate"><img src="https://cdn.xray.fm/image/small/rcs-logo-final-really_this_time_2_copy.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/reverse-couple-skate">Reverse Couple-Skate</a></div>
+            <div class="short-description">A wide variety of music, from the genre-defining to the genre-defying, with an emphasis on the music of the 60s and 70s. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show rogue-apostles clearfix">
+            <div class="image-container">
+      <a href="/shows/rogue-apostles"><img src="https://cdn.xray.fm/image/small/Rogue_Apostles_App_Icon.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/rogue-apostles">Rogue Apostles</a></div>
+            <div class="short-description">The Rogue Apostles present The Notorious Savannah O. Bennington as she invites creators in to talk about what they're doing and what they have coming up for their audiences. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show temp1 clearfix">
+            <div class="image-container">
+      <a href="/shows/temp1"><img src="https://cdn.xray.fm/image/small/XRAY_Rotation_2022.JPG" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/temp1">Rotation</a></div>
+            <div class="short-description">The best of XRAY on repeat!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show rotation-saturday-3-am-5-am clearfix">
+            <div class="image-container">
+      <a href="/shows/rotation-saturday-3-am-5-am"><img src="https://cdn.xray.fm/image/small/XRAY_ROTATION_2018_2_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/rotation-saturday-3-am-5-am">Rotation Saturday 3 AM - 5 AM</a></div>
+            <div class="short-description">The best of XRAY on repeat!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show rug-radio clearfix">
+            <div class="image-container">
+      <a href="/shows/rug-radio"><img src="https://cdn.xray.fm/image/small/Screen_Shot_2022-08-11_at_10.27.45_PM.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/rug-radio">Rug Radio </a></div>
+            <div class="short-description">Time to roll out the Persian rug and get freaky! Let your ears do all the work during this magic carpet ride through the airwaves. It's sure to be filled with obscurities, new releases, and cult favorites.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show run-up-the-numberz clearfix">
+            <div class="image-container">
+      <a href="/shows/run-up-the-numberz"><img src="https://cdn.xray.fm/image/small/run_up_the_numberz.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/run-up-the-numberz">Run Up The Numberz</a></div>
+            <div class="short-description">Your weekly dose of news from The Numberz.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show sadder-star clearfix">
+            <div class="image-container">
+      <a href="/shows/sadder-star"><img src="https://cdn.xray.fm/image/small/sadderstar_stickies_2.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/sadder-star">Sadder Star</a></div>
+            <div class="short-description">Sadder Star showcases the highly expressive and often misunderstood genre of emo, short for emotive hardcore ♡</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show sanremo1985 clearfix">
+            <div class="image-container">
+      <a href="/shows/sanremo1985"><img src="https://cdn.xray.fm/image/small/SanRemoSoundsSensational.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/sanremo1985">San Remo 1985</a></div>
+            <div class="short-description">a weekly, hour-long, almost entirely vinyl-based show focusing on the intersection between a (world)wide variety of musics and the exponential proliferation of synthesized sound, from the late 70’s on</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show savage-beat clearfix">
+            <div class="image-container">
+      <a href="/shows/savage-beat"><img src="https://cdn.xray.fm/image/small/SAVAGE-BEAT-RADIOxray.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/savage-beat">Savage Beat</a></div>
+            <div class="short-description">SAVAGE BEAT is garage, surf, proto-punk and a little more of the like plus some out of character stuff from time to time! Weirdo screamers and trashy creepers.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show searchingforthesound clearfix">
+            <div class="image-container">
+      <a href="/shows/searchingforthesound"><img src="https://cdn.xray.fm/image/small/download_2_.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/searchingforthesound">Searching For The Sound</a></div>
+            <div class="short-description">A weekly exploration of African and African American sounds from the '60's, '70's and beyond with cross-genre journeys into psych-rock, funk, disco, R&B, Soul, blues and the many flavors of jazz. Sounds of liberation, love, identity, the spiritual and pure groove from the greatest musical tradition your mind and body will ever embrace.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show seasonal-compression clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/seasonal-compression">Seasonal Compression</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show self-help-radio clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/self-help-radio">Self Help Radio</a></div>
+            <div class="short-description">Self Help Radio explores a different theme with music & talk every week.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show sessions clearfix">
+            <div class="image-container">
+      <a href="/shows/sessions"><img src="https://cdn.xray.fm/image/small/SessionsFromTheBoxLogo-Green2.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/sessions">Sessions From The Box</a></div>
+            <div class="short-description">Go find yourself a new band! Sessions From The Box is the live concert experience without the sticky floor. Live sessions and interviews from local and touring bands. No genres, just great music.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show sex-drugs-basketball clearfix">
+            <div class="image-container">
+      <a href="/shows/sex-drugs-basketball"><img src="https://cdn.xray.fm/image/small/Screen_Shot_2016-03-03_at_4.31.09_PM.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/sex-drugs-basketball">Sex, Drugs, & Basketball</a></div>
+            <div class="short-description">A live interactive radio show broadcast from the Slingshot Lounge in beautiful southeast Portland! On most Thursday nights we come to you from the back porch of the lounge where host Arthur Bradford welcomes calls, text messages, and live conversation with patrons who come in to see the show. Sometimes we have planned guests and those have included Zia McCabe, Viva Las Vegas, Stephen Malkmus, Thomas Lauderdale, Joy Bryant, Moon Zappa, and more! We love to talk about Drugs, Sex, and Basketball, but we don't mind if things go astray either. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show silky-top clearfix">
+            <div class="image-container">
+      <a href="/shows/silky-top"><img src="https://cdn.xray.fm/image/small/lez_4.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/silky-top">Silky Top</a></div>
+            <div class="short-description">house & disco mostly + a little techno here & acid there. queer rave moments. house divas. getting ready music. peak boogie music. put on lingerie and clean your house on mushrooms music</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show silly-love-songs clearfix">
+            <div class="image-container">
+      <a href="/shows/silly-love-songs"><img src="https://cdn.xray.fm/image/small/F92DDD69-500A-401E-B636-18489966155F.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/silly-love-songs">Silly Love Songs </a></div>
+            <div class="short-description">A sweet, emotional and sultry musical dedication and call-in radio hour hosted by Sappho. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show six-beats-under clearfix">
+            <div class="image-container">
+      <a href="/shows/six-beats-under"><img src="https://cdn.xray.fm/image/small/GENERIC_FLYER_FOR_XRAY.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/six-beats-under">Six Beats Under</a></div>
+            <div class="short-description">A mix of goth, shoegaze, post-punk, ethereal, darkwave and dark 80's, Classic tracks and new tunes weekly!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show sfutf clearfix">
+            <div class="image-container">
+      <a href="/shows/sfutf"><img src="https://cdn.xray.fm/image/small/postpunktape.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/sfutf">Songs From Under The Floorboard</a></div>
+            <div class="short-description">60 minutes dedicated to post-punk, darkwave, cold wave and whatever other signifiers, Dave Cantrell and Victor Montes bring you the best, most wide-ranging playlist you can imagine. Known by goths and wavers everywhere, SFUTF is your FINEST resource. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show soul-archaeology clearfix">
+            <div class="image-container">
+      <a href="/shows/soul-archaeology"><img src="https://cdn.xray.fm/image/small/Avery1.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/soul-archaeology">Soul Archaeology</a></div>
+            <div class="short-description">Soul Archaeology is a soulful trip down memory lane engineered by your tour guide, Avery Pack, affectionately known as DJ Daddy Cool.
+
+Here is where you hear the best of the old school...soul indeed, but other cuts that are in the ball park of soul, but smell of rock, blues, jazz and sometimes a little country. Come take this journey through time and explore the musical sounds of your mind's reminiscence. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show space-does-not-care clearfix">
+            <div class="image-container">
+      <a href="/shows/space-does-not-care"><img src="https://cdn.xray.fm/image/small/BoyEatsPlanet.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/space-does-not-care">Space Does Not Care: Sonic Snax and Attax for PDX</a></div>
+            <div class="short-description">SpacepsychkrautneokrautambientnoisedreamdroneindieelectronicA</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show spawn-on-me clearfix">
+            <div class="image-container">
+      <a href="/shows/spawn-on-me"><img src="https://cdn.xray.fm/image/small/SOM_LOGO.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/spawn-on-me">Spawn On Me</a></div>
+            <div class="short-description">Spawn On Me is the definitive video game podcast featuring and spotlighting gamers of color. Brought to you directly from Brookago, Spawn on Me brings you gaming news, previews and reviews while simultaneously looking at how games affect the world. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show spirit-of-79 clearfix">
+            <div class="image-container">
+      <a href="/shows/spirit-of-79"><img src="https://cdn.xray.fm/image/small/spirit.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/spirit-of-79">Spirit of '79</a></div>
+            <div class="short-description">Power-Pop, Punk and Mod Revival from the late 70s and early 80s, spinning primarily 7" singles</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show sportslandia clearfix">
+            <div class="image-container">
+      <a href="/shows/sportslandia"><img src="https://cdn.xray.fm/image/small/Sportslandia_Logo.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/sportslandia">Sportslandia</a></div>
+            <div class="short-description">Sportslandia is a sports talk show with a local flare and emphasis on the positive side of sports. This is not a typical "hot take" sports show. Each episode we will shine a light on local pro athletes, coaches, and owners about their teams and leagues. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show sprouts-radio-from-the-grassroots clearfix">
+            <div class="image-container">
+      <a href="/shows/sprouts-radio-from-the-grassroots"><img src="https://cdn.xray.fm/image/small/233687-img_show.225x225.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/sprouts-radio-from-the-grassroots">Sprouts: Radio From the Grassroots</a></div>
+            <div class="short-description">Sprouts is a weekly collaborative program that showcases local stories produced by community radio stations and grassroots media groups around the world.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show staff-infection clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/staff-infection">Staff Infection</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show stapled-sounds clearfix">
+            <div class="image-container">
+      <a href="/shows/stapled-sounds"><img src="https://cdn.xray.fm/image/small/20221209_155809.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/stapled-sounds">Stapled Sounds</a></div>
+            <div class="short-description">Stapled Sounds are all vinyl, Americana greasy spooksters from the past and present!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show static-distance clearfix">
+            <div class="image-container">
+      <a href="/shows/static-distance"><img src="https://cdn.xray.fm/image/small/staticdistancecat.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/static-distance">Static + Distance</a></div>
+            <div class="short-description">Long, dark blues and other audio ephemera that transcend space and time. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show strange-babes clearfix">
+            <div class="image-container">
+      <a href="/shows/strange-babes"><img src="https://cdn.xray.fm/image/small/Strangebabes_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/strange-babes">Strange Babes</a></div>
+            <div class="short-description">Long time Portland DJ crew, Strange Babes bring you a wide and formidable mix of underground gems across genres. Modern to well-aged. Local and far beyond. Strange and getting stranger. 
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show street-roots-radio clearfix">
+            <div class="image-container">
+      <a href="/shows/street-roots-radio"><img src="https://cdn.xray.fm/image/small/StreetRootsRadio_ShowImage_June2023.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/street-roots-radio">Street Roots Radio</a></div>
+            <div class="short-description">XRAY.FM's Street Roots Radio is a collaborative radio project with Street Roots journalists. Highlighting the work of the Orange Fence Project, which focuses on homelessness policy, enforcement and impact in Portland, OR. 
+
+Also available as a podcast on demand.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show strikeofdeath clearfix">
+            <div class="image-container">
+      <a href="/shows/strikeofdeath"><img src="https://cdn.xray.fm/image/small/Strike_V_Small.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/strikeofdeath">Strike Of Death</a></div>
+            <div class="short-description">Strike of Death features the best of Death Metal, Thrash, Grindcore, Doom, Hardcore, Black Metal and other extreme music from the 80s to the present. Join us if you dare.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show sugar-substitute clearfix">
+            <div class="image-container">
+      <a href="/shows/sugar-substitute"><img src="https://cdn.xray.fm/image/small/sugarsubstitutelogo2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/sugar-substitute">Sugar Substitute</a></div>
+            <div class="short-description">A deceptively sweet concoction of indie musics, from twee to postpunk, for middle-of-the-night snacking.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-bridge clearfix">
+            <div class="image-container">
+      <a href="/shows/the-bridge"><img src="https://cdn.xray.fm/image/small/Photo_Oct_07_1_27_42_AM_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-bridge">Take It To The Bridge!</a></div>
+            <div class="short-description">New music, classic hits, and rare gems from the Bridge City, the Pacific Northwest, and beyond!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show talk-rotation clearfix">
+            <div class="image-container">
+      <a href="/shows/talk-rotation"><img src="https://cdn.xray.fm/image/small/XRAY_Talk_Rotation_w_Blade_AC_2021.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/talk-rotation">Talk Rotation</a></div>
+            <div class="short-description">A curated selection of XRAY's best talk content and podcasts.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show team-human clearfix">
+            <div class="image-container">
+      <a href="/shows/team-human"><img src="https://cdn.xray.fm/image/small/teamhuman.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/team-human">Team Human</a></div>
+            <div class="short-description">Team Human is a podcast striving to amplify human connection. Each week, host Douglas Rushkoff engages in discussion with people who are hacking autonomous technologies, runaway markets and weaponized media to make it more compatible with human life, and helping redefine what it means to stay human in a digital age.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show test-pilots clearfix">
+            <div class="image-container">
+      <a href="/shows/test-pilots"><img src="https://cdn.xray.fm/image/small/Test_Pilots_2022__.JPG" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/test-pilots">Test Pilots</a></div>
+            <div class="short-description">A place to hear new episodes from upcoming XRAY DJs. Tell us what you think by texting in at 971-220-5979</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show test-show-1 clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/test-show-1">Test Show</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show test-show-2 clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/test-show-2">test-show</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show testing-all-the-time clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/testing-all-the-time">Testing All the Time</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-in-crowd clearfix">
+            <div class="image-container">
+      <a href="/shows/the-in-crowd"><img src="https://cdn.xray.fm/image/small/IN_Crowd_Logo_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-in-crowd">The "IN" Crowd</a></div>
+            <div class="short-description">Get in with The "IN" Crowd and be transported back in time. You will hear songs from the 50's to the 70's. As record collectors we enjoy playing rare gems all on vinyl. Saturdays from 2pm-3pm.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-aardvark-hour-with-kickstand-comedy clearfix">
+            <div class="image-container">
+      <a href="/shows/the-aardvark-hour-with-kickstand-comedy"><img src="https://cdn.xray.fm/image/small/The_AardvarkHourLogo.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-aardvark-hour-with-kickstand-comedy">The Aardvark Hour with Kickstand Comedy</a></div>
+            <div class="short-description">Real conversations....with fake people. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-afterparty clearfix">
+            <div class="image-container">
+      <a href="/shows/the-afterparty"><img src="https://cdn.xray.fm/image/small/Afterparty_cover_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-afterparty">The Afterparty</a></div>
+            <div class="short-description">After the club closes, join veteran DJs AC$ and Sir Round as we explore the deeper side of underground house music.  Deep/Soulful/Afro/Latin house music for your mind, body and soul. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-common-good clearfix">
+            <div class="image-container">
+      <a href="/shows/the-common-good"><img src="https://cdn.xray.fm/image/small/Common-Good_Show-APP-SQ.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-common-good">The Common Good</a></div>
+            <div class="short-description">The Common Good!
+KXRW! 
+Placeholder text.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show live-vinyl-treats clearfix">
+            <div class="image-container">
+      <a href="/shows/live-vinyl-treats"><img src="https://cdn.xray.fm/image/small/toby01.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/live-vinyl-treats">The Denim Dinner Party</a></div>
+            <div class="short-description">Underground obscurities and above-ground psych, prog, funk and rock from the 1970s and beyond. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-detour clearfix">
+            <div class="image-container">
+      <a href="/shows/the-detour"><img src="https://cdn.xray.fm/image/small/OHm-TheDetourPodcast.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-detour">The Detour</a></div>
+            <div class="short-description">A show about people and ideas from Oregon Humanities.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show night-drive clearfix">
+            <div class="image-container">
+      <a href="/shows/night-drive"><img src="https://cdn.xray.fm/image/small/Screenshot_20190917-164841_Instagram.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/night-drive">The Filet</a></div>
+            <div class="short-description">New and newly unearthed jams from all over to put you in a dancing mood.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-fix clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/the-fix">The Fix</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-funhouse clearfix">
+            <div class="image-container">
+      <a href="/shows/the-funhouse"><img src="https://cdn.xray.fm/image/small/Funhouse.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-funhouse">The Funhouse</a></div>
+            <div class="short-description">Welcome...</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-future-of-what clearfix">
+            <div class="image-container">
+      <a href="/shows/the-future-of-what"><img src="https://cdn.xray.fm/image/small/FOW-Logo-1000px.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-future-of-what">The Future Of What</a></div>
+            <div class="short-description">The music business is half the size it was ten years ago, and many people believe music should be free.  On The Future of What we talk to musicians and allies to find out what's happening now and where we're going.  Is there a future for music... or what?</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show groove-theory clearfix">
+            <div class="image-container">
+      <a href="/shows/groove-theory"><img src="https://cdn.xray.fm/image/small/2018-10-22_19.26.28-5.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/groove-theory">The Groove Theory Mixshow</a></div>
+            <div class="short-description">Groove Theory, hosted by Dj O.G.ONE, is a collection of feel good music mixes that move the soul. Focused on creating a musical experience that supports good music by both local and national artist who don't always get airplay on commercial radio. You'll R&B, Soul, Jazz, Alternative and even some pPop that gets your groovin.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-hearing-music clearfix">
+            <div class="image-container">
+      <a href="/shows/the-hearing-music"><img src="https://cdn.xray.fm/image/small/hearing_trumpet.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-hearing-music">The Hearing Music</a></div>
+            <div class="short-description">In the Hearing Music I plan to show connections between punk, no wave, minimalism, free jazz, exotica, drone, experimental, psychedelic, noise, new age, synth bliss, and other lost threads to build my portrait of sound.
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-impact-sound clearfix">
+            <div class="image-container">
+      <a href="/shows/the-impact-sound"><img src="https://cdn.xray.fm/image/small/impact.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-impact-sound">The IMPACT! Sound</a></div>
+            <div class="short-description">Sweet ska and rocksteady from the sixties, the deepest roots reggae from the seventies and the best dancehall from the eighties and beyond. Get ready to move your dancing feet to the sound that can't be beat: The IMPACT! Sound. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-lamp clearfix">
+            <div class="image-container">
+      <a href="/shows/the-lamp"><img src="https://cdn.xray.fm/image/small/LAMP.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-lamp">The Lamp</a></div>
+            <div class="short-description">Midnight hour warmth for you to kick back and reset to. Beats to ground us, soulful vibrations to lift us up! Shapeshifting encouraged.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-last-schmaltz-on-the-left clearfix">
+            <div class="image-container">
+      <a href="/shows/the-last-schmaltz-on-the-left"><img src="https://cdn.xray.fm/image/small/LastSchmaltzShow.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-last-schmaltz-on-the-left">The Last Schmaltz On The Left</a></div>
+            <div class="short-description">Easy Listening, Exotica, Latin Jazz, Soundtracks, Vintage Synth, Sublime Frequencies, Incredibly Strange music,  In sounds from the Way out.  - Music your strange aunt listens to.
+Email DJPrimitiva@gmail.com </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-local clearfix">
+            <div class="image-container">
+      <a href="/shows/the-local"><img src="https://cdn.xray.fm/image/small/THE_LOCAL_final.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-local">The Local</a></div>
+            <div class="short-description">The Local is your daily dose of hometown news, delivered fresh to your podcasts feeds every morning and broadcast at 6:30am. Episodes available at https://xraypod.com/show/the-local</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show nonprofit clearfix">
+            <div class="image-container">
+      <a href="/shows/nonprofit"><img src="https://cdn.xray.fm/image/small/NPHvar1_4.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/nonprofit">The Non-Profit Happy Hour</a></div>
+            <div class="short-description">The Non Profit Hour: a weekly look at Portland's nonprofits and do-gooders with interviews, profiles, and documentaries. Hosted by Phil Busse and Julie Falk.  Produced and edited by Molly Jean Bennett.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-numberz-broadcast clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/the-numberz-broadcast">The Numberz Broadcast</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-path-is-the-destination clearfix">
+            <div class="image-container">
+      <a href="/shows/the-path-is-the-destination"><img src="https://cdn.xray.fm/image/small/IMG_2735.JPG" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-path-is-the-destination">The Path Is The Destination</a></div>
+            <div class="short-description">a show about human expression</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-pm-show clearfix">
+            <div class="image-container">
+      <a href="/shows/the-pm-show"><img src="https://cdn.xray.fm/image/small/JBHorwitz.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-pm-show">The PM Show</a></div>
+            <div class="short-description">The PM Show features the best in Progressive Electric Music from around the world. Hear the latest in "Prog" and catch some old favorites as well. It's all on The PM Show with your host JB Horwitz. 2-4AM Thursday mornings on 91.1 and 107.1 XRAY FM, 99.9 KXRW FM and at www.xray.fm. The PM Show is dedicated to world peace. Believe it!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-sean-paul-lambert-show clearfix">
+            <div class="image-container">
+      <a href="/shows/the-sean-paul-lambert-show"><img src="https://cdn.xray.fm/image/small/524A3BB3-09E0-4392-9C32-180B4865DCDC.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-sean-paul-lambert-show">The Sean Paul Lambert Show</a></div>
+            <div class="short-description">You're a Portland kind of person, living that Portland kind of life. You're craving a mix of punk, disorder, jazz, soul, found audio detritus and the like. You're tired of the same old same old and need that fam new new. Welcome, friend. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-sound-of-pictures clearfix">
+            <div class="image-container">
+      <a href="/shows/the-sound-of-pictures"><img src="https://cdn.xray.fm/image/small/SOP_XRAY_cover_2.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-sound-of-pictures">The Sound Of Pictures</a></div>
+            <div class="short-description">The “Sound of Pictures” is a movie music show hosted by disk detective DJ Scili. 
+This show sets an imaginary stage for film music near and far.  You’ll hear lots of soundtracks, source music and interviews with film composers with your cinema-centric host.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-sound-of-pictures clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/the-sound-of-pictures">The Sound of Pictures</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-stephanie-miller-show clearfix">
+            <div class="image-container">
+      <a href="/shows/the-stephanie-miller-show"><img src="https://cdn.xray.fm/image/small/1-6346341754.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-stephanie-miller-show">The Stephanie Miller Show</a></div>
+            <div class="short-description">Stephanie Miller offers irreverent daily drive-time discussion of current events, politics, and pop culture.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-vibe clearfix">
+            <div class="image-container">
+      <a href="/shows/the-vibe"><img src="https://cdn.xray.fm/image/small/vibe4_1__HgtuL.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-vibe">The Vibe</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-womens-mosaic clearfix">
+            <div class="image-container">
+      <a href="/shows/the-womens-mosaic"><img src="https://cdn.xray.fm/image/small/Women_s_Mosaic_Logo.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-womens-mosaic">The Women's Mosaic</a></div>
+            <div class="short-description">The Women’s Mosaic explores the real lives of local women through story-rich interviews as co-hosts Karen Morrison and Elizabeth Madrigal expose what works and what doesn’t to enhance the wellbeing of women in our greater community. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-world-krewsade-aka-the-hip-hop-spot clearfix">
+            <div class="image-container">
+      <a href="/shows/the-world-krewsade-aka-the-hip-hop-spot"><img src="https://cdn.xray.fm/image/small/0_6.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-world-krewsade-aka-the-hip-hop-spot">The World Krewsade</a></div>
+            <div class="short-description">Local rap group The U-Krew and DJ P-Kookie host a weekly Hip-Hop show</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show soul-food clearfix">
+            <div class="image-container">
+      <a href="/shows/soul-food"><img src="https://cdn.xray.fm/image/small/IMG_1418.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/soul-food">theInterlude</a></div>
+            <div class="short-description">The Friday Night Interlude w/ Mo B. is everything you need to get your weekend off the right start. Tune in, vibe out, and I guarantee you'll hear something new each and every week.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show they-gave-us-a-show clearfix">
+            <div class="image-container">
+      <a href="/shows/they-gave-us-a-show"><img src="https://cdn.xray.fm/image/small/pdf_20230730_110416_0000.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/they-gave-us-a-show">They Gave Us a Show?</a></div>
+            <div class="short-description">Danny Ocean and Shaydo bring you hip-hop, r&b, and Reggae. New and throwbacks, from Portland and beyond. Plus, catch interviews from talented artists.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show this-is-cannabis clearfix">
+            <div class="image-container">
+      <a href="/shows/this-is-cannabis"><img src="https://cdn.xray.fm/image/small/This_is_Cannabis_XRAY_Image_no_header.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/this-is-cannabis">This Is Cannabis</a></div>
+            <div class="short-description">This. Is. Cannabis!
+The show that takes an insider look at the Oregon cannabis scene.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show thom_hartmann clearfix">
+            <div class="image-container">
+      <a href="/shows/thom_hartmann"><img src="https://cdn.xray.fm/image/small/ThomHartmann2019.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/thom_hartmann">Thom Hartmann Program</a></div>
+            <div class="short-description">America's Number One Progressive Radio Show
+
+Call In @ (202) 808-9925
+M-F 9AM - 12PM</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show time-place clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/time-place">Time & Place</a></div>
+            <div class="short-description">Time & Place is a program that aims to take you on a journey through the most distinctive and fascinating music scenes from any point in time, anywhere on earth and potentially beyond!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show time-out-4-fun clearfix">
+            <div class="image-container">
+      <a href="/shows/time-out-4-fun"><img src="https://cdn.xray.fm/image/small/NeoBoys_coKRecords.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/time-out-4-fun">Time Out 4 Fun</a></div>
+            <div class="short-description">Three abnormal chicks coming together to bring you sonic gems from the depths of their record crates, from obscure to familiar, from hardcore to hard to listen to. Take some time out for fun with Mof, Janie, and Bri. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show tina-turner-tributes clearfix">
+            <div class="image-container">
+      <a href="/shows/tina-turner-tributes"><img src="https://cdn.xray.fm/image/small/230524154243-03b-tina-turner-lead-image.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/tina-turner-tributes">Tina Turner Tributes</a></div>
+            <div class="short-description">XRAY DJs have shown their love for Queen of Rock 'n' Roll and all-around-music-legend Tina Turner. Listen to all the dedicated tributes they've made and broadcast this week in response to her passing on May 24th. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show to-the-republic clearfix">
+            <div class="image-container">
+      <a href="/shows/to-the-republic"><img src="https://cdn.xray.fm/image/small/78500138_103627577786212_3848225083000619008_n_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/to-the-republic">To the Republic</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show too-much-class clearfix">
+            <div class="image-container">
+      <a href="/shows/too-much-class"><img src="https://cdn.xray.fm/image/small/Screen_Shot_2019-11-12_at_3.20.35_PM.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/too-much-class">Too Much Class</a></div>
+            <div class="short-description">Playing early rock & roll, punk, post punk, girl-groups, glam, bubble gum and power pop to keep your day sweet and classy. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show totally-board clearfix">
+            <div class="image-container">
+      <a href="/shows/totally-board"><img src="https://cdn.xray.fm/image/small/e7b11a33-1625-404b-85b0-6002bd83adaa.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/totally-board">Totally Board</a></div>
+            <div class="short-description">The XRAY Board takes over the airwaves! </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show travlin-the-tracks-with-dj-action-slacks clearfix">
+            <div class="image-container">
+      <a href="/shows/travlin-the-tracks-with-dj-action-slacks"><img src="https://cdn.xray.fm/image/small/Screen_Shot_2023-04-26_at_8.55.29_PM.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/travlin-the-tracks-with-dj-action-slacks">Travlin' the Tracks with DJ Action Slacks</a></div>
+            <div class="short-description">DJ Action Slacks keeps the music in motion, busting past the gatekeepers, into the world of vintage music collecting (R&B, soul, jazz, blues, Latin & more). So, hop on the bandwagon and let’s get moving!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show tribal-conversations clearfix">
+            <div class="image-container">
+      <a href="/shows/tribal-conversations"><img src="https://cdn.xray.fm/image/small/TB.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/tribal-conversations">Tribal Conversations</a></div>
+            <div class="short-description">Discussions with Tribal members about issues of interest to Tribal Members</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show the-adventures-of-encyclopedia-sound clearfix">
+            <div class="image-container">
+      <a href="/shows/the-adventures-of-encyclopedia-sound"><img src="https://cdn.xray.fm/image/small/Tropicology.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/the-adventures-of-encyclopedia-sound">Tropicology</a></div>
+            <div class="short-description">Each week DJ Encyclopedia Sound shares 2 hours of rare grooves from Africa, Brazil, and Latin America. This fusion of African drumming with European composition is the same recipe as jazz, blues, and rock; the other side of our shared musical family tree.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show turtles-have-short-legs clearfix">
+            <div class="image-container">
+      <a href="/shows/turtles-have-short-legs"><img src="https://cdn.xray.fm/image/small/turtles_have_short_legs_logo_maybe_take_2_800_square.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/turtles-have-short-legs">Turtles Have Short Legs</a></div>
+            <div class="short-description">An intoxicating mix of psychedelic & experimental sounds new & old: Krautrock/kosmische, acid folk/weirdlore, hauntological delights, popsike pipedreams, analog electronics, surreal sound collage/drone, avant-rock oddities, & unusual international sounds.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show twilight-transmissions clearfix">
+            <div class="image-container">
+      <a href="/shows/twilight-transmissions"><img src="https://cdn.xray.fm/image/small/TT_Square_02.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/twilight-transmissions">Twilight Transmissions</a></div>
+            <div class="short-description">Somewhere, something incredible is waiting to be heard.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show two-rooms-at-the-end-of-the-world clearfix">
+            <div class="image-container">
+      <a href="/shows/two-rooms-at-the-end-of-the-world"><img src="https://cdn.xray.fm/image/small/2Rooms_Show-APP-SQ-copy-300x300.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/two-rooms-at-the-end-of-the-world">Two Rooms at the End of the World</a></div>
+            <div class="short-description">This hour long show dives deep into lesser known music of yesteryear and today.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show unrefined-sophisticates clearfix">
+            <div class="image-container">
+      <a href="/shows/unrefined-sophisticates"><img src="https://cdn.xray.fm/image/small/US_Podcast_Homepage_Hero.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/unrefined-sophisticates">Unrefined Sophisticates Podcast</a></div>
+            <div class="short-description">More unrefined than sophisticated, 2 friends giving you our take on this thing called life. The duo goes over the week's news, pop topics, and welcomes guests ranging from music artists to mortgage lenders. Evolving, learning, and laughing, in a way only they can. Bring ya red cup and listen up!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show up-above-the-world-so-high clearfix">
+            <div class="image-container">
+      <a href="/shows/up-above-the-world-so-high"><img src="https://cdn.xray.fm/image/small/IMG_3585.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/up-above-the-world-so-high">Up Above the World So High</a></div>
+            <div class="short-description">You'll never guess what's next with DJ UpAbove. Come for the left of the dial Indie, Soul, Post Punk, Psych, Shoegaze, and Camp - stay for the vibes.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show vcr-tv clearfix">
+            <div class="image-container">
+      <a href="/shows/vcr-tv"><img src="https://cdn.xray.fm/image/small/CD944EA0-E0BB-4103-96AF-DFE772054A1B.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/vcr-tv">VCR TV</a></div>
+            <div class="short-description">Video Music.
+Movie Soundtracks. Dark Danse. 
+What John Carpenter listens to, late at night...</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show disco clearfix">
+            <div class="image-container">
+      <a href="/shows/disco"><img src="https://cdn.xray.fm/image/small/PetHedgehog24.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/disco">Very Good Plus</a></div>
+            <div class="short-description">Very Good Plus explores a mix of electric jazz, minimal and experimental synth, kosmische, tribal ambient, disco, soul & funk, and related genres, typically with an international reach to Europe, Africa, the Middle East, and Asia.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show video-adventure clearfix">
+            <div class="image-container">
+      <a href="/shows/video-adventure"><img src="https://cdn.xray.fm/image/small/bryan_youtube.final.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/video-adventure">Video Adventure</a></div>
+            <div class="short-description">Join DJ Boflex as he scours the Youtube archives for rare and diverse content including music videos, TV performances, covers, remixes, and even non-musical oddities. Fight against the algorithm Sundays at 4 A.M. 
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show voices-from-our-community clearfix">
+            <div class="image-container">
+      <a href="/shows/voices-from-our-community"><img src="https://cdn.xray.fm/image/small/Peaceful_Protest_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/voices-from-our-community">Voices from our Community </a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show wttn clearfix">
+            <div class="image-container">
+      <a href="/shows/wttn"><img src="https://cdn.xray.fm/image/small/WTTN_FLYER_2018_2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/wttn">Welcome To The Neighborhood</a></div>
+            <div class="short-description">2 hours of hip-hop, funk & soul with a heavy focus on the Portland scene.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show welcome-to-your-good-day clearfix">
+            <div class="image-container">
+      <a href="/shows/welcome-to-your-good-day"><img src="https://cdn.xray.fm/image/small/wolfgang-abomination.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/welcome-to-your-good-day">Welcome To Your Good Day</a></div>
+            <div class="short-description">We highlight the best new music released each week with an eclectic mix of synth-pop, hip-hop, indie rock, R&B and garage. All genres unified by the freshness. Bangers only.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show where-the-traffic-goes clearfix">
+            <div class="image-container">
+      <a href="/shows/where-the-traffic-goes"><img src="https://cdn.xray.fm/image/small/17917367_264392134021763_6365828396847518775_o.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/where-the-traffic-goes">Where The Traffic Goes!</a></div>
+            <div class="short-description">Where the Traffic Goes plays the best in classic UK and US indiepop, punk rock, DIY noise, and anything underground.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show wildflowers-and-weeds clearfix">
+            <div class="image-container">
+      <a href="/shows/wildflowers-and-weeds"><img src="https://cdn.xray.fm/image/small/IMG_8144.jpeg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/wildflowers-and-weeds">Wildflowers & Weeds</a></div>
+            <div class="short-description">Indie & vintage cosmic country, folk, roots, Americana, western, outlaw, rock and roll & stadium hits and desert psych (when acceptable) with a strong emphasis on female artists—on every Thursday 2-3pm. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show wings clearfix">
+            <div class="image-container">
+      <a href="/shows/wings"><img src="https://cdn.xray.fm/image/small/Screen_Shot_2022-10-03_at_5.34.56_PM.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/wings">WINGS</a></div>
+            <div class="short-description">WINGS: Women's International News Gathering Service. "Raising Women's Voices through Radio Worldwide."
+
+</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show world-of-noise clearfix">
+            <div class="image-container">
+      <a href="/shows/world-of-noise"><img src="https://cdn.xray.fm/image/small/WONLogo2.jpg" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/world-of-noise">World of Noise</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show xray-community-mixes clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/xray-community-mixes">XRAY Community Mixes</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show xray-concert-calendar clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/xray-concert-calendar">XRAY Concert Calendar</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show xray-djs-best-of-2021 clearfix">
+            <div class="image-container">
+      <a href="/shows/xray-djs-best-of-2021"><img src="https://cdn.xray.fm/image/small/XRAY_DJ_s_Select_Best_Music_of_2021.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/xray-djs-best-of-2021">XRAY DJ's Best Of 2021</a></div>
+            <div class="short-description">A collection of "Best of 2021" shows from a wide range of XRAY's world class DJs.  Explore the eclectic taste that spans the community that is XRAY (dot) FM</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show xray-djs-best-of-2023 clearfix">
+            <div class="image-container">
+      <a href="/shows/xray-djs-best-of-2023"><img src="https://cdn.xray.fm/image/small/Best_of_2023_Logo.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/xray-djs-best-of-2023">XRAY DJs Best of 2023</a></div>
+            <div class="short-description"></div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show xray-djs-best-of-2022 clearfix">
+            <div class="image-container">
+      <a href="/shows/xray-djs-best-of-2022"><img src="https://cdn.xray.fm/image/small/best22.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/xray-djs-best-of-2022">XRAY DJs' Best of 2022</a></div>
+            <div class="short-description">A collection of "Best of 2022" / year-in-review shows from XRAY's world class DJs.  Explore the eclectic taste that spans the community that is XRAY.FM</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show xray-in-the-mornings clearfix">
+            <div class="image-container">
+      <a href="/shows/xray-in-the-mornings"><img src="https://cdn.xray.fm/image/small/xraymomo3-01.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/xray-in-the-mornings">XRAY In The Morning</a></div>
+            <div class="short-description">Start your mornings live, with a fresh take on the important, underreported, and often overlooked stories of the day. A wide array of guests and a rotating group of diverse hosts provide comic relief and informative discussions from around the corner and across the globe. Radio is yours!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show xray-podcast-hour clearfix">
+            <div class="info-container">
+      <div class="title"><a href="/shows/xray-podcast-hour">XRAY Podcast Hour</a></div>
+            <div class="short-description">Highlighting XRAYpod's best works.</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show xray-presents clearfix">
+            <div class="image-container">
+      <a href="/shows/xray-presents"><img src="https://cdn.xray.fm/image/small/XRAYPresents_ShowImage.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/xray-presents">XRAY Presents</a></div>
+            <div class="short-description">Shining a spotlight on people, events, and topics of note that we think more folks in this community should know about, with production led by station staff. </div>
+      <div class="categories"></div>
+    </div>
+  </div>
+  <div class="program cfm-show xray-morning-mix clearfix">
+            <div class="image-container">
+      <a href="/shows/xray-morning-mix"><img src="https://cdn.xray.fm/image/small/Orange_and_White_Book_Chatter_Media_Broadcasting_Media_Podcast_Cover_1_.png" /></a>
+    </div>
+        <div class="info-container">
+      <div class="title"><a href="/shows/xray-morning-mix">XRAY's Morning Mix</a></div>
+            <div class="short-description">Get your day started with XRAY! We'll talk local news, Portland's creative scene, preview new releases, interview local changemakers, and plenty more. This program is actively in development, so we want to hear what you think: text in at 971-220-5979 with your feedback!</div>
+      <div class="categories"></div>
+    </div>
+  </div>
+</div>
+
+  </div>
+</div></div>
+</div>
+</div>
+</div>
+<div id="footer">
+  <div class="footer-main">
+    <div class="container">
+      <div class="row row-no-right-margin">
+<div class="social-media clearfix"><a href="https://facebook.com/xrayfm" target="blank" title="Facebook"><i class="fa fa-facebook"></i></a><a href="https://twitter.com/xrayfm" target="blank" title="Twitter"><i class="fa fa-twitter"></i></a><a href="https://instagram.com/xrayfm" target="blank" title="Instagram"><i class="fa fa-instagram"></i></a><a href="https://www.youtube.com/channel/UCzLnrs7EirGCpL88TXhvYEw" target="blank" title="YouTube"><i class="fa fa-youtube"></i></a><a href="http://bit.ly/xraynewsletter" target="blank" title="Newsletter"><i class="fa fa-envelope"></i></a><a href="http://linktr.ee/xrayfm" target="blank" title="Linktree"><i class="fa fa-link"></i></a></div>
+        <div class="main-links col-xs-12 col-sm-12 col-md-8 col-lg-8 clearfix">
+          <div class="inner">
+          <!--<a href="/fccapplications">FCC Apps &raquo;</a>-->
+          <!--<a href="https://xraypod.com">Podcast Network &raquo;</a>-->
+          <a href="https://www.bonfire.com/store/xrayfm/" target="_blank">Merch &raquo;</a>
+          <a href="/contact">Contact Us &raquo;</a>
+          <a href="http://onelink.to/dceghb" class="for-mobile-only">Get the App &raquo;</a>
+          <a href="/library">Gear Library &raquo;</a>
+          <a href="http://eepurl.com/tGgmj"target="_blank">Newsletter &raquo;</a>
+          <a href="https://xray.fm/users/sign-in">DJ Sign in &raquo;</a>
+<!--<a href="http://onelink.to/dceghb">Equipment Library &raquo;</a>-->
+        <!--<div class="lower">
+            <!--a href="/shows">Shows &raquo;</a><a href="/events">Events</a> class="events"> &raquo;</a><a href="/info/partners">Partners &raquo;</a><a href="/info/get-involved">Get Involved! &raquo;</a>
+            </div>
+          </div>
+        </div>
+        <div class="info col-xs-12 col-sm-12 col-md-4 col-lg-4 clearfix">
+          <!--a(href='/').donate Donate-->
+          <!--a(href='/').partners Partners-->
+          </div>
+          </div>
+          </div>
+          <div class="kxry">
+            <div class="container">
+            </div>
+              <span class="nowrap">KXRY 107.1 / 91.1 FM (Portland, OR)</span> 
+              <br>
+              <span class="nowrap">KXRY 91.7 FM (Nehalem,OR)</span> 
+              <br>
+              <span class="nowrap">CALL: 503-233-XRAY</span> | <span class="nowrap">TEXT: 971-220-KXRY</span>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+</div> -end outer container
+<!--</div>end outer container-->
+<div id="audio-toolbar">
+  <div class="container">
+    <div class="inner">
+      <div class="row">
+        <div class="col-xs-2 col-sm-1">
+          <div class="play-button-container">
+            <a href="javascript:" class="stream-button play-button cfm-stream-main-button cfm-stream-play-button" title="Play Button"><i class="fa fa-play"></i></a>
+            <a href="javascript:" class="stream-button stop-button cfm-stream-main-button cfm-stream-stop-button" title="Stop Button"><i class="fa fa-pause"></i></a>
+          </div>
+        </div>
+        <div class="col-xs-10 col-sm-10">
+          <div id="toolbar-broadcasting">
+            <div class="title">
+              <span class="now-playing">Now <span class="playing">Playing</span> </span>
+              <span id="current-show" class="hidden"> <span class="first-slashes slashes">///</span> <a href="/shows/{{data.now.short_name}}">{{data.now.title}}</a></span>
+              <span id="current-track" class="hidden"> <span class="slashes">///</span> <a href="/playlist">{{data.artist}} - {{data.title}}</a></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-1 visible-sm visible-md visible-lg">
+          <div id="volume-tool" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;" unselectable="on" onselectstart="return false;">
+            <div class="bar">
+              <div class="filler"></div>
+            </div>
+          </div>
+          <div class="volume-button-container"><a href="javascript:" id="volume-open" title="Volume Open"><i class="fa fa-volume-up" title="Volume Up"></i></a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="load">
+  <script type="text/javascript">
+  $(function(){
+    //Volume Button JS
+    $('body').on('click', '#weekday-dropdown-button', function(){
+      $('.block-weekdays').toggleClass('dropdown-open')
+    })
+    $('body').on('click', '#volume-open', function(){
+      //alert(10)
+      console.log(1);
+      $('#volume-tool').fadeToggle(150);
+    })
+    var volumeDragging = false;
+    $('#volume-tool .bar').on('mousedown', function(e) {
+      volumeDragging = true;
+    });
+    $('#volume-tool .bar').on('mouseup', function(e) {
+      volumeDragging = false;
+    });
+    $('#volume-tool .bar').on('mousemove mousedown', function(e) {
+      if(volumeDragging){
+        var posY = $(this).offset().top;
+        var clickWhere = e.pageY - posY;
+        var theVolum = 1 - (clickWhere / 100);
+        var fillerHaiyt = (100 * theVolum) + 'px';
+        $('#volume-tool .bar .filler').css('height', fillerHaiyt);
+        $("#cfm-stream-jp").jPlayer("volume", theVolum);
+      }
+    });
+    var show_template = $("#current-show").html();
+    var track_template = $("#current-track").html();
+    var checkTrack = function(x){
+      //console.log(x.data);
+      if(x.data){
+        return true;
+      }else {
+        $("#current-track").fadeOut();
+        return false;
+      }
+    }
+    var checkBroadcasting = function (){
+      Creek.apiTemplates.render({api:"tracks/current", id: "#current-track", t: track_template, loadingIndicator: false, onLoad: checkTrack  });
+      Creek.apiTemplates.render({api:"broadcasting", id: "#current-show", t: show_template, loadingIndicator: false});
+    }
+    var checkBroadcastingInterval = window.setInterval(checkBroadcasting, 5000);
+    //Start by refreshing it right now
+    checkBroadcasting();
+  })
+  </script>
+</div><script>
+  // This tag runs all our Google Analytics data collection. Don't touch it unless you know you need to update the data being collected or the credentials being used.
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-41493054-2', 'xray.fm');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+</script>
+
+<!--Google tag (gtag.js)-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G04SZLJW3G"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-G04SZLJW3G');
+</script> 
+<div id="cfm-stream-jp" class="jp-jplayer"></div>
+<script type="text/javascript" src="/js/cfm-stream.js?x=1437796891"></script>
+<!-- <script type="text/javascript" src="/js/cfm-stream-preroll.js?x=1437796891"></script> -->
+
+<script type="text/javascript">
+
+/* Activate the image gallery */
+$(function(){
+  $('.image-popup-vertical-fit').magnificPopup({
+    type: 'image'
+    // other options
+  });
+});
+
+</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-41493054-2', 'xray.fm');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+<script src="/js/cfm-single-page.js?x=1441826410"></script>
+</body>
+</html>

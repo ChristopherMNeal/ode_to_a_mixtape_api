@@ -5,9 +5,9 @@ class CreateAlbums < ActiveRecord::Migration[7.1]
     create_table :albums do |t|
       t.string :title
       t.date :release_date
-      t.integer :artist_id
-      t.integer :genre_id
-      t.integer :record_label_id
+      t.references :artist, foreign_key: true
+      t.references :genre, foreign_key: true
+      t.references :record_label, foreign_key: true
 
       t.timestamps
     end

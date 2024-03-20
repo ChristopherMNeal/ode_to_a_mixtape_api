@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAlbumsArtists < ActiveRecord::Migration[7.1]
   def change
     create_table :albums_artists do |t|
@@ -6,6 +8,6 @@ class CreateAlbumsArtists < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
-    add_index :albums_artists, [:album_id, :artist_id], unique: true
+    add_index :albums_artists, %i[album_id artist_id], unique: true
   end
 end

@@ -1,0 +1,981 @@
+<!-- *****************************
+This document is commented to help volunteer and less experienced users navigate the site code. 
+If you have experience with web design / development, XRAY would love your help! :]
+Contact us at: http://xray.fm/info/get-involved
+***************************** -->
+
+<!-- Don't touch any of the stuff in this <head> section unless you know what you're doing -->
+<!DOCTYPE html>  
+<html lang="en">
+<head>
+  <title>House Rockin' Again - Strange Babes /// XRAY.fm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
+  <meta name="google-site-verification" content="IWwHQzWD4ImumsQMOl_3NK0IDzmkGOuBFsw3xDN6FoQ" />
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!--<link href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css' rel='stylesheet' type='text/css'>-->
+  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <link href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+  <meta name="description" content="XRAY.fm aims to hold a boom mic up to the best and most distinctive of Portland." />
+  <link rel="shortcut icon" type="image/png" href="/theme/107/favicon.ico"/>
+  <meta property="og:title" content="House Rockin' Again - Strange Babes /// XRAY.fm" />
+<meta property="og:url" content="http://xray.fm/broadcasts/39257?url=broadcasts%2F39257" />
+<meta property="og:image" content="http://s31.postimg.cc/gvngbyezf/unnamed.png" />
+<meta property="og:description" content="Long time Portland DJ crew, Strange Babes bring you a wide and formidable mix of underground gems across genres. Modern to well-aged. Local and far beyond. Strange and getting stranger. 
+" />
+  <script src="/components/jquery/dist/jquery.min.js?x=1437796891"></script>
+
+<!-- Initialize Creek.fm JS -->
+<script src="/js/cfm-head.js?x=1437796891" type="text/javascript"></script>
+<script type="text/javascript">
+
+  Creek.signedIn = false;
+  Creek.station.id = "xray";
+  Creek.streamPlayer.flashByDefault = 0;
+
+  //Check for Internet Explorer
+  if(window.ActiveXObject || "ActiveXObject" in window){
+
+    //Defalt to Flash for stream player
+    Creek.streamPlayer.flashByDefault = 1;
+
+  }
+</script>
+
+<script type="text/javascript" src="/packages/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+<script src="/packages/soundmanager/script/soundmanager2-nodebug-jsmin.js?x=1498244286"></script>
+<style> #sm2-container {position:absolute; top:-10000px; left:-10000px} </style>
+<script src="/js/sm2-settings.js?x=1437796891"></script>
+<link rel="stylesheet" type="text/css" href="/packages/soundmanager/demo/bar-ui/css/bar-ui.css?x=1437796891" />
+<script src="/js/creek-sm2-bar-ui.js?x=1441826410"></script><link href="/css/creekfm-public.css?x=1500320125" rel="stylesheet" type='text/css'>
+<link href="/packages/magnific-popup/magnific-popup.css?x=1437796891" rel="stylesheet" type='text/css'>
+<link href="/css/playlist.css?x=1455040699" rel="stylesheet" type='text/css'>
+
+  <script src="/theme/107/js/js-settings.js?x=1460258951" type="text/javascript"></script>
+  <script type="text/javascript"> 
+    var playlistInterval = new Object;
+    console.log(
+      '***************************** \nThis document is commented to help volunteer and less experienced users navigate the site code. \nIf you have experience with web design / development, XRAY would love your help! :] \nContact us at: http://xray.fm/info/get-involved \n*****************************'  
+    )
+  </script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
+<script src="/js/cfm-api-templates.js?x=1437796891" type="text/javascript"></script>
+  
+<!-- Initialize Creek.fm Stream Player -->
+<script type="text/javascript">Creek.streamPlayer.streamUrl = 'https://listen.xray.fm/stream';</script>
+<script type="text/javascript" src="/packages/jplayer/jquery.jplayer.min.js"></script>
+
+  <link href="/theme/107/css/css-main.css?x=1707418509" rel="stylesheet" type='text/css'>
+  <link href="/theme/107/css/css-pages.css?x=1450993017" rel="stylesheet" type='text/css'>
+  <link href="/theme/107/css/css-tools.css?x=1450993017" rel="stylesheet" type='text/css'>
+  <link href="/theme/107/css/css-responsive.css?x=1617048386" rel="stylesheet" type='text/css'>
+  <link href="/theme/107/css/css-fixes.css?x=1450993017" rel="stylesheet" type='text/css'>
+  <script src="/theme/107/js/readmore.min.js" type="text/javascript"></script>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-139695561-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-139695561-1');
+</script>
+
+<script data-ad-client="ca-pub-8693591481625598" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+<!-- This section contains the visible content of the main page -->
+<body class="broadcasts-view ">
+
+  <!-- Why is this here at the top of the <body>? Why can't we run this from the end of the document? -->
+  <script type="text/javascript">
+    $(function(){
+      var doMenu = function(){
+        $('#mobile-menu').toggleClass('open');
+        //alert(1);
+      }
+      $('body').on('click', '#mobile-menu a.button', function(){
+        doMenu();
+      })
+      $('body').on('click', '#mobile-menu .inner a', function(){
+        doMenu()
+      })
+    })
+  </script>
+  
+  <!-- Add anchor tags to this section in order to populate the hamburger style drop down menu on mobile views. Given the current organization, links are duplicated between this mobile menu and the wide-screen navbar. -->
+  <div id="mobile-menu">
+    <!-- This anchor tag is the hamburger logo that users click to show the hidden link menu -->
+    <a href="javascript:" class="button"><img src="/theme/107/img/menu-button3_2.png" alt="menu-button3_2" /></a>
+    
+    <div id="mobile-menu-inner" class="inner cfm-sp-load">
+      <a href="/" class="home ">HOME</a>
+      <a href="/about" class="about" target="_blank">ABOUT</a>
+      <a href="/shows" class="shows  ">SHOWS</a>
+      <a href="/playlist" class="plsylist ">PLAYLIST</a>
+      <a href="/events" class="events">EVENTS</a>
+      <a href="/partners" class="podcasts" target="_blank">PARTNERS</a>
+      <a href="http://xrayfm.wordpress.com/" target="_blank" class="news">BLOG</a>
+      <a href="/membership" class='membership'>MEMBERSHIP</a>
+      <a href="/get-involved" class="about" target="_blank">GET INVOLVED!</a>
+      <a href="/users/sign-in">Sign In</a>
+      <a href="/donate" class="donate">Donate</a>
+    </div>
+  </div>
+  
+  <!-- This sections contains the navigation elements for wide-screen views. If you add a link to this section, make sure you duplicate it in the preceeding mobile menu as well, since this section is hidden from users with small screens -->
+  <div id="top-toolbar" class="cfm-sp-load">
+  
+    <div class="top-user-panel clearfix">
+      <div class="container"><div class="cfm-user-panel user-panel not-signed-in">
+    <div class="sign-in">
+    <a href="/users/sign-in?return_url=">Sign in</a>
+  </div>
+  </div></div>
+    </div>
+    
+    <div id="trycholeranit" class="cfm-sp-load container">
+      <div class="logo">
+        <a href="/">
+          <img src="/theme/107/img/logo1_white-on-black_399.png" alt="logo1_white-on-black_399" class="img-responsive"/>
+        </a>
+      </div>
+      
+      <!-- Here are the wide-screen links, add and remove them from this <div> section -->
+     <div class="links">
+        <a href="/" class="home ">HOME</a>
+        <a href="/about" class="about" target="_blank">ABOUT</a>
+        <a href="/shows" class="shows  ">SHOWS</a>
+        <a href="/playlist" class="playlist ">PLAYLIST</a>
+        <a href="/events" class=" events">EVENTS</a>
+        <a href="https://xrayfm.wordpress.com/" class=" news" target="_blank">BLOG</a>
+        <a href="/info/partners" class="partners">PARTNERS</a>
+        <a href="/info/get-involved" class="get-involved">GET INVOLVED!</a>
+        <a href="/membership" class='membership'>MEMBERSHIP</a>
+        <!--<a href="https://xraypod.com" class="tv">PODCASTS</a>
+        <!--<a href="https://xraypod.com" class="tv">PODCASTS</a>
+        
+        <!-- You can always comment out links you're not using anymore, but that you think you might use again in the future. This BLOG link below is an example -->
+        <!--<a href="/news" class=" news">BLOG</a>-->
+      </div>
+      
+      <div class="donate">
+        <a href="/donate">DONATE &raquo;</a>
+      </div>
+      
+      <div class="cfm-user-panel user-panel not-signed-in">
+    <div class="sign-in">
+    <a href="/users/sign-in?return_url=">Sign in</a>
+  </div>
+  </div>
+    </div>
+  </div>
+  
+  <!-- 
+  
+  Notice that there are no closing tags for most of the <div>'s below this point. 
+  
+  This is because this is the opening "header" template of the layout. The rest of the closing </div>'s are inside the footer template.
+  
+  So, for example, DON'T do this: 
+    
+    <div id="main" class="clearfix"> 
+    ...
+    </div> <============== BAD
+    
+  -->
+  <div id="outer-container" class="clearfix">
+    <!--Shows an animated "loading" indicator between interactions. Don't touch this. -->
+    <div id="loader">
+      <i class="fa fa-spinner fa-spin"></i>
+    </div>
+    
+    <!-- This nested <div> structure is for styling hook purposes. You should never need to change this unless you are making major changes to the general layout of the page. Change the individual pages instead -->
+    <div id="main" class="clearfix">
+      <div id="main-inner" class="clearfix">
+        <div id="cfm-sp-container" class="clearfix">
+          <div id="page-container" class="page-broadcasts-view clearfix">
+
+<div class="header-image header-image-empty">&nbsp;</div>
+<div class="container">
+  <div class="page-inner-block">
+    <div class="row">
+      <div class="col-xs-12 col-sm-4 col-sm-push-8 clear-left">
+        <div class="info clearfix"><a href="/shows/strange-babes" class="back-to-show clearfix">
+            <div class="back-to">&laquo BACK TO</div>
+            <div class="title">Strange Babes</div></a>
+          <!--.comments-link-->
+          <!--  -->
+          
+          
+<script>
+  function fbShare() {
+      var url = window.location
+      var winWidth = 520;
+      var winHeight = 350;
+      var winTop = (screen.height / 2) - (winWidth / 2);
+      var winLeft = (screen.width / 2) - (winHeight / 2);
+      window.open('http://www.facebook.com/sharer.php?s=100&p[url]=' + url, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight);
+  }
+  function twShare() {
+    var width  = 575,
+        height = 400,
+        left   = ($(window).width()  - width)  / 2,
+        top    = ($(window).height() - height) / 2,
+        url    = window.location,
+        opts   = 'status=1' +
+                 ',width='  + width  +
+                 ',height=' + height +
+                 ',top='    + top    +
+                 ',left='   + left;
+    
+    window.open('http://twitter.com/share', 'Twitter', opts);
+      }
+  //function gPShare() {
+    //var width  = 575,
+        //height = 400,
+        //left   = ($(window).width()  - width)  / 2,
+        //top    = ($(window).height() - height) / 2,
+        //url    = window.location,
+        //opts   = 'status=1' +
+                 //',width='  + width  +
+                 //',height=' + height +
+                 //',top='    + top    +
+                 //',left='   + left;
+    
+    //window.open('https://plus.google.com/share?url'+url, 'Instagram', opts);
+  //}
+  
+</script>
+<div class="big-share-buttons clearfix"><a href="javascript:fbShare()">
+    <i class="fa fa-facebook"></i>
+    <div class="text">Share</div></a><a href="javascript:twShare()">
+     
+    <i class="fa fa-twitter"></i>
+    <div class="text">Tweet</div></a>
+  <!--a(href="javascript:gpShare()")
+  //<i class="fa fa-google-plus"></i>
+  .text +1
+  -->
+</div>
+          <div class="featured-image cfm-no-image"><img src="https://cdn.xray.fm/image/medium/" class="img-responsive"/></div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-8 col-sm-pull-4">
+        <div class="content-center clearfix">
+          <h1>House Rockin' Again</h1>
+          <div class="date">4:00pm, 4-13-2021</div>
+          <div class="featured-image cfm-no-image"><img src="https://cdn.xray.fm/image/medium/" class="img-responsive"/></div><a href="/shows/strange-babes" class="back-to-show clearfix">
+            <div class="title"><span class="grey">&lt;&lt;</span> Strange Babes</div></a>
+          <div class="main-text clearfix"></div><div class="media-attachments-container">
+
+
+<div class="media-attachments-audio">
+
+      
+    
+
+
+<div class="creek-audio-player sm2-bar-ui flat full-width ">
+
+  <div class="bd sm2-main-controls">
+
+    <div class="sm2-inline-texture"></div>
+    <div class="sm2-inline-gradient"></div>
+
+    <div class="sm2-inline-element sm2-button-element">
+     <div class="sm2-button-bd">
+      <a href="#play" class="sm2-inline-button play-pause">Play / pause</a>
+     </div>
+    </div>
+
+    <div class="sm2-inline-element sm2-inline-status">
+
+     <div class="sm2-playlist">
+      <div class="sm2-playlist-target">
+       <!-- playlist <ul> + <li> markup will be injected here -->
+       <!-- if you want default / non-JS content, you can put that here. -->
+       <noscript><p>JavaScript is required.</p></noscript>
+      </div>
+     </div>
+
+     <div class="sm2-progress">
+      <div class="sm2-row">
+      <div class="sm2-inline-time">0:00</div>
+       <div class="sm2-progress-bd">
+        <div class="sm2-progress-track">
+         <div class="sm2-progress-bar"></div>
+         <div class="sm2-loading-bar"></div>
+         <div class="sm2-progress-ball"><div class="icon-overlay"></div></div>
+        </div>
+       </div>
+       <div class="sm2-inline-duration">0:00</div>
+      </div>
+     </div>
+
+    </div>
+
+    <div class="sm2-inline-element sm2-button-element sm2-volume">
+     <div class="sm2-button-bd">
+      <span class="sm2-inline-button sm2-volume-control volume-shade"></span>
+      <a href="#volume" class="sm2-inline-button sm2-volume-control">volume</a>
+     </div>
+    </div>
+
+  </div>
+
+  <div class="bd sm2-playlist-drawer sm2-element">
+
+    <div class="sm2-inline-texture">
+     <div class="sm2-box-shadow"></div>
+    </div>
+
+    <!-- playlist content is mirrored here -->
+
+    <div class="sm2-playlist-wrapper">
+      <ul class="sm2-playlist-bd">
+
+
+<li>
+  <a oncontextmenu="return false" class="player" href="https://cdn.xray.fm/audio/strange-babes/StrangeBabesAPR13_2021.mp3">StrangeBabesAPR13_2021.mp3</a>
+  </li>
+
+
+
+
+      </ul>
+    </div>
+
+    <div class="sm2-extra-controls">
+
+     <div class="bd">
+
+      <div class="sm2-inline-element sm2-button-element">
+       <a href="#prev" title="Previous" class="sm2-inline-button previous">&lt; previous</a>
+      </div>
+
+      <div class="sm2-inline-element sm2-button-element">
+       <a href="#next" title="Next" class="sm2-inline-button next">&gt; next</a>
+      </div>
+
+     </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+  
+  
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+$(function(){
+
+/*
+
+  $('.media-attachments-image, .cfm-media-attachments-image, .image-popup-vertical-fit').magnificPopup({
+    delegate: 'a',
+    type: 'image',
+    tLoading: 'Loading image #%curr%...',
+    mainClass: 'mfp-img-mobile',
+    gallery: {
+      enabled: true,
+      navigateByImgClick: true,
+      preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+    },
+    image: {
+      tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+    }
+  });
+*/
+
+});
+</script>
+
+</div>
+
+          
+<script>
+  function fbShare() {
+      var url = window.location
+      var winWidth = 520;
+      var winHeight = 350;
+      var winTop = (screen.height / 2) - (winWidth / 2);
+      var winLeft = (screen.width / 2) - (winHeight / 2);
+      window.open('http://www.facebook.com/sharer.php?s=100&p[url]=' + url, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight);
+  }
+  function twShare() {
+    var width  = 575,
+        height = 400,
+        left   = ($(window).width()  - width)  / 2,
+        top    = ($(window).height() - height) / 2,
+        url    = window.location,
+        opts   = 'status=1' +
+                 ',width='  + width  +
+                 ',height=' + height +
+                 ',top='    + top    +
+                 ',left='   + left;
+    
+    window.open('http://twitter.com/share', 'Twitter', opts);
+      }
+  //function gPShare() {
+    //var width  = 575,
+        //height = 400,
+        //left   = ($(window).width()  - width)  / 2,
+        //top    = ($(window).height() - height) / 2,
+        //url    = window.location,
+        //opts   = 'status=1' +
+                 //',width='  + width  +
+                 //',height=' + height +
+                 //',top='    + top    +
+                 //',left='   + left;
+    
+    //window.open('https://plus.google.com/share?url'+url, 'Instagram', opts);
+  //}
+  
+</script>
+<div class="big-share-buttons clearfix"><a href="javascript:fbShare()">
+    <i class="fa fa-facebook"></i>
+    <div class="text">Share</div></a><a href="javascript:twShare()">
+     
+    <i class="fa fa-twitter"></i>
+    <div class="text">Tweet</div></a>
+  <!--a(href="javascript:gpShare()")
+  //<i class="fa fa-google-plus"></i>
+  .text +1
+  -->
+</div>
+          
+<div class="creek-playlist"><ul><li class="creek-track">
+  <span class="creek-track-time">4:01pm</span>    <span class="creek-track-title">Stop Having Fun</span>
+  by
+  <span class="creek-track-artist">The Wimps</span>
+  on
+  <span class="creek-track-album">Repeat</span>
+      (<span class="creek-track-label">End of Time </span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:06pm</span>    <span class="creek-track-title">Boom Boom Boom</span>
+  by
+  <span class="creek-track-artist">MSG </span>
+  on
+  <span class="creek-track-album">Songs From a Gated Community</span>
+      (<span class="creek-track-label">Crimp Wax Records</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:08pm</span>    <span class="creek-track-title">Dance the Night Away</span>
+  by
+  <span class="creek-track-artist">Colleen Green</span>
+  on
+  <span class="creek-track-album">Green One</span>
+      (<span class="creek-track-label">Hardly Art</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:11pm</span>    <span class="creek-track-title">New Taste</span>
+  by
+  <span class="creek-track-artist">Sneaks</span>
+  on
+  <span class="creek-track-album">Gymnastics</span>
+      (<span class="creek-track-label">Merge</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:13pm</span>    <span class="creek-track-title">No Problem</span>
+  by
+  <span class="creek-track-artist">Sneaks</span>
+  on
+  <span class="creek-track-album">Gymnastics</span>
+      (<span class="creek-track-label">Merge</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:15pm</span>    <span class="creek-track-title">Peanut Butter</span>
+  by
+  <span class="creek-track-artist">Thelma and the Sleaze, Mackenzie Green</span>
+  on
+  <span class="creek-track-album">Peanut Butter</span>
+      (<span class="creek-track-label">self release</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:17pm</span>    <span class="creek-track-title">A Minor Altercation</span>
+  by
+  <span class="creek-track-artist">Nice Face</span>
+  on
+  <span class="creek-track-album">Immer Etwas</span>
+      (<span class="creek-track-label">Sacred Bones</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:19pm</span>    <span class="creek-track-title">Liez</span>
+  by
+  <span class="creek-track-artist">Des Demonas</span>
+  on
+  <span class="creek-track-album">Des Demonas</span>
+      (<span class="creek-track-label">In The Red</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:23pm</span>    <span class="creek-track-title">Lord Knows Best</span>
+  by
+  <span class="creek-track-artist">Dirty Beaches</span>
+  on
+  <span class="creek-track-album">Badlands</span>
+      (<span class="creek-track-label">Zoo Music</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:26pm</span>    <span class="creek-track-title">Eyes Hands Mouth</span>
+  by
+  <span class="creek-track-artist">Explode Into Colors</span>
+  on
+  <span class="creek-track-album">Eyes Hands Mouth</span>
+      (<span class="creek-track-label">Kill Rock Stars</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:30pm</span>    <span class="creek-track-title">Brutal Women</span>
+  by
+  <span class="creek-track-artist">Formica Man</span>
+  on
+  <span class="creek-track-album">S/T</span>
+      (<span class="creek-track-label">self released</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:32pm</span>    <span class="creek-track-title">Heat From The Day</span>
+  by
+  <span class="creek-track-artist">Blood On The Wall</span>
+  on
+  <span class="creek-track-album">Awesomer</span>
+      (<span class="creek-track-label">The Social Registry</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:34pm</span>    <span class="creek-track-title">I Shall Be Free</span>
+  by
+  <span class="creek-track-artist">Hot Snakes</span>
+  on
+  <span class="creek-track-album">single</span>
+      (<span class="creek-track-label">Sub Pop</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:38pm</span>    <span class="creek-track-title">Exxon Baby</span>
+  by
+  <span class="creek-track-artist">Hooded Hags</span>
+  on
+  <span class="creek-track-album">7</span>
+      (<span class="creek-track-label">Stank House</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:40pm</span>    <span class="creek-track-title">Now I Wanna Sniff Some Glue</span>
+  by
+  <span class="creek-track-artist">Ramones</span>
+  on
+  <span class="creek-track-album">Ramones</span>
+      (<span class="creek-track-label">Sire</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:44pm</span>    <span class="creek-track-title">Witchy</span>
+  by
+  <span class="creek-track-artist">Mr. Wrong</span>
+  on
+  <span class="creek-track-album">Babes in Boyland</span>
+      (<span class="creek-track-label">Waterwing Records</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:45pm</span>    <span class="creek-track-title">Scrambled</span>
+  by
+  <span class="creek-track-artist">Chalk Circle</span>
+  on
+  <span class="creek-track-album">Reflection</span>
+      (<span class="creek-track-label">Mississippi Records</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:47pm</span>    <span class="creek-track-title">Resist Psychic Death</span>
+  by
+  <span class="creek-track-artist">Bikini Kill</span>
+  on
+  <span class="creek-track-album">Yeah Yeah Yeah Yeah</span>
+      (<span class="creek-track-label">Kill Rock Stars</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:49pm</span>    <span class="creek-track-title">What Is</span>
+  by
+  <span class="creek-track-artist">Wipers</span>
+  on
+  <span class="creek-track-album">Over The Edge</span>
+      (<span class="creek-track-label">Jackpot</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:51pm</span>    <span class="creek-track-title">Absolutes</span>
+  by
+  <span class="creek-track-artist">Snoozers</span>
+  on
+  <span class="creek-track-album">Snoozers EP</span>
+      (<span class="creek-track-label">self released</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:53pm</span>    <span class="creek-track-title">A Hit</span>
+  by
+  <span class="creek-track-artist">Smog</span>
+  on
+  <span class="creek-track-album">single</span>
+      (<span class="creek-track-label">Drag City</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">4:56pm</span>    <span class="creek-track-title">I-5</span>
+  by
+  <span class="creek-track-artist">Mope Grooves</span>
+  on
+  <span class="creek-track-album">Joy</span>
+      (<span class="creek-track-label">See My Friends</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:01pm</span>    <span class="creek-track-title">Vibrations In The Woods</span>
+  by
+  <span class="creek-track-artist">Robert Pollard</span>
+  on
+  <span class="creek-track-album">Waved Out</span>
+      (<span class="creek-track-label">Matador</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:02pm</span>    <span class="creek-track-title">Test The Beat</span>
+  by
+  <span class="creek-track-artist">The 39 Clocks</span>
+  on
+  <span class="creek-track-album">Pain It Dark</span>
+      (<span class="creek-track-label">Luxury Products</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:05pm</span>    <span class="creek-track-title">Rose</span>
+  by
+  <span class="creek-track-artist">Mecca Normal</span>
+  on
+  <span class="creek-track-album">Jarred Up</span>
+      (<span class="creek-track-label">K</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:07pm</span>    <span class="creek-track-title">You Take Time</span>
+  by
+  <span class="creek-track-artist">Bleached</span>
+  on
+  <span class="creek-track-album">You Take Time</span>
+      (<span class="creek-track-label">Art Fag</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:10pm</span>    <span class="creek-track-title">The Love We Could Have Had</span>
+  by
+  <span class="creek-track-artist">Rose Melberg, Dustin Reske</span>
+  on
+  <span class="creek-track-album">Double Agent 001</span>
+      (<span class="creek-track-label">Double Agent</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:12pm</span>    <span class="creek-track-title">Speed Trials</span>
+  by
+  <span class="creek-track-artist">Elliott Smith</span>
+  on
+  <span class="creek-track-album">Speed Trials</span>
+      (<span class="creek-track-label">Kill Rock Stars</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:15pm</span>    <span class="creek-track-title">In My Room</span>
+  by
+  <span class="creek-track-artist">Dear Nora</span>
+  on
+  <span class="creek-track-album">Dreaming Out Loud EP</span>
+      (<span class="creek-track-label">Magic Marker Records</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:17pm</span>    <span class="creek-track-title">Slow And Strong</span>
+  by
+  <span class="creek-track-artist">Dear Nora</span>
+  on
+  <span class="creek-track-album">Dreaming Out Loud EP</span>
+      (<span class="creek-track-label">Magic Marker Records</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:19pm</span>    <span class="creek-track-title">Loro</span>
+  by
+  <span class="creek-track-artist">Pinback</span>
+  on
+  <span class="creek-track-album">Loro</span>
+      (<span class="creek-track-label">Ace Fu</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:22pm</span>    <span class="creek-track-title">Feel Okay</span>
+  by
+  <span class="creek-track-artist">Corey Flood</span>
+  on
+  <span class="creek-track-album">Wish You Hadn't</span>
+      (<span class="creek-track-label">self released</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:26pm</span>    <span class="creek-track-title">What Sign (Was Frankenstein?)</span>
+  by
+  <span class="creek-track-artist">Escape-Ism</span>
+  on
+  <span class="creek-track-album">The Lost Record</span>
+      (<span class="creek-track-label">Merge</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:30pm</span>    <span class="creek-track-title">Fertile Ground</span>
+  by
+  <span class="creek-track-artist">Milk Music</span>
+  on
+  <span class="creek-track-album">Beyond Living</span>
+      (<span class="creek-track-label">Made In USA</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:35pm</span>    <span class="creek-track-title">Blockhead</span>
+  by
+  <span class="creek-track-artist">Charles Brown Superstar</span>
+  on
+  <span class="creek-track-album">Days Of Our Drive/Sweet Piece Of Ass</span>
+      (<span class="creek-track-label">W.I.N. Records</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:38pm</span>    <span class="creek-track-title">Travelling</span>
+  by
+  <span class="creek-track-artist">Mr. Airplane Man</span>
+  on
+  <span class="creek-track-album">The Lost Tapes</span>
+      (<span class="creek-track-label">Dirty Water</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:41pm</span>    <span class="creek-track-title">Omologato</span>
+  by
+  <span class="creek-track-artist">The Gories</span>
+  on
+  <span class="creek-track-album">Outta Here!</span>
+      (<span class="creek-track-label">Crypt Records</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:45pm</span>    <span class="creek-track-title">Louise</span>
+  by
+  <span class="creek-track-artist">Kyra</span>
+  on
+  <span class="creek-track-album">Here I Am, I Always Am</span>
+      (<span class="creek-track-label">M'Ladys</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:49pm</span>    <span class="creek-track-title">O How I Miss You</span>
+  by
+  <span class="creek-track-artist">Broadcast</span>
+  on
+  <span class="creek-track-album">Haha Sound</span>
+      (<span class="creek-track-label">Warp</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:51pm</span>    <span class="creek-track-title">Quarantined </span>
+  by
+  <span class="creek-track-artist">Atlas Sound</span>
+  on
+  <span class="creek-track-album">Let the Blind lead those who can see but cannot feel</span>
+      (<span class="creek-track-label">Kranky</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:54pm</span>    <span class="creek-track-title">Keyboard</span>
+  by
+  <span class="creek-track-artist">Black Belt Eagle Scout</span>
+  on
+  <span class="creek-track-album">Mother Of My Children</span>
+      (<span class="creek-track-label">Saddle Creek</span>)
+      </li>
+<li class="creek-track">
+  <span class="creek-track-time">5:58pm</span>    <span class="creek-track-title">Gold Dust</span>
+  by
+  <span class="creek-track-artist">Duster</span>
+  on
+  <span class="creek-track-album">Stratosphere</span>
+      (<span class="creek-track-label">Numero</span>)
+      </li>
+</ul></div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+</div>
+</div>
+</div>
+<div id="footer">
+  <div class="footer-main">
+    <div class="container">
+      <div class="row row-no-right-margin">
+<div class="social-media clearfix"><a href="http://facebook.com/xrayfm" target="blank" title="Facebook"><i class="fa fa-facebook"></i></a><a href="http://twitter.com/xrayfm" target="blank" title="Twitter"><i class="fa fa-twitter"></i></a><a href="http://instagram.com/xrayfm" target="blank" title="Instagram"><i class="fa fa-instagram"></i></a><a href="https://www.youtube.com/channel/UCzLnrs7EirGCpL88TXhvYEw" target="blank" title="YouTube"><i class="fa fa-youtube"></i></a><a href="http://bit.ly/xraynewsletter" target="blank" title="Newsletter"><i class="fa fa-envelope"></i></a><a href="http://linktr.ee/xrayfm" target="blank" title="Linktree"><i class="fa fa-link"></i></a></div>
+        <div class="main-links col-xs-12 col-sm-12 col-md-8 col-lg-8 clearfix">
+          <div class="inner">
+          <!--<a href="/fccapplications">FCC Apps &raquo;</a>-->
+          <!--<a href="https://xraypod.com">Podcast Network &raquo;</a>-->
+          <a href="https://www.bonfire.com/store/xrayfm/" target="_blank">Merch &raquo;</a>
+          <a href="/contact">Contact Us &raquo;</a>
+          <a href="http://onelink.to/dceghb" class="for-mobile-only">Get the App &raquo;</a>
+          <a href="/library">Gear Library &raquo;</a>
+          <a href="http://eepurl.com/tGgmj"target="_blank">Newsletter &raquo;</a>
+          <a href="http://xray.fm/users/sign-in">DJ Sign in &raquo;</a>
+<!--<a href="http://onelink.to/dceghb">Equipment Library &raquo;</a>-->
+        <!--<div class="lower">
+            <!--a href="/shows">Shows &raquo;</a><a href="/events">Events</a> class="events"> &raquo;</a><a href="/info/partners">Partners &raquo;</a><a href="/info/get-involved">Get Involved! &raquo;</a>
+            </div>
+          </div>
+        </div>
+        <div class="info col-xs-12 col-sm-12 col-md-4 col-lg-4 clearfix">
+          <!--a(href='/').donate Donate-->
+          <!--a(href='/').partners Partners-->
+          </div>
+          </div>
+          </div>
+          <div class="kxry">
+            <div class="container">
+            </div>
+              <span class="nowrap">KXRY 107.1 / 91.1 FM (Portland, OR)</span> 
+              <br>
+              <span class="nowrap">KXRY 91.7 FM (Nehalem,OR)</span> 
+              <br>
+              <span class="nowrap">CALL: 503-233-XRAY</span> | <span class="nowrap">TEXT: 971-220-KXRY</span>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+</div> -end outer container
+<!--</div>end outer container-->
+<div id="audio-toolbar">
+  <div class="container">
+    <div class="inner">
+      <div class="row">
+        <div class="col-xs-2 col-sm-1">
+          <div class="play-button-container">
+            <a href="javascript:" class="stream-button play-button cfm-stream-main-button cfm-stream-play-button" title="Play Button"><i class="fa fa-play"></i></a>
+            <a href="javascript:" class="stream-button stop-button cfm-stream-main-button cfm-stream-stop-button" title="Stop Button"><i class="fa fa-pause"></i></a>
+          </div>
+        </div>
+        <div class="col-xs-10 col-sm-10">
+          <div id="toolbar-broadcasting">
+            <div class="title">
+              <span class="now-playing">Now <span class="playing">Playing</span> </span>
+              <span id="current-show" class="hidden"> <span class="first-slashes slashes">///</span> <a href="/shows/{{data.now.short_name}}">{{data.now.title}}</a></span>
+              <span id="current-track" class="hidden"> <span class="slashes">///</span> <a href="/playlist">{{data.artist}} - {{data.title}}</a></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-1 visible-sm visible-md visible-lg">
+          <div id="volume-tool" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;" unselectable="on" onselectstart="return false;">
+            <div class="bar">
+              <div class="filler"></div>
+            </div>
+          </div>
+          <div class="volume-button-container"><a href="javascript:" id="volume-open" title="Volume Open"><i class="fa fa-volume-up" title="Volume Up"></i></a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="load">
+  <script type="text/javascript">
+  $(function(){
+    //Volume Button JS
+    $('body').on('click', '#weekday-dropdown-button', function(){
+      $('.block-weekdays').toggleClass('dropdown-open')
+    })
+    $('body').on('click', '#volume-open', function(){
+      //alert(10)
+      console.log(1);
+      $('#volume-tool').fadeToggle(150);
+    })
+    var volumeDragging = false;
+    $('#volume-tool .bar').on('mousedown', function(e) {
+      volumeDragging = true;
+    });
+    $('#volume-tool .bar').on('mouseup', function(e) {
+      volumeDragging = false;
+    });
+    $('#volume-tool .bar').on('mousemove mousedown', function(e) {
+      if(volumeDragging){
+        var posY = $(this).offset().top;
+        var clickWhere = e.pageY - posY;
+        var theVolum = 1 - (clickWhere / 100);
+        var fillerHaiyt = (100 * theVolum) + 'px';
+        $('#volume-tool .bar .filler').css('height', fillerHaiyt);
+        $("#cfm-stream-jp").jPlayer("volume", theVolum);
+      }
+    });
+    var show_template = $("#current-show").html();
+    var track_template = $("#current-track").html();
+    var checkTrack = function(x){
+      //console.log(x.data);
+      if(x.data){
+        return true;
+      }else {
+        $("#current-track").fadeOut();
+        return false;
+      }
+    }
+    var checkBroadcasting = function (){
+      Creek.apiTemplates.render({api:"tracks/current", id: "#current-track", t: track_template, loadingIndicator: false, onLoad: checkTrack  });
+      Creek.apiTemplates.render({api:"broadcasting", id: "#current-show", t: show_template, loadingIndicator: false});
+    }
+    var checkBroadcastingInterval = window.setInterval(checkBroadcasting, 5000);
+    //Start by refreshing it right now
+    checkBroadcasting();
+  })
+  </script>
+</div><script>
+  // This tag runs all our Google Analytics data collection. Don't touch it unless you know you need to update the data being collected or the credentials being used.
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-41493054-2', 'xray.fm');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+</script>
+
+<!--Google tag (gtag.js)-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G04SZLJW3G"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-G04SZLJW3G');
+</script> 
+<div id="cfm-stream-jp" class="jp-jplayer"></div>
+<script type="text/javascript" src="/js/cfm-stream.js?x=1437796891"></script>
+<!-- <script type="text/javascript" src="/js/cfm-stream-preroll.js?x=1437796891"></script> -->
+
+<script type="text/javascript">
+
+/* Activate the image gallery */
+$(function(){
+  $('.image-popup-vertical-fit').magnificPopup({
+    type: 'image'
+    // other options
+  });
+});
+
+</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-41493054-2', 'xray.fm');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+<script src="/js/cfm-single-page.js?x=1441826410"></script>
+</body>
+</html>
