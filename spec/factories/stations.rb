@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :station do
-    name { 'MyString' }
-    call_sign { 'MyString' }
-    location { 'MyString' }
+    name { 'XRAY.fm' }
+    base_url { 'https://xray.fm' }
+    broadcasts_index_url { 'https://xray.fm/shows/all' }
   end
 end

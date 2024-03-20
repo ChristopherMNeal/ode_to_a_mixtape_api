@@ -2,11 +2,8 @@
 
 FactoryBot.define do
   factory :broadcast do
-    title { 'MyString' }
-    url { 'MyString' }
-    dj_id { 'MyString' }
-    integer { 'MyString' }
-    station_id { 'MyString' }
-    integer { 'MyString' }
+    title { 'Strange Babes' }
+    old_title { 'Strange Babes' }
+    url { 'https://xray.fm/shows/strange-babes' }
   end
 end
