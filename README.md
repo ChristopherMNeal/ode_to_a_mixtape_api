@@ -1,9 +1,32 @@
+```
+          __              __                                                        __                               
+         /\ \            /\ \__                                      __            /\ \__                            
+  ___    \_\ \     __    \ \ ,_\   ___          __          ___ ___ /\_\   __  _   \ \ ,_\    __     _____      __   
+ / __`\  /'_` \  /'__`\   \ \ \/  / __`\      /'__`\      /' __` __`\/\ \ /\ \/'\   \ \ \/  /'__`\  /\ '__`\  /'__`\ 
+/\ \L\ \/\ \L\ \/\  __/    \ \ \_/\ \L\ \    /\ \L\.\_    /\ \/\ \/\ \ \ \\/>  </    \ \ \_/\ \L\.\_\ \ \L\ \/\  __/ 
+\ \____/\ \___,_\ \____\    \ \__\ \____/    \ \__/.\_\   \ \_\ \_\ \_\ \_\/\_/\_\    \ \__\ \__/.\_\\ \ ,__/\ \____\
+ \/___/  \/__,_ /\/____/     \/__/\/___/      \/__/\/_/    \/_/\/_/\/_/\/_/\//\/_/     \/__/\/__/\/_/ \ \ \/  \/____/
+                                                                                                       \ \_\         
+                                                                                                        \/_/         
+    ____________________________
+  /|............................|
+ | |:     ,-.   _____   ,-.    :|
+ | |:    ( `)) [_____] ( `))   :|
+ |v|:     `-`   ' ' '   `-`    :|
+ |||:    ,________________.    :|
+ |^|..../:::O::::::::::O:::\....|
+ |/`---/--------------------`---|
+ `.___/ /====/ /=//=/ /====/____/
+```
 # README
+## Description
+This is a project to scrape playlists from radio stations and store them in a database. The goal is to have a database of playlists that can be queried to find out what songs were played on a given day, or to find out what songs were played on a given station.Ω
+
 ## TO DO
-- [] Add station timezone to stations table
-  - [] Factor in timezone when calculating air time
-- [] add broadcast first and last air date to broadcasts table
-- [] scrape the broadcasts in chronological order to sort the IDs
+[ ] Add station timezone to stations table
+  [ ] Factor in timezone when calculating air time
+[ ] add broadcast first and last air date to broadcasts table
+[ ] scrape the broadcasts in chronological order to sort the IDs
 
 ## DB Design
 ```yaml

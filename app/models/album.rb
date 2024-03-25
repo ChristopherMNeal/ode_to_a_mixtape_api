@@ -2,10 +2,9 @@
 
 class Album < ApplicationRecord
   belongs_to :record_label, optional: true
+  belongs_to :artist
   has_many :albums_songs
   has_many :songs, through: :albums_songs
-  has_many :albums_artists
-  has_many :artists, through: :albums_artists
 
   validates :title, presence: true
 end

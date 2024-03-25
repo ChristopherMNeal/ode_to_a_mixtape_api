@@ -29,16 +29,6 @@ ActiveRecord::Schema[7.1].define(version: 20_240_317_034_843) do
     t.index ["record_label_id"], name: "index_albums_on_record_label_id"
   end
 
-  create_table "albums_artists", force: :cascade do |t|
-    t.bigint "album_id", null: false
-    t.bigint "artist_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index %w[album_id artist_id], name: "index_albums_artists_on_album_id_and_artist_id", unique: true
-    t.index ["album_id"], name: "index_albums_artists_on_album_id"
-    t.index ["artist_id"], name: "index_albums_artists_on_artist_id"
-  end
-
   create_table "albums_songs", force: :cascade do |t|
     t.bigint "album_id", null: false
     t.bigint "song_id", null: false
@@ -65,6 +55,11 @@ ActiveRecord::Schema[7.1].define(version: 20_240_317_034_843) do
     t.integer "air_day"
     t.time "air_time_start"
     t.time "air_time_end"
+    t.boolean "active", default: true
+    t.datetime "last_scraped_at"
+    t.datetime "last_broadcast_at"
+    t.datetime "first_broadcast_at"
+    t.integer "frequency_in_days"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["dj_id"], name: "index_broadcasts_on_dj_id"
@@ -164,8 +159,6 @@ ActiveRecord::Schema[7.1].define(version: 20_240_317_034_843) do
   add_foreign_key "albums", "artists"
   add_foreign_key "albums", "genres"
   add_foreign_key "albums", "record_labels"
-  add_foreign_key "albums_artists", "albums"
-  add_foreign_key "albums_artists", "artists"
   add_foreign_key "albums_songs", "albums"
   add_foreign_key "albums_songs", "songs"
   add_foreign_key "broadcasts", "djs"
