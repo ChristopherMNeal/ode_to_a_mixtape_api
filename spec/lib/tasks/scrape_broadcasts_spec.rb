@@ -86,11 +86,20 @@ RSpec.describe ScrapeBroadcasts do
       before { call_task }
 
       it 'updates broadcasts more information from the broadcast show page' do
+        dj = Dj.find_by(dj_name: 'Strange Babes')
+        expect(dj).to have_attributes(
+          member_names: 'Jen O, KM Fizzy, and Magic Beans',
+          email: 'strangebabesbooking@gmail.com',
+          twitter: 'strangebabes',
+          instagram: 'strangebabes',
+          facebook: 'strangebabespdx'
+        )
         expect(broadcast).to have_attributes(
           title: 'Strange Babes',
           old_title: 'Strange Babes',
           url: "#{base_url}/shows/#{broadcast_name}",
           station:,
+          dj:,
           air_day: 2,
           active: false,
           # no expected end time because the end time is not provided on the page

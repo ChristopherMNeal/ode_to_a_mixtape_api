@@ -13,6 +13,8 @@ class ScrapeBroadcastTitles
       ActiveRecord::Base.transaction do
         broadcast = Broadcast.where(station:, url:).first_or_initialize
         broadcast.update_broadcast_title(title, url)
+        broadcast.save!
+        scrape_logger "Updated broadcast: #{broadcast.title}"
       rescue StandardError => e
         scrape_logger("Error updating broadcast: #{e.message}")
       end
@@ -34,6 +36,6 @@ class ScrapeBroadcastTitles
   end
 
   def scrape_logger(message)
-    puts message
+    ScrapeLogger.new.call(message)
   end
 end

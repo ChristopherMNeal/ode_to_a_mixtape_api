@@ -104,6 +104,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rubocop (v1.60.2, asdf: 3.3.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop-ast (v1.30.0, asdf: 3.3.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ruby-progressbar (v1.13.0, asdf: 3.3.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="shoulda-matchers (v6.2.0, asdf: 3.3.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="spring (v4.1.3, asdf: 3.3.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thor (v1.3.0, asdf: 3.3.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="tzinfo (v2.0.6, asdf: 3.3.0) [gem]" level="application" />
@@ -497,7 +498,7 @@
           <RakeTaskImpl id="scrape">
             <subtasks>
               <RakeTaskImpl description="Check the website for new broadcast titles and populate the database with them with minimal info from the broadcasts index" fullCommand="scrape:broadcast_titles" id="broadcast_titles" />
-              <RakeTaskImpl description="Scrape all data from a broadcast show page and populate the database with it.Usage: rake scrape:broadcasts call on each broadcast" fullCommand="scrape:broadcasts" id="broadcasts" />
+              <RakeTaskImpl description="Scrape all data from a broadcast show page and populate the database with it" fullCommand="scrape:broadcasts" id="broadcasts" />
             </subtasks>
           </RakeTaskImpl>
           <RakeTaskImpl description="Run all specs in spec directory (excluding plugin specs)" fullCommand="spec" id="spec" />
@@ -511,6 +512,11 @@
             </subtasks>
           </RakeTaskImpl>
           <RakeTaskImpl description="Report code statistics (KLOCs, etc) from the application or engine" fullCommand="stats" id="stats" />
+          <RakeTaskImpl id="task">
+            <subtasks>
+              <RakeTaskImpl description="Find which playlists are rebroadcasts from previous shows and update the database with this information" fullCommand="task:identify_rebroadcasts" id="identify_rebroadcasts" />
+            </subtasks>
+          </RakeTaskImpl>
           <RakeTaskImpl description="Run all tests in test folder except system ones" fullCommand="test" id="test" />
           <RakeTaskImpl id="test">
             <subtasks>

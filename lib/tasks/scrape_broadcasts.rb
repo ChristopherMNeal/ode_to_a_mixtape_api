@@ -39,29 +39,31 @@ class ScrapeBroadcasts
 
       # reverse the order of the broadcasts so we can start from the oldest playlist
       broadcast_divs.reverse.each do |broadcast_div|
-        broadcast_date = parse_broadcast_date(broadcast_div)
+        ActiveRecord::Base.transaction(requires_new: true) do
+          broadcast_date = parse_broadcast_date(broadcast_div)
 
-        if end_date && broadcast_date > end_date
-          scrape_logger "Broadcast from #{broadcast_date} is after the end date #{end_date}, stopping"
-          break
-        elsif broadcast_date <= start_date
-          scrape_logger "Broadcast from #{broadcast_date} is before the start date #{start_date}, skipping"
-          next
+          if end_date && broadcast_date > end_date
+            scrape_logger "Broadcast from #{broadcast_date} is after the end date #{end_date}, stopping"
+            break
+          elsif broadcast_date <= start_date
+            scrape_logger "Broadcast from #{broadcast_date} is before the start date #{start_date}, skipping"
+            next
+          end
+
+          broadcast_show_url = base_url + broadcast_div.css('div.title a').attribute('href').value
+          title = broadcast_div.css('div.title a').text.strip
+
+          scrape_logger "Processing: #{broadcast_date.strftime('%I:%M%p, %m-%d-%Y')} - #{title}"
+
+          broadcast_show_page = open_url(broadcast_show_url)
+          next unless broadcast_show_page
+
+          tracks_hash_array = parse_tracks(broadcast_show_page)
+          playlist = find_or_create_playlist(
+            broadcast_date, title, broadcast_show_url, broadcast_show_page, tracks_hash_array, broadcast
+          )
+          playlist.create_records_from_tracks_hash
         end
-
-        broadcast_show_url = base_url + broadcast_div.css('div.title a').attribute('href').value
-        title = broadcast_div.css('div.title a').text.strip
-
-        scrape_logger "Processing: #{broadcast_date.strftime('%I:%M%p, %m-%d-%Y')} - #{title}"
-
-        broadcast_show_page = open_url(broadcast_show_url)
-        next unless broadcast_show_page
-
-        tracks_hash_array = parse_tracks(broadcast_show_page)
-        playlist = find_or_create_playlist(
-          broadcast_date, title, broadcast_show_url, broadcast_show_page, tracks_hash_array, broadcast
-        )
-        playlist.create_records_from_tracks_hash
       end
 
       break if page_number == 1
@@ -104,8 +106,8 @@ class ScrapeBroadcasts
       # max_date = broadcast_dates.max.end_of_day
       max_date = previous_page_start_date
 
-      puts "Page #{page_number}: #{min_date} - #{max_date}"
-      puts "Start date: #{start_date}"
+      scrape_logger "Page #{page_number}: #{min_date} - #{max_date}"
+      scrape_logger "Start date: #{start_date}"
 
       if start_date >= min_date && start_date <= max_date
         # if the start date is within the range of dates on this page, break and return page_number
@@ -273,7 +275,8 @@ class ScrapeBroadcasts
 
     add_broadcast_start_time(broadcast, paginated_broadcast_index)
 
-    scrape_dj_info(paginated_broadcast_index, broadcast)
+    dj = scrape_dj_info(paginated_broadcast_index, broadcast)
+    broadcast.update(dj:) if broadcast.dj_id.nil?
   end
 
   def scrape_dj_info(doc, broadcast)
@@ -298,6 +301,7 @@ class ScrapeBroadcasts
     dj.save! if dj.changed?
 
     scrape_djs_station_info(doc, broadcast, dj)
+    dj
   end
 
   def scrape_djs_station_info(doc, broadcast, dj)
@@ -318,6 +322,6 @@ class ScrapeBroadcasts
   end
 
   def scrape_logger(message)
-    puts message
+    ScrapeLogger.new.call(message)
   end
 end

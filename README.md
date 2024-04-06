@@ -26,7 +26,30 @@ This is a project to scrape playlists from radio stations and store them in a da
 [ ] Add station timezone to stations table
   [ ] Factor in timezone when calculating air time
 [ ] add broadcast first and last air date to broadcasts table
-[ ] scrape the broadcasts in chronological order to sort the IDs
+[x] scrape the broadcasts in chronological order to sort the IDs
+[ ] create (or find!) a music dates API to check dates for music history events relevant to radio playlists
+  - Maybe add ability to search by specific date (with year) or by month and day for any year and see playlists for that date
+  - This would be for searching for non-holiday events. Adding a separate column for holidays.
+  - It would also be nice to cross reference with a music history API to see what happened in music history on a playlist's air date.
+  - Creating a music history calendar feels like a big undertaking that would quickly snowball. First I'll look in to these:
+    - [ ] https://www.onthisday.com/music
+    - [ ] https://www.thisdayinmusic.com/
+    - [ ] https://www.songfacts.com/
+    - [ ] https://www.musicvf.com/
+    - [ ] https://www.music-map.com/
+  - looking for:
+    - album release dates
+    - artist birthdays
+    - artist death dates
+[ ] also incorporate my previous logic for finding the playlists from the x week of a given month.
+[ ] it might also be nice to create a calendar specific to each station
+    - station first broadcast/anniversary date
+    - fund drives
+    - special events
+[ ] Would it make sense to do the same for broadcasts?
+    - first broadcast date and anniversary
+    - ...special events?
+
 
 ## DB Design
 ```yaml
