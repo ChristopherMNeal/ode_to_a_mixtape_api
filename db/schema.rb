@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_240_317_034_843) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_30_173957) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,18 +45,16 @@ ActiveRecord::Schema[7.1].define(version: 20_240_317_034_843) do
   end
 
   create_table "broadcasts", force: :cascade do |t|
-    t.bigint "station_id"
+    t.bigint "station_id", null: false
     t.bigint "dj_id"
-    t.string "title"
+    t.string "title", null: false
     t.string "old_title"
-    t.string "url"
+    t.string "url", null: false
     t.integer "air_day"
     t.time "air_time_start"
     t.time "air_time_end"
     t.boolean "active", default: true
     t.datetime "last_scraped_at"
-    t.datetime "last_broadcast_at"
-    t.datetime "first_broadcast_at"
     t.integer "frequency_in_days"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -108,8 +104,12 @@ ActiveRecord::Schema[7.1].define(version: 20_240_317_034_843) do
     t.jsonb "scraped_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "theme"
+    t.string "holiday"
     t.index ["broadcast_id"], name: "index_playlists_on_broadcast_id"
+    t.index ["holiday"], name: "index_playlists_on_holiday"
     t.index ["station_id"], name: "index_playlists_on_station_id"
+    t.index ["theme"], name: "index_playlists_on_theme"
   end
 
   create_table "playlists_songs", force: :cascade do |t|
