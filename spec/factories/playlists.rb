@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :playlist do
     sequence(:title) { |n| "Ode to a Mixtape#{n}" } # Corrected this line
-    sequence(:air_date) { |n| Date.today - n.weeks }
+    sequence(:air_date) { |n| Time.zone.today - n.weeks }
     broadcast
     station { broadcast.station }
     sequence(:playlist_url) { |n| "https://xray.fm/broadcasts/39512#{n}" }

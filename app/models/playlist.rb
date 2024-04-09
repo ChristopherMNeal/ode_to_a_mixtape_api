@@ -30,7 +30,7 @@ class Playlist < ApplicationRecord
   end
 
   def rebroadcasts?
-    Playlist.where(original_playlist_id: id).exists?
+    Playlist.exists?(original_playlist_id: id)
   end
 
   def with_rebroadcasts

@@ -13,7 +13,7 @@ RSpec.describe ScrapeBroadcastTitles do
         broadcasts_index_url: 'https://xray.fm/shows/all'
       )
     end
-    let(:html_content) { File.read(Rails.root.join('spec/fixtures/xray/broadcasts_index.html')) }
+    let(:html_content) { Rails.root.join('spec/fixtures/xray/broadcasts_index.html').read }
 
     before do
       stub_request(:get, station.broadcasts_index_url)
@@ -22,7 +22,7 @@ RSpec.describe ScrapeBroadcastTitles do
 
     it 'creates or updates broadcasts with titles and URLs from the station index page' do
       expect { described_class.new.call(station) }
-        .to change { Broadcast.count }.by(255)
+        .to change(Broadcast, :count).by(255)
 
       broadcast = Broadcast.find_by(title: 'Strange Babes')
       expect(broadcast.url).to eq('https://xray.fm/shows/strange-babes')
@@ -32,7 +32,7 @@ RSpec.describe ScrapeBroadcastTitles do
       described_class.new.call(station)
 
       expect { described_class.new.call(station) }
-        .to change { Broadcast.count }.by(0)
+        .not_to(change(Broadcast, :count))
     end
 
     it 'parses the old broadcast title from the URL' do
@@ -48,13 +48,13 @@ RSpec.describe ScrapeBroadcastTitles do
       broadcast = Broadcast.find_by(title: 'PNKHSE Radio')
       expect(broadcast.old_title).to eq('Mutant Pop')
 
-      html_content = File.read(Rails.root.join('spec/fixtures/xray/broadcasts_index.html'))
+      html_content = Rails.root.join('spec/fixtures/xray/broadcasts_index.html').read
       html_content.gsub!('PNKHSE Radio', 'PUNKHOUSE Radio')
       stub_request(:get, station.broadcasts_index_url)
         .to_return(status: 200, body: html_content)
 
       expect { described_class.new.call(station) }
-        .to change { Broadcast.count }.by(0)
+        .not_to(change(Broadcast, :count))
 
       broadcast.reload
       expect(broadcast)

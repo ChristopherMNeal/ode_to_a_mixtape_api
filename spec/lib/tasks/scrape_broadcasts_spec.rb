@@ -24,27 +24,27 @@ RSpec.describe ScrapeBroadcasts do
   end
   let(:base_url) { 'https://xray.fm' }
   let(:broadcast_name) { 'strange-babes' }
-  let(:html_content_1) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-broadcast-index-1.html')) }
-  let(:html_content_2) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-broadcast-index-2.html')) }
-  let(:html_content_3) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-broadcast-index-3.html')) }
-  let(:playlist_1) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-playlist-01.html')) }
+  let(:html_content_1) { Rails.root.join('spec/fixtures/xray/strange-babes-broadcast-index-1.html').read }
+  let(:html_content_2) { Rails.root.join('spec/fixtures/xray/strange-babes-broadcast-index-2.html').read }
+  let(:html_content_3) { Rails.root.join('spec/fixtures/xray/strange-babes-broadcast-index-3.html').read }
+  let(:playlist_1) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-01.html').read }
   let(:playlist_1_air_date) { DateTime.new(2021, 4, 27, 16) }
-  let(:playlist_2) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-playlist-02.html')) }
+  let(:playlist_2) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-02.html').read }
   let(:playlist_2_air_date) { DateTime.new(2021, 4, 20, 16) }
-  let(:playlist_3) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-playlist-03.html')) }
+  let(:playlist_3) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-03.html').read }
   let(:playlist_3_air_date) { DateTime.new(2021, 4, 13, 16) }
-  let(:playlist_4_no_songs) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-playlist-04.html')) }
+  let(:playlist_4_no_songs) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-04.html').read }
   let(:playlist_4_no_songs_air_date) { DateTime.new(2021, 4, 6, 16) }
-  let(:playlist_5) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-playlist-05.html')) }
-  let(:playlist_6_bad_data) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-playlist-06.html')) }
+  let(:playlist_5) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-05.html').read }
+  let(:playlist_6_bad_data) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-06.html').read }
   let(:playlist_6_bad_data_air_date) { DateTime.new(2021, 3, 23, 16) }
-  let(:playlist_7) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-playlist-07.html')) }
-  let(:playlist_8) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-playlist-08.html')) }
-  let(:playlist_9) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-playlist-09.html')) }
-  let(:playlist_10) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-playlist-10.html')) }
-  let(:playlist_11) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-playlist-11.html')) }
+  let(:playlist_7) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-07.html').read }
+  let(:playlist_8) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-08.html').read }
+  let(:playlist_9) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-09.html').read }
+  let(:playlist_10) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-10.html').read }
+  let(:playlist_11) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-11.html').read }
   let(:playlist_11_air_date) { DateTime.new(2021, 2, 16, 16) }
-  let(:playlist_double_downloads) { File.read(Rails.root.join('spec/fixtures/xray/strange-babes-playlist-19.html')) }
+  let(:playlist_double_downloads) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-19.html').read }
   let(:playlist_double_downloads_date) { DateTime.new(2020, 12, 15, 16) }
 
   before do
@@ -83,6 +83,7 @@ RSpec.describe ScrapeBroadcasts do
 
     context 'when scraping the most recent 2 playlists' do
       let(:start_date) { playlist_2_air_date }
+
       before { call_task }
 
       it 'updates broadcasts more information from the broadcast show page' do
@@ -170,7 +171,7 @@ RSpec.describe ScrapeBroadcasts do
 
       # Now scrape playlists 1 and 2 so that 2 is scraped twice
       let(:start_date) { playlist_2_air_date }
-      let(:end_date) { Date.today }
+      let(:end_date) { Time.zone.today }
 
       it 'updates playlist 2 with new data' do
         # the script actually doesn't do this. Should it? Is there a reason to expect a historic playlist to change...
@@ -215,6 +216,7 @@ RSpec.describe ScrapeBroadcasts do
     context 'when scraping a playlist without songs listed' do
       let(:start_date) { playlist_4_no_songs_air_date }
       let(:end_date) { playlist_4_no_songs_air_date }
+
       before { call_task }
 
       it 'creates a playlist without songs' do
@@ -233,6 +235,7 @@ RSpec.describe ScrapeBroadcasts do
     context 'when scraping a playlist with two download links' do
       let(:start_date) { playlist_double_downloads_date }
       let(:end_date) { playlist_double_downloads_date }
+
       before { call_task }
 
       it 'creates a playlist with two download links' do
@@ -248,6 +251,7 @@ RSpec.describe ScrapeBroadcasts do
 
     context 'when scraping the same playlist twice' do
       let(:start_date) { playlist_1_air_date }
+
       before { call_task }
 
       it 'does not create duplicate playlists' do
@@ -262,6 +266,7 @@ RSpec.describe ScrapeBroadcasts do
     context 'when scraping playlists that span two index pages' do
       # start on the most recent playlist of the second page, then scrape the first page
       let(:start_date) { playlist_11_air_date }
+
       before { call_task }
 
       it 'creates a playlist with songs' do

@@ -23,7 +23,7 @@ class IdentifyRebroadcasts
       ┴ ┴┴ ┴ ┴ └─┘┴ ┴  └─┘ ┴   ┴  ┴ ┴┴└─└─┘┘└┘ ┴ ┴ ┴└─┘ ┴ ┴└─┘┴ ┴┴─┘
     MESSAGE
     checked_playlists = []
-    playlists.where('title iLIKE ?', '%(%').each do |playlist|
+    playlists.where('title iLIKE ?', '%(%').find_each do |playlist|
       next if playlist.rebroadcast? || checked_playlists.include?(playlist)
 
       original_title = playlist.title.split('(').first.strip

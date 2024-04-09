@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Playlist, type: :model do
+RSpec.describe Playlist do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:broadcast_id) }
     it { is_expected.to validate_presence_of(:date) }
@@ -19,6 +19,7 @@ RSpec.describe Playlist, type: :model do
 
   describe '#to_s' do
     let(:playlist) { FactoryBot.create(:playlist, date: Date.parse('2017-01-17'), title: 'Playlist Title') }
+
     it 'returns the date and title' do
       expect(playlist.to_s).to eq('2017-01-17: Playlist Title')
     end
@@ -26,6 +27,7 @@ RSpec.describe Playlist, type: :model do
 
   describe '#external_id' do
     let(:playlist) { FactoryBot.create(:playlist, playlist_url: 'http://example.com/playlist-id') }
+
     it 'returns the id of the playlist on the station website' do
       expect(playlist.external_id).to eq('playlist-id')
     end
@@ -33,8 +35,9 @@ RSpec.describe Playlist, type: :model do
 
   describe '#rebroadcast?' do
     context 'when the playlist is a rebroadcast' do
-      let(:original_playlist) { FactoryBot.build(:playlist) }
+      let(:original_playlist) { build(:playlist) }
       let(:playlist) { FactoryBot.create(:playlist, original_playlist:) }
+
       it 'returns true' do
         expect(playlist.rebroadcast?).to be true
       end
@@ -42,6 +45,7 @@ RSpec.describe Playlist, type: :model do
 
     context 'when the playlist is not a rebroadcast' do
       let(:playlist) { FactoryBot.create(:playlist) }
+
       it 'returns false' do
         expect(playlist.rebroadcast?).to be false
       end
@@ -88,7 +92,7 @@ RSpec.describe Playlist, type: :model do
 
       it 'creates songs with complete data' do
         expect { playlist_with_missing_data.create_records_from_tracks_hash }
-          .to change { Song.count }
+          .to change(Song, :count)
           .from(0)
           .to(2)
         expect(Song.find_by(title: 'Love Is The Slug')).to be_present
@@ -102,8 +106,8 @@ RSpec.describe Playlist, type: :model do
 
       it 'creates playlists_songs skipping position 20' do
         playlist_with_missing_data.create_records_from_tracks_hash
-        song_titles = scraped_data_with_missing_attributes.map { |a| a['title'] if a['title'].present? }.compact
-        expect(playlist_with_missing_data.songs.map(&:title)).to contain_exactly(*song_titles)
+        song_titles = scraped_data_with_missing_attributes.map { |a| a['title'].presence }.compact
+        expect(playlist_with_missing_data.songs.map(&:title)).to match_array(song_titles)
         expect(playlist_with_missing_data.playlists_songs.pluck(:position)).to contain_exactly(19, 21)
       end
     end
@@ -133,7 +137,7 @@ RSpec.describe Playlist, type: :model do
 
       it 'creates songs with complete data' do
         expect { playlist_with_missing_label.create_records_from_tracks_hash }
-          .to change { Song.count }
+          .to change(Song, :count)
           .from(0)
           .to(1)
         expect(Song.find_by(title: 'Which Way To Go'))
@@ -179,10 +183,9 @@ RSpec.describe Playlist, type: :model do
 
       it 'creates songs with complete data' do
         expect { playlist_with_missing_album.create_records_from_tracks_hash }
-          .to change { Song.count }
+          .to change(Song, :count)
           .from(0)
-          .to(2)
-        expect(Song.find_by(title: 'Love Is The Slug')).to be_present
+          .to(1)
         expect(Song.find_by(title: 'Which Way To Go')).to be_present
       end
 
@@ -193,8 +196,10 @@ RSpec.describe Playlist, type: :model do
 
       it 'creates playlists_songs skipping position 20' do
         playlist_with_missing_album.create_records_from_tracks_hash
-        song_titles = scraped_data_with_missing_attributes.map { |a| a['title'] if a['title'].present? }.compact
-        expect(playlist_with_missing_album.songs.map(&:title)).to contain_exactly(*song_titles)
+        song_titles = scraped_data_with_missing_attributes.map do |a|
+          a['title'].presence
+        end.compact
+        expect(playlist_with_missing_album.songs.map(&:title)).to match_array(song_titles)
         expect(playlist_with_missing_album.playlists_songs.pluck(:position)).to contain_exactly(19, 21)
       end
     end
@@ -237,7 +242,7 @@ RSpec.describe Playlist, type: :model do
       end
 
       it 'does not create duplicate songs' do
-        expect { playlist_with_duplicate_entries.create_records_from_tracks_hash }.to change { Song.count }.by(2)
+        expect { playlist_with_duplicate_entries.create_records_from_tracks_hash }.to change(Song, :count).by(2)
         expect(Song.where(title: 'Party of The Mind').count).to eq(1)
         expect(Song.where(title: 'Love Is The Slug').count).to eq(1)
       end

@@ -1,4 +1,17 @@
-# Common configuration.
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-factory_bot
+
+Rails:
+  Enabled: true
+
+RSpec:
+  Enabled: true
+
+FactoryBot:
+  Enabled: true
+
 
 AllCops:
   RubyInterpreters:
@@ -63,6 +76,7 @@ AllCops:
     - '**/Vagabondfile'
     - '**/Vagrantfile'
   Exclude:
+    - db/schema.rb
     - 'node_modules/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'

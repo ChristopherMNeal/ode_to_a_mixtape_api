@@ -5,7 +5,6 @@ class Broadcast < ApplicationRecord
   belongs_to :dj, optional: true
   has_many :playlists
 
-  validates :station_id, presence: true
   validates :title, presence: true
   validates :url, uniqueness: true, presence: true,
                   format: { with: %r{\Ahttps?://.*\z}, message: 'must start with http:// or https://' }

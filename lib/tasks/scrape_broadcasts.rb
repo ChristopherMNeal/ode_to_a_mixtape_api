@@ -70,6 +70,8 @@ class ScrapeBroadcasts
 
       page_number -= 1
     end
+    broadcast.update(last_scraped_at: Time.zone.now)
+    scrape_logger("Finished scraping broadcast: #{broadcast.title}")
   end
 
   def get_start_date(broadcast, start_date)
@@ -97,7 +99,7 @@ class ScrapeBroadcasts
 
   def find_start_date_page_number(start_date, base_url, broadcast_name_for_url)
     page_number = 1
-    previous_page_start_date = Date.today.end_of_day
+    previous_page_start_date = Time.zone.today.end_of_day
 
     loop do
       paginated_broadcast_index = open_broadcasts_index_page(base_url, broadcast_name_for_url, page_number)
@@ -183,9 +185,9 @@ class ScrapeBroadcasts
   end
 
   def parse_time_string(time_string)
-    return nil unless time_string.present?
+    return nil if time_string.blank?
 
-    Time.parse(time_string)
+    Time.zone.parse(time_string)
   end
 
   def most_recent_broadcast_air_time(paginated_broadcast_index)
@@ -221,7 +223,7 @@ class ScrapeBroadcasts
   # end
 
   def process_broadcast_download_urls(broadcast_show_page)
-    broadcast_show_page.css('a.player').map { |download_url| download_url['href'] }
+    broadcast_show_page.css('a.player').pluck('href')
   end
 
   def next_page_available?(paginated_broadcast_index)
@@ -267,10 +269,23 @@ class ScrapeBroadcasts
     paginated_broadcast_index = open_broadcasts_index_page(base_url, broadcast_name_for_url, 1)
 
     most_recent_dates = fetch_broadcast_dates(paginated_broadcast_index)
-    broadcast.frequency_in_days = most_recent_dates.each_cons(2).map { |a, b| (a - b).to_i }.max
-    broadcast.last_broadcast_at = most_recent_dates.max
+    broadcast.frequency_in_days =
+      if most_recent_dates.count < 2
+        most_recent_dates.each_cons(2).map { |a, b| (a - b).to_i }.max
+      else
+        123.days # allows for an annual broadcast to be considered active. It's a bit arbitrary.
+      end
+
+    # This could be configurable in the future.
+    # Currently set to 3 times the frequency of the broadcast or 15 days, whichever is greater,
+    # to allow for holidays, vacations, and schedule changes.
     inactivity_threshold = [broadcast.frequency_in_days * 3, 15].max
-    broadcast.active = (Date.today - inactivity_threshold.days) < broadcast.last_broadcast_at
+    last_playlist_date = most_recent_dates.max
+    broadcast.active = if last_playlist_date
+                         (Time.zone.today - inactivity_threshold.days) < last_playlist_date
+                       else
+                         true # active until proven otherwise
+                       end
     broadcast.save! if broadcast.changed?
 
     add_broadcast_start_time(broadcast, paginated_broadcast_index)
@@ -322,6 +337,6 @@ class ScrapeBroadcasts
   end
 
   def scrape_logger(message)
-    ScrapeLogger.new.call(message)
+    ScrapeLogger.log(message)
   end
 end

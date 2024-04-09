@@ -2,6 +2,6 @@
 
 require 'rails_helper'
 
-RSpec.describe RecordLabel, type: :model do
+RSpec.describe RecordLabel do
   pending "add some examples to (or delete) #{__FILE__}"
 end

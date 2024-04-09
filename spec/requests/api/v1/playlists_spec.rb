@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::V1::Playlists', type: :request do
+RSpec.describe 'Api::V1::Playlists' do
   describe 'GET /index' do
     pending 'returns http success' do
       get '/api/v1/playlists/index'
