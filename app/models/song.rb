@@ -11,4 +11,16 @@ class Song < ApplicationRecord
 
   validates :title, presence: true
   validates :title, uniqueness: { scope: :artist_id }
+
+  def to_s
+    if album.present?
+      "#{artist.name} - #{title} (#{album.title})"
+    else
+      "#{artist.name} - #{title}"
+    end
+  end
+
+  def list_playlists
+    playlists.where(original_playlist: nil).map(&:to_s)
+  end
 end

@@ -15,7 +15,7 @@ class Playlist < ApplicationRecord
   validates :playlist_url, format: { with: %r{\Ahttps?://.*\z}, message: 'must start with http:// or https://' }
 
   def to_s
-    "#{air_date&.strftime('%Y-%m-%d')}: #{title}"
+    "#{broadcast.title}: #{air_date&.strftime('%Y-%m-%d')}: #{title}"
   end
 
   def external_id
@@ -30,6 +30,10 @@ class Playlist < ApplicationRecord
   # exclude from playlists API endpoint
   def songs?
     songs.any?
+  end
+
+  def print_songs
+    playlists_songs.joins(song: :artist).order(:position).map { |ps| "#{ps.song.artist.name} - #{ps.song.title}" }
   end
 
   def rebroadcasts?
