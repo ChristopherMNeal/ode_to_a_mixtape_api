@@ -44,6 +44,36 @@ class Playlist < ApplicationRecord
     end
   end
 
+  # This can move to a service object if using elsewhere
+  def sanitize_filename(filename)
+    sanitized = filename.gsub(%r{[:/\\*?"<>|]}, '_')
+    sanitized = sanitized.gsub(' ', '_')
+    sanitized.squeeze('_')
+    sanitized.gsub(/\A_|_\z/, '')
+  end
+
+  def download_files(target_dir = Rails.root.join('tmp/downloads')) # rubocop:disable Metrics
+    filename = "#{broadcast.title}_#{air_date&.strftime('%Y-%m-%d')}_#{title}"
+    filename = sanitize_filename(filename).downcase
+    file_path = File.join(target_dir, filename)
+    FileUtils.mkdir_p(target_dir)
+
+    download_urls = [download_url_1, download_url_2].compact_blank
+    multiple_downloads = download_urls.size > 1
+    download_urls.each_with_index do |download_url, i|
+      file_extension = download_url.split('.').last.downcase
+      if %w[mp3 m4a].exclude?(file_extension)
+        Rails.logger.debug { "Skipping download #{download_url} with unexpected extension: #{file_extension}" }
+        next
+      end
+      file_number = multiple_downloads ? "_#{i + 1}" : ''
+      File.binwrite("#{file_path}#{file_number}.#{file_extension}", URI.open(download_url).read)
+      Rails.logger.debug { "Downloaded to: #{file_path}#{file_number}.#{file_extension}" }
+    end
+  rescue StandardError => e
+    Rails.logger.debug { "An error occurred: #{e.message}" }
+  end
+
   def create_records_from_tracks_hash
     if scraped_data.blank?
       Rails.logger.debug '    No scraped data to process'
