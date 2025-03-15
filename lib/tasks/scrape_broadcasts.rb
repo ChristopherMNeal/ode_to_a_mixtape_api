@@ -13,7 +13,8 @@ require 'date'
 # If no playlists are in the database, the start date is set to 1901-12-12, the date of the first radio broadcast.
 # If no end date is provided, all broadcasts after the start date are scraped.
 class ScrapeBroadcasts
-  def call(broadcast, start_date = nil, end_date = nil)
+  def call(broadcast, start_date = nil, end_date = nil, throttle_secs: 0)
+    @throttle_secs = throttle_secs
     start_date = get_start_date(broadcast, start_date)
     scrape_broadcasts(broadcast, start_date, end_date)
   end
@@ -196,6 +197,10 @@ class ScrapeBroadcasts
   end
 
   def open_url(url)
+    if @throttle_secs.positive?
+      scrape_logger "Throttling request for #{@throttle_secs} seconds"
+      sleep(@throttle_secs)
+    end
     # Open the URL, set the stream's encoding to UTF-8, read the content,
     # ensure it's encoded in UTF-8, and parse with Nokogiri
     Nokogiri::HTML(URI.open(url).set_encoding('utf-8').read.encode('UTF-8'))
