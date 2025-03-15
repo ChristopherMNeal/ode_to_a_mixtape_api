@@ -1,56 +1,110 @@
 # frozen_string_literal: true
 
+require 'i18n'
+
 class IdentifyRebroadcasts
+  KEYWORDS = %w[rerun rebroadcast re-broadcast copy replay reprise remix redux duplicate again evergreen (re)broadcast].freeze
+
   def perform(broadcast)
-    new.call(broadcast)
+    new.call(broadcast.id)
   end
 
-  def call(broadcast)
-    playlists = broadcast.playlists.where(original_playlist_id: nil).order(air_date: :asc)
-    check_by_parenthetical(playlists) # fast
-    check_by_identical_songs(playlists) # slower
+  def call(broadcast_id)
+    @cleaned_title_hash = cleaned_title_hash(broadcast_id)
+    check_by_title_keywords(broadcast_id)
+    check_by_parenthetical(broadcast_id)
+    # check_by_identical_songs(broadcast_id) # This is much too slow to be worth it.
   end
 
   private
 
-  def check_by_parenthetical(playlists)
+  def clean_title(string)
+    I18n.transliterate(string.to_s.downcase.gsub(/[^a-z0-9]/, '').gsub(/#{KEYWORDS.join('|')}/i, '').strip)
+  end
+
+  def cleaned_title_hash(broadcast_id)
+    Playlist.where(broadcast_id:, original_playlist_id: nil)
+            .find_each(batch_size: 500)
+            .each_with_object({}) do |playlist, hash|
+      cleaned_title = clean_title(playlist.title)
+      hash[cleaned_title] ||= []
+      hash[cleaned_title] << playlist.id
+    end
+  end
+
+  def print_titles
+    max_title_length = @cleaned_title_hash.keys.map(&:length).max
+    output = @cleaned_title_hash.map do |title, id_array|
+      "  - #{title.ljust(max_title_length)}: #{id_array.join(', ')}"
+    end
+    puts 'All Cleaned Broadcast Titles:'
+    puts output.sort
+  end
+
+  def check_by_title_keywords(broadcast_id)
+    puts { <<~MESSAGE }
+      ╔╦╗╔═╗╔╦╗╔═╗╦ ╦  ╔╗ ╦ ╦  ╔╦╗╦╔╦╗╦  ╔═╗
+      ║║║╠═╣ ║ ║  ╠═╣  ╠╩╗╚╦╝   ║ ║ ║ ║  ║╣
+      ╩ ╩╩ ╩ ╩ ╚═╝╩ ╩  ╚═╝ ╩    ╩ ╩ ╩ ╩═╝╚═╝
+    MESSAGE
+    print_titles
+    keywords = KEYWORDS.map { |w| "%#{w}%" }
+    playlists = Playlist.where(broadcast_id:)
+                        .where(keywords.map { 'title ILIKE ?' }.join(' OR '), *keywords)
+                        .where(original_playlist_id: nil).order(air_date: :asc)
+
+    checked_playlist_ids = []
+    playlists.each do |playlist|
+      next if checked_playlist_ids.include?(playlist.id)
+
+      cleaned_title = clean_title(playlist.title)
+      possible_match_ids = @cleaned_title_hash[cleaned_title]
+      checked_playlist_ids += possible_match_ids
+      # Not all Broadcasts have Playlists with unique names... so this might not work.
+      next if possible_match_ids.size > 12
+
+      possible_matches = Playlist.where(id: possible_match_ids)
+      prompt_for_match(possible_matches, 'title')
+    end
+  end
+
+  def check_by_parenthetical(broadcast_id)
     # Checks for playlists that indicate a rebroadcast in the title
     # e.g. "Strange Strange Feelin' (rebroadcast)"
     # this uses calvin s font from https://patorjk.com/software/taag/#p=display&f=Calvin%20S&t=STRANGE%20BABES
-    puts <<~MESSAGE
-      ┌┬┐┌─┐┌┬┐┌─┐┬ ┬  ┌┐ ┬ ┬  ┌─┐┌─┐┬─┐┌─┐┌┐┌┌┬┐┬ ┬┌─┐┌┬┐┬┌─┐┌─┐┬
-      │││├─┤ │ │  ├─┤  ├┴┐└┬┘  ├─┘├─┤├┬┘├┤ │││ │ ├─┤├┤  │ ││  ├─┤│
-      ┴ ┴┴ ┴ ┴ └─┘┴ ┴  └─┘ ┴   ┴  ┴ ┴┴└─└─┘┘└┘ ┴ ┴ ┴└─┘ ┴ ┴└─┘┴ ┴┴─┘
+    puts { <<~MESSAGE }
+      ╔╦╗╔═╗╔╦╗╔═╗╦ ╦  ╔╗ ╦ ╦  ╔═╗╔═╗╦═╗╔═╗╔╗╔╔╦╗╦ ╦╔═╗╔╦╗╦╔═╗╔═╗╦
+      ║║║╠═╣ ║ ║  ╠═╣  ╠╩╗╚╦╝  ╠═╝╠═╣╠╦╝║╣ ║║║ ║ ╠═╣║╣  ║ ║║  ╠═╣║
+      ╩ ╩╩ ╩ ╩ ╚═╝╩ ╩  ╚═╝ ╩   ╩  ╩ ╩╩╚═╚═╝╝╚╝ ╩ ╩ ╩╚═╝ ╩ ╩╚═╝╩ ╩╩═╝
     MESSAGE
     checked_playlists = []
-    playlists.where('title iLIKE ?', '%(%').find_each do |playlist|
+
+    opening_brackets = ['{', '[', '(', '|']
+    pattern = /\s*[{\[(|].*$/
+    Playlist.where(broadcast_id:)
+            .where(opening_brackets.map { 'title ILIKE ?' }.join(' OR '), *opening_brackets.map { |b| "%#{b}%" })
+            .where(original_playlist_id: nil)
+            .order(air_date: :asc)
+            .find_each do |playlist|
       next if playlist.rebroadcast? || checked_playlists.include?(playlist)
 
-      original_title = playlist.title.split('(').first.strip
-      possible_matches = playlists.where('title iLIKE ?', "#{original_title}%")
+      # Use regex to get the part before any opening bracket
+      original_title = playlist.title.sub(pattern, '').strip
+      possible_matches = Playlist.where(broadcast_id:, original_playlist_id: nil).where('title iLIKE ?', "#{original_title}%")
       checked_playlists += possible_matches
-      # make the change automatically if there's a clear match with the original title + (rebroadcast)
-      rebroadcast_patterns = /\((re-?broadcast)|(copy)|(rerun)\)/i
-
-      if possible_matches.map do |playlist|
-        playlist.title.gsub(original_title, '').gsub(rebroadcast_patterns, '').strip.downcase
-      end.uniq.sort == ['']
-        update_rebroadcasts(possible_matches.first, possible_matches)
-        next
-      end
 
       prompt_for_match(possible_matches, 'parenthetical')
     end
   end
 
-  def check_by_identical_songs(playlists)
-    puts <<~MESSAGE
-      ┌┬┐┌─┐┌┬┐┌─┐┬ ┬  ┌┐ ┬ ┬  ┬┌┬┐┌─┐┌┐┌┌┬┐┬┌─┐┌─┐┬    ┌─┐┌─┐┌┐┌┌─┐┌─┐
-      │││├─┤ │ │  ├─┤  ├┴┐└┬┘  │ ││├┤ │││ │ ││  ├─┤│    └─┐│ │││││ ┬└─┐
-      ┴ ┴┴ ┴ ┴ └─┘┴ ┴  └─┘ ┴   ┴─┴┘└─┘┘└┘ ┴ ┴└─┘┴ ┴┴─┘  └─┘└─┘┘└┘└─┘└─┘
+  def check_by_identical_songs(broadcast_id)
+    puts { <<~MESSAGE }
+      ╔╦╗╔═╗╔╦╗╔═╗╦ ╦  ╔╗ ╦ ╦  ╦╔╦╗╔═╗╔╗╔╔╦╗╦╔═╗╔═╗╦    ╔═╗╔═╗╔╗╔╔═╗╔═╗
+      ║║║╠═╣ ║ ║  ╠═╣  ╠╩╗╚╦╝  ║ ║║║╣ ║║║ ║ ║║  ╠═╣║    ╚═╗║ ║║║║║ ╦╚═╗
+      ╩ ╩╩ ╩ ╩ ╚═╝╩ ╩  ╚═╝ ╩   ╩═╩╝╚═╝╝╚╝ ╩ ╩╚═╝╩ ╩╩═╝  ╚═╝╚═╝╝╚╝╚═╝╚═╝
     MESSAGE
     # Preload songs for all playlists to avoid N+1 query issues
-    playlists_with_songs = Playlist.includes(:songs).find(playlists.ids)
+    playlists_with_songs = Playlist.joins(:songs).where(broadcast_id:)
 
     # Group playlists by their song IDs
     playlist_groups = playlists_with_songs.each_with_object(Hash.new { |h, k| h[k] = [] }) do |playlist, groups|
@@ -70,7 +124,7 @@ class IdentifyRebroadcasts
   end
 
   def update_rebroadcasts(original_playlist, possible_matches)
-    possible_matches.where.not(id: original_playlist.id).update_all(original_playlist_id: original_playlist.id)
+    possible_matches.where.not(id: original_playlist.id).update_all(original_playlist_id: original_playlist.id) # rubocop:disable Rails/SkipsModelValidations
   end
 
   def prompt_for_match(possible_matches, type) # rubocop:disable Metrics/AbcSize
@@ -86,7 +140,6 @@ class IdentifyRebroadcasts
     end
     prompt = <<~PROMPT
       Matching by #{type} there are #{possible_matches.count} possible matches.
-      SQL Query: #{possible_matches.to_sql}
       If all playlists are the same, ENTER THE NUMBER OF THE ORIGINAL PLAYLIST.
       All other playlists will be updated to reference the original playlist.
       OTHERWISE, enter 'n' to skip.
