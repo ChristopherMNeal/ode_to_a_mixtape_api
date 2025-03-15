@@ -65,7 +65,15 @@ class Playlist < ApplicationRecord
           next
         end
 
-        artist = Artist.find_or_create_by!(name: artist_name)
+        normalized_name = Normalizable.normalize_text(artist_name)
+        artist = Artist.find_or_create_by(normalized_name:)
+        if artist.new_record?
+          artist.update!(name: artist_name)
+        else
+          preferred_name = NameFormatter.format_name([artist_name, artist.name])
+          artist.update!(name: preferred_name) if artist.name != preferred_name
+        end
+
         song = Song.find_or_create_by!(title: song_title, artist:)
         find_or_create_playlists_songs(song, track_hash)
 
