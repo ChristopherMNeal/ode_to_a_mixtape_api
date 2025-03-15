@@ -10,9 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_30_173957) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_15_135950) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_trgm"
   enable_extension "plpgsql"
+  enable_extension "unaccent"
 
   create_table "albums", force: :cascade do |t|
     t.string "title"
@@ -22,8 +24,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_30_173957) do
     t.bigint "record_label_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "normalized_title"
     t.index ["artist_id"], name: "index_albums_on_artist_id"
     t.index ["genre_id"], name: "index_albums_on_genre_id"
+    t.index ["normalized_title"], name: "index_albums_on_normalized_title"
     t.index ["record_label_id"], name: "index_albums_on_record_label_id"
   end
 
@@ -42,6 +46,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_30_173957) do
     t.text "bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "normalized_name"
+    t.index ["normalized_name"], name: "index_artists_on_normalized_name", unique: true
   end
 
   create_table "broadcasts", force: :cascade do |t|
@@ -58,7 +64,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_30_173957) do
     t.integer "frequency_in_days"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "normalized_title"
     t.index ["dj_id"], name: "index_broadcasts_on_dj_id"
+    t.index ["normalized_title"], name: "index_broadcasts_on_normalized_title", unique: true
     t.index ["station_id"], name: "index_broadcasts_on_station_id"
     t.index ["title"], name: "index_broadcasts_on_title"
     t.check_constraint "air_day IS NULL OR air_day >= 0 AND air_day <= 6", name: "air_day_valid_range"
@@ -90,6 +98,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_30_173957) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "normalized_name"
+    t.index ["normalized_name"], name: "index_genres_on_normalized_name", unique: true
+  end
+
+  create_table "playlist_imports", force: :cascade do |t|
+    t.bigint "playlist_id", null: false
+    t.jsonb "scraped_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["playlist_id"], name: "index_playlist_imports_on_playlist_id"
   end
 
   create_table "playlists", force: :cascade do |t|
@@ -101,13 +119,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_30_173957) do
     t.integer "original_playlist_id"
     t.string "download_url_1"
     t.string "download_url_2"
-    t.jsonb "scraped_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "theme"
     t.string "holiday"
+    t.boolean "fund_drive", default: false, null: false
+    t.string "normalized_title"
     t.index ["broadcast_id"], name: "index_playlists_on_broadcast_id"
     t.index ["holiday"], name: "index_playlists_on_holiday"
+    t.index ["normalized_title"], name: "index_playlists_on_normalized_title"
     t.index ["station_id"], name: "index_playlists_on_station_id"
     t.index ["theme"], name: "index_playlists_on_theme"
   end
@@ -127,6 +147,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_30_173957) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "normalized_name"
+    t.index ["normalized_name"], name: "index_record_labels_on_normalized_name", unique: true
   end
 
   create_table "songs", force: :cascade do |t|
@@ -136,8 +158,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_30_173957) do
     t.bigint "genre_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "normalized_title"
     t.index ["artist_id"], name: "index_songs_on_artist_id"
     t.index ["genre_id"], name: "index_songs_on_genre_id"
+    t.index ["normalized_title"], name: "index_songs_on_normalized_title"
     t.index ["title"], name: "index_songs_on_title"
   end
 
@@ -165,6 +189,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_30_173957) do
   add_foreign_key "broadcasts", "stations"
   add_foreign_key "djs_stations", "djs"
   add_foreign_key "djs_stations", "stations"
+  add_foreign_key "playlist_imports", "playlists"
   add_foreign_key "playlists", "broadcasts"
   add_foreign_key "playlists", "playlists", column: "original_playlist_id"
   add_foreign_key "playlists", "stations"
