@@ -172,8 +172,8 @@ class ScrapeBroadcasts
   end
 
   def parse_air_times(air_times)
-    air_day_string = air_times.css('span.weekday')
-    air_day = air_day_string.present? ? Date::DAYNAMES.include?(air_day_string.singularize) : nil
+    air_day_string = air_times.css('span.weekday').text
+    air_day = DayOfWeek.integer_from_day_of_week(air_day_string)
 
     start_time_string = air_times.css('span.start').text
     end_time_string = air_times.css('span.end').text
