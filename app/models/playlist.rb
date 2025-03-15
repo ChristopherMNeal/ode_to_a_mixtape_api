@@ -6,6 +6,9 @@ class Playlist < ApplicationRecord
   belongs_to :original_playlist, class_name: 'Playlist', optional: true
   has_many :playlists_songs, dependent: :destroy
   has_many :songs, through: :playlists_songs
+  has_one :playlist_import
+
+  delegate :scraped_data, to: :playlist_import, allow_nil: true
 
   validates :title, presence: true
   validates :playlist_url, uniqueness: true, allow_blank: false

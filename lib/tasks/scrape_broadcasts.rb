@@ -259,9 +259,10 @@ class ScrapeBroadcasts
       station_id: broadcast.station.id,
       broadcast_id: broadcast.id,
       download_url_1: download_urls[0],
-      download_url_2: download_urls[1],
-      scraped_data: tracks_hash
+      download_url_2: download_urls[1]
     )
+    playlist_import = PlaylistImport.find_or_initialize_by(playlist_id: playlist.id)
+    playlist_import.update(scraped_data: tracks_hash)
     playlist
   end
 
