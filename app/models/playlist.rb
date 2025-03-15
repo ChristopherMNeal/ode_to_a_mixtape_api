@@ -46,7 +46,7 @@ class Playlist < ApplicationRecord
 
   def create_records_from_tracks_hash
     if scraped_data.blank?
-      puts 'No scraped data to process'
+      Rails.logger.debug '    No scraped data to process'
       return
     end
 

@@ -51,10 +51,11 @@ class ScrapeBroadcasts
             next
           end
 
-          broadcast_show_url = base_url + broadcast_div.css('div.title a').attribute('href').value
+          parsed_url = broadcast_div.css('div.title a').attribute('href').value
+          broadcast_show_url = base_url + parsed_url
           title = broadcast_div.css('div.title a').text.strip
 
-          scrape_logger "Processing: #{broadcast_date.strftime('%I:%M%p, %m-%d-%Y')} - #{title}"
+          scrape_logger "  Processing: #{broadcast.title}: #{broadcast_date.strftime('%I:%M%p, %m-%d-%Y')} - #{title} from #{parsed_url}"
 
           broadcast_show_page = open_url(broadcast_show_url)
           next unless broadcast_show_page
@@ -72,7 +73,7 @@ class ScrapeBroadcasts
       page_number -= 1
     end
     broadcast.update(last_scraped_at: Time.zone.now)
-    scrape_logger("Finished scraping broadcast: #{broadcast.title}")
+    scrape_logger("Finished scraping broadcast: #{broadcast.title}\n\n")
   end
 
   def get_start_date(broadcast, start_date)
@@ -104,7 +105,10 @@ class ScrapeBroadcasts
 
     loop do
       paginated_broadcast_index = open_broadcasts_index_page(base_url, broadcast_name_for_url, page_number)
+
       broadcast_dates = fetch_broadcast_dates(paginated_broadcast_index)
+      break if broadcast_dates.empty?
+
       min_date = broadcast_dates.min.beginning_of_day
       # max_date = broadcast_dates.max.end_of_day
       max_date = previous_page_start_date
@@ -156,6 +160,8 @@ class ScrapeBroadcasts
 
   def add_broadcast_start_time(broadcast, paginated_broadcast_index)
     air_times = paginated_broadcast_index.css('div.air_times-container')
+    return if air_times.empty?
+
     air_day, air_time_start, air_time_end =
       if air_times.present?
         parse_air_times(air_times)
@@ -238,8 +244,21 @@ class ScrapeBroadcasts
   def parse_tracks(broadcast_show_page)
     date = broadcast_show_page.css('div.date').text.split(',').last.strip
     broadcast_show_page.css('div.creek-playlist li.creek-track').map.with_index do |track, index|
-      song_time_string = track.css('span.creek-track-time').text
-      song_datetime = DateTime.strptime("#{date}, #{song_time_string}", '%m-%d-%Y, %I:%M%p')
+      song_time_string = track.css('span.creek-track-time').text.upcase
+      date_time_string = "#{date}, #{song_time_string}"
+      expected_format = /\A\d{1,2}-\d{1,2}-\d{4}, \d{1,2}:\d{2}(AM|PM)\z/
+
+      begin
+        if date_time_string.match?(expected_format)
+          song_datetime = DateTime.strptime(date_time_string, '%m-%d-%Y, %I:%M%p')
+        else
+          puts date_time_string
+          raise ArgumentError, "Date string '#{date_time_string}' does not match the expected format."
+        end
+      rescue ArgumentError => e
+        scrape_logger "Failed to parse broadcast date from #{date_time_string}: #{e.message}"
+      end
+
       {
         track_number: index + 1,
         time_string: song_time_string,
@@ -254,7 +273,7 @@ class ScrapeBroadcasts
 
   def find_or_create_playlist(broadcast_date, title, broadcast_show_url, broadcast_show_page, tracks_hash, broadcast)
     download_urls = process_broadcast_download_urls(broadcast_show_page)
-    scrape_logger "More than two download URLs found for #{title}" if download_urls.length > 2
+    scrape_logger "#{download_urls.length} download URLs found for #{title}" if download_urls.length > 2
 
     playlist = Playlist.find_or_initialize_by(playlist_url: broadcast_show_url)
 
@@ -273,14 +292,17 @@ class ScrapeBroadcasts
 
   def update_broadcast_details(broadcast, base_url, broadcast_name_for_url)
     paginated_broadcast_index = open_broadcasts_index_page(base_url, broadcast_name_for_url, 1)
+    return if paginated_broadcast_index.blank?
 
     most_recent_dates = fetch_broadcast_dates(paginated_broadcast_index)
     broadcast.frequency_in_days =
-      if most_recent_dates.count < 2
+      if most_recent_dates.count > 2
         most_recent_dates.each_cons(2).map { |a, b| (a - b).to_i }.max
       else
-        123.days # allows for an annual broadcast to be considered active. It's a bit arbitrary.
+        123 # allows for an annual broadcast to be considered active. It's a bit arbitrary.
       end
+
+    broadcast.save!
 
     # This could be configurable in the future.
     # Currently set to 3 times the frequency of the broadcast or 15 days, whichever is greater,
@@ -327,7 +349,8 @@ class ScrapeBroadcasts
 
   def scrape_djs_station_info(doc, broadcast, dj)
     station = broadcast.station
-    url = doc.css('div.hosts-container a').first['href'] || ''
+    host_container = doc.css('div.hosts-container a').first
+    url = host_container.nil? ? '' : host_container['href'] || ''
 
     DjsStation.find_or_create_by(dj:, station:, profile_url: url)
   end

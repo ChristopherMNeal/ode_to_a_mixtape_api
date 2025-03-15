@@ -5,6 +5,7 @@ require 'nokogiri'
 
 class ScrapeBroadcastTitles
   def call(station)
+    scrape_logger("Scraping broadcast titles for #{station.name}")
     station_broadcast_index_url = station.broadcasts_index_url
     titles_urls_hashes = fetch_all_broadcast_titles(station_broadcast_index_url)
     titles_urls_hashes.each do |titles_urls_hash|
@@ -36,6 +37,6 @@ class ScrapeBroadcastTitles
   end
 
   def scrape_logger(message)
-    ScrapeLogger.new.call(message)
+    ScrapeLogger.log(message)
   end
 end
