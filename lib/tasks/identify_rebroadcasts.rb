@@ -2,8 +2,21 @@
 
 require 'i18n'
 
-class IdentifyRebroadcasts
-  KEYWORDS = %w[rerun rebroadcast re-broadcast copy replay reprise remix redux duplicate again evergreen (re)broadcast].freeze
+class IdentifyRebroadcasts # rubocop:disable Metrics/ClassLength
+  KEYWORDS = %w[
+    rerun
+    rebroadcast
+    re-broadcast
+    copy
+    replay
+    reprise
+    remix
+    redux
+    duplicate
+    again
+    evergreen
+    (re)broadcast
+  ].freeze
 
   def perform(broadcast)
     new.call(broadcast.id)
@@ -37,12 +50,12 @@ class IdentifyRebroadcasts
     output = @cleaned_title_hash.map do |title, id_array|
       "  - #{title.ljust(max_title_length)}: #{id_array.join(', ')}"
     end
-    puts 'All Cleaned Broadcast Titles:'
-    puts output.sort
+    puts 'All Cleaned Broadcast Titles:' # rubocop:disable Rails/Output
+    puts output.sort # rubocop:disable Rails/Output
   end
 
-  def check_by_title_keywords(broadcast_id)
-    puts { <<~MESSAGE }
+  def check_by_title_keywords(broadcast_id) # rubocop:disable Metrics
+    puts <<~MESSAGE # rubocop:disable Rails/Output
       ╔╦╗╔═╗╔╦╗╔═╗╦ ╦  ╔╗ ╦ ╦  ╔╦╗╦╔╦╗╦  ╔═╗
       ║║║╠═╣ ║ ║  ╠═╣  ╠╩╗╚╦╝   ║ ║ ║ ║  ║╣
       ╩ ╩╩ ╩ ╩ ╚═╝╩ ╩  ╚═╝ ╩    ╩ ╩ ╩ ╩═╝╚═╝
@@ -68,11 +81,11 @@ class IdentifyRebroadcasts
     end
   end
 
-  def check_by_parenthetical(broadcast_id)
+  def check_by_parenthetical(broadcast_id) # rubocop:disable Metrics
     # Checks for playlists that indicate a rebroadcast in the title
     # e.g. "Strange Strange Feelin' (rebroadcast)"
     # this uses calvin s font from https://patorjk.com/software/taag/#p=display&f=Calvin%20S&t=STRANGE%20BABES
-    puts { <<~MESSAGE }
+    puts <<~MESSAGE # rubocop:disable Rails/Output
       ╔╦╗╔═╗╔╦╗╔═╗╦ ╦  ╔╗ ╦ ╦  ╔═╗╔═╗╦═╗╔═╗╔╗╔╔╦╗╦ ╦╔═╗╔╦╗╦╔═╗╔═╗╦
       ║║║╠═╣ ║ ║  ╠═╣  ╠╩╗╚╦╝  ╠═╝╠═╣╠╦╝║╣ ║║║ ║ ╠═╣║╣  ║ ║║  ╠═╣║
       ╩ ╩╩ ╩ ╩ ╚═╝╩ ╩  ╚═╝ ╩   ╩  ╩ ╩╩╚═╚═╝╝╚╝ ╩ ╩ ╩╚═╝ ╩ ╩╚═╝╩ ╩╩═╝
@@ -90,15 +103,18 @@ class IdentifyRebroadcasts
 
       # Use regex to get the part before any opening bracket
       original_title = playlist.title.sub(pattern, '').strip
-      possible_matches = Playlist.where(broadcast_id:, original_playlist_id: nil).where('title iLIKE ?', "#{original_title}%")
+      possible_matches =
+        Playlist
+        .where(broadcast_id:, original_playlist_id: nil)
+        .where('title iLIKE ?', "#{original_title}%")
       checked_playlists += possible_matches
 
       prompt_for_match(possible_matches, 'parenthetical')
     end
   end
 
-  def check_by_identical_songs(broadcast_id)
-    puts { <<~MESSAGE }
+  def check_by_identical_songs(broadcast_id) # rubocop:disable Metrics
+    puts <<~MESSAGE # rubocop:disable Rails/Output
       ╔╦╗╔═╗╔╦╗╔═╗╦ ╦  ╔╗ ╦ ╦  ╦╔╦╗╔═╗╔╗╔╔╦╗╦╔═╗╔═╗╦    ╔═╗╔═╗╔╗╔╔═╗╔═╗
       ║║║╠═╣ ║ ║  ╠═╣  ╠╩╗╚╦╝  ║ ║║║╣ ║║║ ║ ║║  ╠═╣║    ╚═╗║ ║║║║║ ╦╚═╗
       ╩ ╩╩ ╩ ╩ ╚═╝╩ ╩  ╚═╝ ╩   ╩═╩╝╚═╝╝╚╝ ╩ ╩╚═╝╩ ╩╩═╝  ╚═╝╚═╝╝╚╝╚═╝╚═╝
@@ -127,7 +143,7 @@ class IdentifyRebroadcasts
     possible_matches.where.not(id: original_playlist.id).update_all(original_playlist_id: original_playlist.id) # rubocop:disable Rails/SkipsModelValidations
   end
 
-  def prompt_for_match(possible_matches, type) # rubocop:disable Metrics/AbcSize
+  def prompt_for_match(possible_matches, type) # rubocop:disable Metrics
     return unless possible_matches.count > 1
 
     max_title_length = possible_matches.map(&:title).max_by(&:length).length
@@ -138,14 +154,13 @@ class IdentifyRebroadcasts
       song_ids = match.songs.pluck(:id).join(', ')
       "#{num.rjust(2)}: #{title.ljust(max_title_length)} (#{date}) songs: #{song_ids}"
     end
-    prompt = <<~PROMPT
+    puts <<~PROMPT # rubocop:disable Rails/Output
       Matching by #{type} there are #{possible_matches.count} possible matches.
       If all playlists are the same, ENTER THE NUMBER OF THE ORIGINAL PLAYLIST.
       All other playlists will be updated to reference the original playlist.
       OTHERWISE, enter 'n' to skip.
       #{matches_with_index.join("\n")}
     PROMPT
-    puts prompt
     response = $stdin.gets.chomp
     return unless response.to_i.positive?
 

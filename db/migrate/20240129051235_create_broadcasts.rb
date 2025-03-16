@@ -11,7 +11,7 @@ class CreateBroadcasts < ActiveRecord::Migration[7.1]
       t.integer :air_day, null: true
       t.time :air_time_start
       t.time :air_time_end
-      t.boolean :active, default: true
+      t.boolean :active, default: true # rubocop:disable Rails/ThreeStateBooleanColumn
       t.datetime :last_scraped_at
       t.datetime :last_broadcast_at
       t.datetime :first_broadcast_at

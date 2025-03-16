@@ -43,9 +43,11 @@ every :hour do
   rake 'scrape:unscraped_broadcasts BROADCAST_COUNT=1 THROTTLE_SECS=5'
 end
 
+# rubocop:disable Metrics/LineLength
 # crontab with logging
 # */5 * * * * echo "cron is active at $(date)" >> /Users/christopherneal/cron_log.txt
 # 0 * * * * /bin/bash -l -c 'cd /Users/christopherneal/Desktop/projects/ode_to_a_mixtape_api && echo "scrape hourly broadcasts cron job started at $(date)" >> /Users/christopherneal/cron_log.txt && bundle exec rake scrape:all_active_broadcasts THROTTLE_SECS=5 BY_AIR_DAY=true --silent && echo "scrape hourly broadcasts cron job completed at $(date)" >> /Users/christopherneal/cron_log.txt'
 # 0 * * * * /bin/bash -l -c 'cd /Users/christopherneal/Desktop/projects/ode_to_a_mixtape_api && echo "scrape 1 unscraped broadcast cron job started at $(date)" >> /Users/christopherneal/cron_log.txt && bundle exec rake scrape:unscraped_broadcasts BROADCAST_COUNT=1 THROTTLE_SECS=5 --silent && echo "scrape 1 unscraped broadcast cron job completed at $(date)" >> /Users/christopherneal/cron_log.txt'
 # 0 1 * * * /bin/bash -l -c 'cd /Users/christopherneal/Desktop/projects/ode_to_a_mixtape_api && echo "scrape broadcast titles cron job started at $(date)" >> /Users/christopherneal/cron_log.txt && bundle exec rake scrape:broadcast_titles STATION_ID=1 --silent && echo "scrape broadcast titles cron job completed at $(date)" >> /Users/christopherneal/cron_log.txt'
 # 0 1 * * * /bin/bash -l -c 'cd /Users/christopherneal/Desktop/projects/ode_to_a_mixtape_api && echo "scrape all active broadcasts cron job started at $(date)" >> /Users/christopherneal/cron_log.txt && bundle exec rake scrape:all_active_broadcasts THROTTLE_SECS=5 --silent && echo "scrape all active broadcasts cron job completed at $(date)" >> /Users/christopherneal/cron_log.txt'
+# rubocop:enable Metrics/LineLength

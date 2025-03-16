@@ -6,8 +6,8 @@ class Artist < ApplicationRecord
   include Normalizable
 
   normalize_column :name, :normalized_name
-  has_many :albums
-  has_many :songs
+  has_many :albums, dependent: :destroy
+  has_many :songs, dependent: :destroy
 
   validates :name, presence: true
   validates :normalized_name, uniqueness: true

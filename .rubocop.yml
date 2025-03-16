@@ -1,4 +1,4 @@
-require:
+plugins:
   - rubocop-rails
   - rubocop-rspec
   - rubocop-factory_bot
@@ -266,6 +266,9 @@ Bundler/OrderedGems:
     - '**/*.gemfile'
     - '**/Gemfile'
     - '**/gems.rb'
+
+FactoryBot/SyntaxMethods:
+  Enabled: false
 
 #################### Gemspec ###############################
 
@@ -1841,7 +1844,6 @@ Lint/EmptyConditionalBody:
   Description: 'Checks for the presence of `if`, `elsif` and `unless` branches without a body.'
   Enabled: true
   AutoCorrect: false
-  SafeAutoCorrect: false
   AllowComments: true
   VersionAdded: '0.89'
 
@@ -2200,7 +2202,6 @@ Lint/RedundantRegexpQuantifiers:
 Lint/RedundantRequireStatement:
   Description: 'Checks for unnecessary `require` statement.'
   Enabled: true
-  SafeAutoCorrect: false
   VersionAdded: '0.76'
   VersionChanged: '1.57'
 
@@ -2516,7 +2517,6 @@ Lint/UselessAssignment:
   Enabled: true
   AutoCorrect: false
   VersionAdded: '0.11'
-  SafeAutoCorrect: false
 
 Lint/UselessElseWithoutRescue:
   Description: 'Checks for useless `else` in `begin..end` without `rescue`.'
@@ -3009,6 +3009,23 @@ Naming/VariableNumber:
     - rfc3339      # DateTime.rfc3339
     - x86_64       # Allowed by default as an underscore separated CPU architecture name
   AllowedPatterns: []
+
+#################### RSpec ##############################
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: true
+  Max: 15
+
+RSpec/MultipleExpectations:
+  Enabled: true
+  Max: 6
+
+RSpec/NestedGroups:
+  Enabled: true
+  Max: 4
 
 #################### Security ##############################
 

@@ -48,7 +48,9 @@ module FuzzyFinder
   end
 
   def self.record_count_warning_threshold_message(threshold, record_count)
-    puts "Threshold #{threshold} has #{record_count} records. The search may be too broad." # rubocop:disable Rails/Output
-    puts "Rerun search with 'record_count_warning_threshold: 0' to suppress this message." # rubocop:disable Rails/Output
+    puts <<~MESSAGE # rubocop:disable Rails/Output
+      Threshold #{threshold} has #{record_count} records. The search may be too broad.
+      Rerun search with 'record_count_warning_threshold: 0' to suppress this message.
+    MESSAGE
   end
 end

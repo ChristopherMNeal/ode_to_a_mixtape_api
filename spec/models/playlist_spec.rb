@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Playlist do
   describe 'validations' do
-    it { is_expected.to validate_presence_of(:broadcast_id) }
+    # This test is at odds with rubocop's redundant validation check
+    # it { is_expected.to validate_presence_of(:broadcast_id) }
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_uniqueness_of(:playlist_url) }
     it { is_expected.to allow_value('http://example.com').for(:playlist_url) }

@@ -2,14 +2,12 @@
 
 # I had a bug when populating the air time, so this fills in the gaps
 class PopulatePlaylistAirTimeFromPlaylistScrapedData
-  def perform
+  def perform # rubocop:disable Metrics
     grouped_playlists_songs = PlaylistsSong.joins(:playlist).where(air_date: nil).group_by(&:playlist_id)
     grouped_playlists_songs.each do |playlist_id, playlists_songs|
       playlist = Playlist.find(playlist_id)
       scraped_data = playlist.scraped_data
       air_date = playlist.air_date
-
-      playlist_song_track_numbers = playlists_songs.pluck(:position)
 
       playlists_songs.each do |playlist_song|
         song_data = scraped_data.select { |sd_hash| sd_hash['track_number'] == playlist_song.position }.first

@@ -8,6 +8,7 @@ module Normalizable
         .squeeze(' ')
         .gsub(/\s*&\s*/, ' and ')
         .gsub(' andthe ', ' and the ') # catch one common typo
+        .gsub('/w', 'with')
         .gsub('.', '') # remove periods
         .strip
   end

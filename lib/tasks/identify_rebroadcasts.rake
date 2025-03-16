@@ -6,6 +6,6 @@ require './lib/tasks/identify_rebroadcasts'
 namespace :task do
   desc 'Find which playlists are rebroadcasts from previous shows and update the database with this information.'
   task identify_rebroadcasts: :environment do
-    IdentifyRebroadcasts.new.call(broadcast = Broadcast.find_by(title: 'Strange Babes'))
+    IdentifyRebroadcasts.new.call(Broadcast.find_by(title: 'Strange Babes'))
   end
 end

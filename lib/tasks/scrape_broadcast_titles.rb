@@ -4,7 +4,7 @@ require 'open-uri'
 require 'nokogiri'
 
 class ScrapeBroadcastTitles
-  def call(station)
+  def call(station) # rubocop:disable Metrics
     scrape_logger("Scraping broadcast titles for #{station.name}")
     station_broadcast_index_url = station.broadcasts_index_url
     titles_urls_hashes = fetch_all_broadcast_titles(station_broadcast_index_url)
@@ -25,7 +25,7 @@ class ScrapeBroadcastTitles
   private
 
   def fetch_all_broadcast_titles(station_broadcast_index_url)
-    html_content = URI.open(station_broadcast_index_url)
+    html_content = URI.open(station_broadcast_index_url) # rubocop:disable Security/Open
     html_content.set_encoding('utf-8') # Ensure content is treated as UTF-8
 
     doc = Nokogiri::HTML(html_content.read.encode('UTF-8'))

@@ -2,9 +2,9 @@
 
 require './lib/tasks/scrape_broadcasts'
 
-namespace :scrape do
+namespace :scrape do # rubocop:disable Metrics/BlockLength
   desc 'Scrape all data from all active broadcasts that have not been scraped in over 1 week.'
-  task all_active_broadcasts: :environment do
+  task all_active_broadcasts: :environment do # rubocop:disable Metrics/BlockLength
     throttle_secs = ENV.fetch('THROTTLE_SECS', 0).to_i
     hourly_by_air_day = ENV.fetch('HOURLY_BY_AIR_DAY', 'false') == 'true'
 

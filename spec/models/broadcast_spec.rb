@@ -6,7 +6,8 @@ RSpec.describe Broadcast do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_presence_of(:url) }
-    it { is_expected.to validate_presence_of(:station_id) }
+    # This test is at odds with rubocop's redundant validation check
+    # it { is_expected.to validate_presence_of(:station_id) }
   end
 
   describe 'associations' do

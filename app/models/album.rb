@@ -3,7 +3,7 @@
 class Album < ApplicationRecord
   belongs_to :record_label, optional: true
   belongs_to :artist
-  has_many :albums_songs
+  has_many :albums_songs, dependent: :destroy
   has_many :songs, through: :albums_songs
 
   validates :title, presence: true

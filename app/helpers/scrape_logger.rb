@@ -3,7 +3,7 @@
 class ScrapeLogger
   def self.log(message)
     env = Rails.env
-    Rails.logger.debug message unless env.test?
+    puts message unless env.test? # rubocop:disable Rails/Output
 
     timestamp = Time.zone.now.strftime('%Y%m%d')
     File.open("log/#{timestamp}_#{env}_scrape.log", 'a') do |f|

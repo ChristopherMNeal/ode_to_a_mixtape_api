@@ -34,10 +34,10 @@ class MergeDuplicateRecords
 
   def update_id_column(record, new_id)
     # Using update_column to bypass validations; some records are no longer valid due to the normalized columns
-    record.update_column("#{model.name.underscore}_id", new_id)
+    record.update_column("#{model.name.underscore}_id", new_id) # rubocop:disable Rails/SkipsModelValidations
   end
 
-  def update_children(parent_record, new_id)
+  def update_children(parent_record, new_id) # rubocop:disable Metrics/MethodLength
     model.reflections.each_key do |association_name|
       associated_records = parent_record.send(association_name)
 
@@ -65,10 +65,10 @@ class MergeDuplicateRecords
   end
 
   def choose_primary_record(records, _normalized_column_name)
-    Rails.logger.debug 'Select the primary record for the following group:'
+    puts 'Select the primary record for the following group:' # rubocop:disable Rails/Output
     records.each_with_index { |record, index| puts "#{index + 1}. #{record.send(column_name)}" }
 
-    Rails.logger.debug 'Primary record number: '
+    puts 'Primary record number: ' # rubocop:disable Rails/Output
     primary_record_number = gets.chomp.to_i
     records[primary_record_number - 1]
 

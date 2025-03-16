@@ -1,18 +1,19 @@
 # frozen_string_literal: true
 
-class Playlist < ApplicationRecord
+class Playlist < ApplicationRecord # rubocop:disable Metrics/ClassLength
   belongs_to :station
   belongs_to :broadcast
   belongs_to :original_playlist, class_name: 'Playlist', optional: true
   has_many :playlists_songs, dependent: :destroy
   has_many :songs, through: :playlists_songs
-  has_one :playlist_import
+  has_one :playlist_import, dependent: :destroy
 
   delegate :scraped_data, to: :playlist_import, allow_nil: true
 
   validates :title, presence: true
-  validates :playlist_url, uniqueness: true, allow_blank: false
-  validates :playlist_url, format: { with: %r{\Ahttps?://.*\z}, message: 'must start with http:// or https://' }
+  # validates :broadcast_id, presence: true
+  validates :playlist_url, uniqueness: { case_sensitive: true }, allow_blank: false # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :playlist_url, format: { with: %r{\Ahttps?://.*\z}, message: 'must start with http:// or https://' } # rubocop:disable Rails/I18nLocaleTexts
 
   def to_s
     "#{broadcast.title}: #{air_date&.strftime('%Y-%m-%d')}: #{title}"
@@ -67,39 +68,40 @@ class Playlist < ApplicationRecord
     download_urls.each_with_index do |download_url, i|
       file_extension = download_url.split('.').last.downcase
       if %w[mp3 m4a].exclude?(file_extension)
-        Rails.logger.debug { "Skipping download #{download_url} with unexpected extension: #{file_extension}" }
+        puts "Skipping download #{download_url} with unexpected extension: #{file_extension}" # rubocop:disable Rails/Output
         next
       end
       file_number = multiple_downloads ? "_#{i + 1}" : ''
-      File.binwrite("#{file_path}#{file_number}.#{file_extension}", URI.open(download_url).read)
-      Rails.logger.debug { "Downloaded to: #{file_path}#{file_number}.#{file_extension}" }
+      File.binwrite("#{file_path}#{file_number}.#{file_extension}", URI.open(download_url).read) # rubocop:disable Security/Open
+      puts "Downloaded to: #{file_path}#{file_number}.#{file_extension}" # rubocop:disable Rails/Output
     end
   rescue StandardError => e
-    Rails.logger.debug { "An error occurred: #{e.message}" }
+    puts "An error occurred: #{e.message}" # rubocop:disable Rails/Output
   end
 
-  def create_records_from_tracks_hash
+  def create_records_from_tracks_hash # rubocop:disable Metrics
     if scraped_data.blank?
-      Rails.logger.debug '    No scraped data to process'
+      ScrapeLogger.log '    No scraped data to process'
       return
     end
 
-    scraped_data.each do |track_hash|
+    scraped_data.each do |track_hash| # rubocop:disable Metrics/BlockLength
+      artist_name = track_hash['artist']
+      label_name = track_hash['label']
+      song_title = track_hash['title']
+      album_title = track_hash['album']
+      if artist_name.blank? || song_title.blank?
+        ScrapeLogger.log <<~MESSAGE
+          Skipping record with missing artist or song title. Line:
+            #{track_hash['time_string']}, #{song_title} by #{artist_name} on #{album_title} (#{label_name})
+        MESSAGE
+        next
+      end
+
+      normalized_name = Normalizable.normalize_text(artist_name)
+
       ActiveRecord::Base.transaction do
-        artist_name = track_hash['artist']
-        label_name = track_hash['label']
-        song_title = track_hash['title']
-        album_title = track_hash['album']
-
         record_label = label_name.present? ? RecordLabel.find_or_create_by!(name: label_name) : nil
-
-        if artist_name.blank? || song_title.blank?
-          puts 'Skipping record with missing artist or song title. Line:'
-          puts "     #{track_hash['time_string']}, #{song_title} by #{artist_name} on #{album_title} (#{label_name})"
-          next
-        end
-
-        normalized_name = Normalizable.normalize_text(artist_name)
         artist = Artist.find_or_create_by(normalized_name:)
         if artist.new_record?
           artist.update!(name: artist_name)
@@ -120,8 +122,8 @@ class Playlist < ApplicationRecord
         )
         AlbumsSong.find_or_create_by!(album:, song:)
       rescue ActiveRecord::RecordInvalid => e
-        puts "Failed to create record #{e&.record}: #{e.message}"
-        puts "Line: #{track_hash['time_string']} #{song_title} by #{artist} on #{album} (#{record_label})"
+        puts "Failed to create record #{e&.record}: #{e.message}" # rubocop:disable Rails/Output
+        puts "Line: #{track_hash['time_string']} #{song_title} by #{artist} on #{album} (#{record_label})" # rubocop:disable Rails/Output
         raise e
       end
     end
