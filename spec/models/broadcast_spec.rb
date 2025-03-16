@@ -39,7 +39,7 @@ RSpec.describe Broadcast do
 
   describe '#update_broadcast_title(title, url)' do
     context 'when the broadcast is a new record' do
-      let(:broadcast) { build(:broadcast) }
+      let(:broadcast) { FactoryBot.build(:broadcast) }
 
       it 'creates an old_name attribute from the url' do
         broadcast.update_broadcast_title('title', 'http://example.com/old-title')
@@ -67,7 +67,7 @@ RSpec.describe Broadcast do
 
   describe '#first_playlist' do
     let!(:broadcast) { FactoryBot.create(:broadcast) }
-    let!(:playlists) { create_list(:playlist, 3, broadcast:) }
+    let!(:playlists) { FactoryBot.create_list(:playlist, 3, broadcast:) }
 
     it 'returns the first playlist by air_date' do
       expect(broadcast.first_playlist).to eq(playlists.last)
@@ -76,7 +76,7 @@ RSpec.describe Broadcast do
 
   describe '#last_playlist' do
     let!(:broadcast) { FactoryBot.create(:broadcast) }
-    let!(:playlists) { create_list(:playlist, 3, broadcast:) }
+    let!(:playlists) { FactoryBot.create_list(:playlist, 3, broadcast:) }
 
     it 'returns the last playlist by air_date' do
       expect(broadcast.last_playlist).to eq(playlists.first)

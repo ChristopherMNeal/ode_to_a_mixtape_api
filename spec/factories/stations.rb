@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :station do
-    name { 'XRAY.fm' }
-    base_url { 'https://xray.fm' }
-    broadcasts_index_url { 'https://xray.fm/shows/all' }
+    sequence(:name) { |n| "XRAY.fm#{n}" }
+    sequence(:base_url) { |n| "https://xray.fm#{n}" }
+    sequence(:broadcasts_index_url) { |n| "https://xray.fm/shows/all#{n}" }
   end
 end

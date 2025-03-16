@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe DayOfWeek, type: :helper do
-  let(:day_of_week) { described_class.new }
+  let(:day_of_week) { described_class }
 
   describe '#day_of_week_from_integer' do
     it 'returns the correct day of the week for a given integer' do

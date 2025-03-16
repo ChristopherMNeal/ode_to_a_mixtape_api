@@ -5,8 +5,11 @@ require 'rails_helper'
 RSpec.describe Playlist do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:broadcast_id) }
-    it { is_expected.to validate_presence_of(:date) }
-    it { is_expected.to validate_presence_of(:scraped_data) }
+    it { is_expected.to validate_presence_of(:title) }
+    it { is_expected.to validate_uniqueness_of(:playlist_url) }
+    it { is_expected.to allow_value('http://example.com').for(:playlist_url) }
+    it { is_expected.to allow_value('https://example.com').for(:playlist_url) }
+    it { is_expected.not_to allow_value('example.com').for(:playlist_url) }
   end
 
   describe 'associations' do
@@ -18,10 +21,10 @@ RSpec.describe Playlist do
   end
 
   describe '#to_s' do
-    let(:playlist) { FactoryBot.create(:playlist, date: Date.parse('2017-01-17'), title: 'Playlist Title') }
+    let(:playlist) { FactoryBot.create(:playlist, air_date: Date.parse('2017-01-17'), title: 'Playlist Title') }
 
-    it 'returns the date and title' do
-      expect(playlist.to_s).to eq('2017-01-17: Playlist Title')
+    it 'returns the formatted broadcast title, air date, and playlist title' do
+      expect(playlist.to_s).to eq('Strange Babes: 2017-01-17: Playlist Title')
     end
   end
 
@@ -35,7 +38,7 @@ RSpec.describe Playlist do
 
   describe '#rebroadcast?' do
     context 'when the playlist is a rebroadcast' do
-      let(:original_playlist) { build(:playlist) }
+      let(:original_playlist) { FactoryBot.create(:playlist) }
       let(:playlist) { FactoryBot.create(:playlist, original_playlist:) }
 
       it 'returns true' do
@@ -79,9 +82,11 @@ RSpec.describe Playlist do
             'track_number' => 21 }
         ]
       end
-      let(:playlist_with_missing_data) do
+      let(:playlist_with_missing_data) { FactoryBot.create(:playlist) }
+      let!(:playlist_with_missing_data_import) do # rubocop:disable RSpec/LetSetup
         FactoryBot.create(
-          :playlist,
+          :playlist_import,
+          playlist: playlist_with_missing_data,
           scraped_data: scraped_data_with_missing_attributes
         )
       end
@@ -124,9 +129,11 @@ RSpec.describe Playlist do
             'track_number' => 21 }
         ]
       end
-      let(:playlist_with_missing_label) do
+      let(:playlist_with_missing_label) { FactoryBot.create(:playlist) }
+      let!(:playlist_with_missing_label_import) do # rubocop:disable RSpec/LetSetup
         FactoryBot.create(
-          :playlist,
+          :playlist_import,
+          playlist: playlist_with_missing_label,
           scraped_data: scraped_data_with_missing_label
         )
       end
@@ -135,26 +142,33 @@ RSpec.describe Playlist do
         expect { playlist_with_missing_label.create_records_from_tracks_hash }.not_to raise_error
       end
 
-      it 'creates songs with complete data' do
+      it 'creates a song' do
         expect { playlist_with_missing_label.create_records_from_tracks_hash }
           .to change(Song, :count)
           .from(0)
           .to(1)
-        expect(Song.find_by(title: 'Which Way To Go'))
-          .to have_attributes(
-            artist: 'Big Boys',
-            album: 'No Matter How Long the Line...',
-            record_label: nil
-          )
+      end
+
+      it 'creates a song with complete data' do
+        playlist_with_missing_label.create_records_from_tracks_hash
+        song = Song.find_by(title: 'Which Way To Go')
+        expect(song).to be_present
+        expect(song.albums).to eq(Album.where(title: 'No Matter How Long the Line...'))
+        expect(song.artist).to eq(Artist.find_by(name: 'Big Boys'))
+      end
+
+      it 'creates an album without a label' do
+        playlist_with_missing_label.create_records_from_tracks_hash
+        album = Album.find_by(title: 'No Matter How Long the Line...')
+        expect(album).to be_present
+        expect(album.record_label).to be_nil
       end
 
       it 'creates a playlists_song' do
         playlist_with_missing_label.create_records_from_tracks_hash
-        expect(playlist_with_missing_label.songs.first)
-          .to have_attributes(
-            title: 'Which Way To Go',
-            track_number: 21
-          )
+        song = playlist_with_missing_label.songs.first
+        expect(song.title).to eq('Which Way To Go')
+        expect(song.playlists_songs.first.position).to eq(21)
       end
     end
 
@@ -170,9 +184,11 @@ RSpec.describe Playlist do
             'track_number' => 21 }
         ]
       end
-      let(:playlist_with_missing_album) do
+      let(:playlist_with_missing_album) { FactoryBot.create(:playlist) }
+      let!(:playlist_with_missing_album_import) do # rubocop:disable RSpec/LetSetup
         FactoryBot.create(
-          :playlist,
+          :playlist_import,
+          playlist: playlist_with_missing_album,
           scraped_data: scraped_data_with_missing_album
         )
       end
@@ -196,11 +212,11 @@ RSpec.describe Playlist do
 
       it 'creates playlists_songs skipping position 20' do
         playlist_with_missing_album.create_records_from_tracks_hash
-        song_titles = scraped_data_with_missing_attributes.map do |a|
+        song_titles = scraped_data_with_missing_album.map do |a|
           a['title'].presence
         end.compact
         expect(playlist_with_missing_album.songs.map(&:title)).to match_array(song_titles)
-        expect(playlist_with_missing_album.playlists_songs.pluck(:position)).to contain_exactly(19, 21)
+        expect(playlist_with_missing_album.playlists_songs.pluck(:position)).to contain_exactly(21)
       end
     end
 
@@ -230,9 +246,11 @@ RSpec.describe Playlist do
             'track_number' => 19 }
         ]
       end
-      let(:playlist_with_duplicate_entries) do
+      let(:playlist_with_duplicate_entries) { FactoryBot.create(:playlist) }
+      let!(:playlist_with_duplicate_entries_import) do # rubocop:disable RSpec/LetSetup
         FactoryBot.create(
-          :playlist,
+          :playlist_import,
+          playlist: playlist_with_duplicate_entries,
           scraped_data: scraped_data_with_duplicate_entry
         )
       end

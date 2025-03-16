@@ -24,6 +24,8 @@ RSpec.describe ScrapeBroadcasts do
   end
   let(:base_url) { 'https://xray.fm' }
   let(:broadcast_name) { 'strange-babes' }
+
+  # rubocop:disable RSpec/IndexedLet
   let(:html_content_1) { Rails.root.join('spec/fixtures/xray/strange-babes-broadcast-index-1.html').read }
   let(:html_content_2) { Rails.root.join('spec/fixtures/xray/strange-babes-broadcast-index-2.html').read }
   let(:html_content_3) { Rails.root.join('spec/fixtures/xray/strange-babes-broadcast-index-3.html').read }
@@ -46,6 +48,7 @@ RSpec.describe ScrapeBroadcasts do
   let(:playlist_11_air_date) { DateTime.new(2021, 2, 16, 16) }
   let(:playlist_double_downloads) { Rails.root.join('spec/fixtures/xray/strange-babes-playlist-19.html').read }
   let(:playlist_double_downloads_date) { DateTime.new(2020, 12, 15, 16) }
+  # rubocop:enable RSpec/IndexedLet
 
   before do
     1.upto(3) do |page|
@@ -77,7 +80,7 @@ RSpec.describe ScrapeBroadcasts do
   end
 
   describe '#call' do
-    let(:call_task) { described_class.new.call(broadcast, start_date, end_date) }
+    let(:call_task) { described_class.new(broadcast, start_date, end_date).call }
     let(:start_date) { nil }
     let(:end_date) { nil }
 
@@ -86,7 +89,7 @@ RSpec.describe ScrapeBroadcasts do
 
       before { call_task }
 
-      it 'updates broadcasts more information from the broadcast show page' do
+      it 'updates broadcasts more information from the broadcast show page' do # rubocop:disable RSpec/ExampleLength
         dj = Dj.find_by(dj_name: 'Strange Babes')
         expect(dj).to have_attributes(
           member_names: 'Jen O, KM Fizzy, and Magic Beans',
@@ -103,13 +106,14 @@ RSpec.describe ScrapeBroadcasts do
           dj:,
           air_day: 2,
           active: false,
-          # no expected end time because the end time is not provided on the page
-          air_time_end: nil
+          frequency_in_days: 7
         )
         expect(broadcast.air_time_start.strftime('%H:%M')).to eq('16:00')
+        expect(broadcast.air_time_end.strftime('%H:%M')).to eq('17:59')
+        expect(broadcast.last_scraped_at).to be_within(1.minute).of(Time.zone.now)
       end
 
-      it 'creates 2 playlists' do
+      it 'creates 2 playlists' do # rubocop:disable RSpec/ExampleLength
         aggregate_failures do
           expect(broadcast.playlists.count).to eq(2)
           expect(broadcast.playlists.second).to have_attributes(
@@ -131,7 +135,7 @@ RSpec.describe ScrapeBroadcasts do
         end
       end
 
-      it 'creates playlist songs' do
+      it 'creates playlist songs' do # rubocop:disable RSpec/ExampleLength
         aggregate_failures do
           first_playlist_songs = broadcast.playlists.first.songs
           expect(first_playlist_songs.count).to eq(26)
@@ -155,37 +159,39 @@ RSpec.describe ScrapeBroadcasts do
         expect(Artist.count).to eq(57)
         artist = Artist.find_by(name: 'Bikini Kill')
         album = Album.find_by(title: 'Reject All American')
-        expect(artist).to be_present
-        expect(album).to be_present
-        expect(artist.albums).to include(album)
-        expect(album.artist).to eq(artist)
+        aggregate_failures do
+          expect(artist).to be_present
+          expect(album).to be_present
+          expect(artist.albums).to include(album)
+          expect(album.artist).to eq(artist)
+        end
       end
     end
 
     context 'when the start date is before the earliest playlist' do
       before do
         # scrape playlist 2 and 3
-        described_class.new.call(broadcast, playlist_3_air_date, playlist_2_air_date)
-        broadcast.playlists.update_all(scraped_data: nil)
+        described_class.new(broadcast, playlist_3_air_date, playlist_2_air_date).call
+        broadcast.playlists.each { |p| p.playlist_import.destroy! }
       end
 
       # Now scrape playlists 1 and 2 so that 2 is scraped twice
       let(:start_date) { playlist_2_air_date }
       let(:end_date) { Time.zone.today }
 
-      it 'updates playlist 2 with new data' do
-        # the script actually doesn't do this. Should it? Is there a reason to expect a historic playlist to change...
-        # what if an initial scrape got incorrect or incomplete info? Test that.
-        # TODO: test incomplete scraping
-        # expect { call_task }.to change { broadcast.reload.playlists.second.scraped_data }.from(nil)
-      end
+      # it 'updates playlist 2 with new data' do
+      #   # the script actually doesn't do this. Should it? Is there a reason to expect a historic playlist to change...
+      #   # what if an initial scrape got incorrect or incomplete info? Test that.
+      #   # TODO: test incomplete scraping
+      #   # expect { call_task }.to change { broadcast.reload.playlists.second.scraped_data }.from(nil)
+      # end
 
       it 'does not update playlist_3' do
         expect { call_task }.not_to change { broadcast.reload.playlists.first.scraped_data }.from(nil)
       end
 
       it 'scrapes playlist_1' do
-        expect { described_class.new.call(broadcast, playlist_2_air_date, nil) }
+        expect { described_class.new(broadcast, playlist_2_air_date, nil).call }
           .to change { broadcast.reload.playlists.count }.by(1)
         expect(broadcast.playlists.last).to have_attributes(
           title: 'Ballad of A Mix Tape',
@@ -197,7 +203,7 @@ RSpec.describe ScrapeBroadcasts do
     context 'when scraping without a start date' do
       let(:start_date) { nil }
       let(:end_date) { Date.new(2020, 10, 6).end_of_day }
-      let(:call_task) { described_class.new.call(broadcast, start_date, end_date) }
+      let(:call_task) { described_class.new(broadcast, start_date, end_date).call }
 
       before do
         # stub the url of the last playlist with playlist_11
@@ -259,7 +265,7 @@ RSpec.describe ScrapeBroadcasts do
       end
 
       it 'does not create duplicate songs' do
-        expect { call_task }.not_to change { Song.all.count }.from(33)
+        expect { call_task }.not_to change(Song, :count).from(33)
       end
     end
 
@@ -281,7 +287,9 @@ RSpec.describe ScrapeBroadcasts do
   end
 
   describe '#find_start_date_page_number' do
-    let(:find_page) { described_class.new.find_start_date_page_number(start_date, base_url, broadcast_name) }
+    let(:find_page) do
+      described_class.new(broadcast, start_date).find_start_date_page_number(base_url, broadcast_name)
+    end
     let(:page_1_first_date) { DateTime.new(2021, 4, 27) }
     let(:page_1_last_date) { DateTime.new(2021, 2, 23) }
     let(:page_2_first_date) { DateTime.new(2021, 2, 16) }
@@ -334,7 +342,8 @@ RSpec.describe ScrapeBroadcasts do
   describe '#open_broadcasts_index_page' do
     let(:page_number) { 1 }
     let(:page_content) { html_content_1 }
-    let(:task) { described_class.new }
+    let(:start_date) { nil }
+    let(:task) { described_class.new(broadcast, start_date) }
 
     it 'fetches the page content when not cached' do
       task.open_broadcasts_index_page(base_url, broadcast_name, page_number).to_html
