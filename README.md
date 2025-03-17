@@ -39,6 +39,7 @@ scrape broadcast titles for stations:
 [ ] Troubleshoot cronjobs and scheduler gem
 [X] add fuzzy finder concern
 [ ] implement fuzzy finder for artists, songs, albums, playlists, broadcasts, stations, record labels, genres
+[ ] Create export to merge names in bulk
 [ ] Add station timezone to stations table
   [ ] Factor in timezone when calculating air time
 [ ] add broadcast first and last air date to broadcasts table

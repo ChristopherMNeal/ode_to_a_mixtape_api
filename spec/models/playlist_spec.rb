@@ -22,7 +22,7 @@ RSpec.describe Playlist do
   end
 
   describe '#to_s' do
-    let(:playlist) { FactoryBot.create(:playlist, air_date: Date.parse('2017-01-17'), title: 'Playlist Title') }
+    let(:playlist) { create(:playlist, air_date: Date.parse('2017-01-17'), title: 'Playlist Title') }
 
     it 'returns the formatted broadcast title, air date, and playlist title' do
       expect(playlist.to_s).to eq('Strange Babes: 2017-01-17: Playlist Title')
@@ -30,7 +30,7 @@ RSpec.describe Playlist do
   end
 
   describe '#external_id' do
-    let(:playlist) { FactoryBot.create(:playlist, playlist_url: 'http://example.com/playlist-id') }
+    let(:playlist) { create(:playlist, playlist_url: 'http://example.com/playlist-id') }
 
     it 'returns the id of the playlist on the station website' do
       expect(playlist.external_id).to eq('playlist-id')
@@ -39,8 +39,8 @@ RSpec.describe Playlist do
 
   describe '#rebroadcast?' do
     context 'when the playlist is a rebroadcast' do
-      let(:original_playlist) { FactoryBot.create(:playlist) }
-      let(:playlist) { FactoryBot.create(:playlist, original_playlist:) }
+      let(:original_playlist) { create(:playlist) }
+      let(:playlist) { create(:playlist, original_playlist:) }
 
       it 'returns true' do
         expect(playlist.rebroadcast?).to be true
@@ -48,7 +48,7 @@ RSpec.describe Playlist do
     end
 
     context 'when the playlist is not a rebroadcast' do
-      let(:playlist) { FactoryBot.create(:playlist) }
+      let(:playlist) { create(:playlist) }
 
       it 'returns false' do
         expect(playlist.rebroadcast?).to be false
@@ -83,9 +83,9 @@ RSpec.describe Playlist do
             'track_number' => 21 }
         ]
       end
-      let(:playlist_with_missing_data) { FactoryBot.create(:playlist) }
+      let(:playlist_with_missing_data) { create(:playlist) }
       let!(:playlist_with_missing_data_import) do # rubocop:disable RSpec/LetSetup
-        FactoryBot.create(
+        create(
           :playlist_import,
           playlist: playlist_with_missing_data,
           scraped_data: scraped_data_with_missing_attributes
@@ -130,9 +130,9 @@ RSpec.describe Playlist do
             'track_number' => 21 }
         ]
       end
-      let(:playlist_with_missing_label) { FactoryBot.create(:playlist) }
+      let(:playlist_with_missing_label) { create(:playlist) }
       let!(:playlist_with_missing_label_import) do # rubocop:disable RSpec/LetSetup
-        FactoryBot.create(
+        create(
           :playlist_import,
           playlist: playlist_with_missing_label,
           scraped_data: scraped_data_with_missing_label
@@ -185,9 +185,9 @@ RSpec.describe Playlist do
             'track_number' => 21 }
         ]
       end
-      let(:playlist_with_missing_album) { FactoryBot.create(:playlist) }
+      let(:playlist_with_missing_album) { create(:playlist) }
       let!(:playlist_with_missing_album_import) do # rubocop:disable RSpec/LetSetup
-        FactoryBot.create(
+        create(
           :playlist_import,
           playlist: playlist_with_missing_album,
           scraped_data: scraped_data_with_missing_album
@@ -247,9 +247,9 @@ RSpec.describe Playlist do
             'track_number' => 19 }
         ]
       end
-      let(:playlist_with_duplicate_entries) { FactoryBot.create(:playlist) }
+      let(:playlist_with_duplicate_entries) { create(:playlist) }
       let!(:playlist_with_duplicate_entries_import) do # rubocop:disable RSpec/LetSetup
-        FactoryBot.create(
+        create(
           :playlist_import,
           playlist: playlist_with_duplicate_entries,
           scraped_data: scraped_data_with_duplicate_entry

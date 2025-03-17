@@ -16,8 +16,8 @@ RSpec.describe Broadcast do
   end
 
   describe 'scopes' do
-    let(:station) { FactoryBot.create(:station) }
-    let(:broadcast) { FactoryBot.create(:broadcast, station:) }
+    let(:station) { create(:station) }
+    let(:broadcast) { create(:broadcast, station:) }
 
     describe '.by_station' do
       it 'returns the broadcasts for a given station' do
@@ -40,7 +40,7 @@ RSpec.describe Broadcast do
 
   describe '#update_broadcast_title(title, url)' do
     context 'when the broadcast is a new record' do
-      let(:broadcast) { FactoryBot.build(:broadcast) }
+      let(:broadcast) { build(:broadcast) }
 
       it 'creates an old_name attribute from the url' do
         broadcast.update_broadcast_title('title', 'http://example.com/old-title')
@@ -49,7 +49,7 @@ RSpec.describe Broadcast do
     end
 
     context 'when the broadcast is not a new record' do
-      let(:broadcast) { FactoryBot.create(:broadcast, title: 'Old Title') }
+      let(:broadcast) { create(:broadcast, title: 'Old Title') }
 
       it 'updates the old_title attribute' do
         broadcast.update_broadcast_title('New Title', 'http://example.com/new-title')
@@ -59,7 +59,7 @@ RSpec.describe Broadcast do
   end
 
   describe '#foreign_id' do
-    let(:broadcast) { FactoryBot.create(:broadcast, url: 'http://example.com/playlist-id') }
+    let(:broadcast) { create(:broadcast, url: 'http://example.com/playlist-id') }
 
     it 'returns the id of the playlist on the station website' do
       expect(broadcast.foreign_id).to eq('playlist-id')
@@ -67,8 +67,8 @@ RSpec.describe Broadcast do
   end
 
   describe '#first_playlist' do
-    let!(:broadcast) { FactoryBot.create(:broadcast) }
-    let!(:playlists) { FactoryBot.create_list(:playlist, 3, broadcast:) }
+    let!(:broadcast) { create(:broadcast) }
+    let!(:playlists) { create_list(:playlist, 3, broadcast:) }
 
     it 'returns the first playlist by air_date' do
       expect(broadcast.first_playlist).to eq(playlists.last)
@@ -76,8 +76,8 @@ RSpec.describe Broadcast do
   end
 
   describe '#last_playlist' do
-    let!(:broadcast) { FactoryBot.create(:broadcast) }
-    let!(:playlists) { FactoryBot.create_list(:playlist, 3, broadcast:) }
+    let!(:broadcast) { create(:broadcast) }
+    let!(:playlists) { create_list(:playlist, 3, broadcast:) }
 
     it 'returns the last playlist by air_date' do
       expect(broadcast.last_playlist).to eq(playlists.first)

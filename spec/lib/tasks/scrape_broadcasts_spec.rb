@@ -6,7 +6,7 @@ require Rails.root.join('lib/tasks/scrape_broadcasts.rb')
 
 RSpec.describe ScrapeBroadcasts do
   let(:station) do
-    FactoryBot.create(
+    create(
       :station,
       name: 'XRAY.fm',
       base_url:,
@@ -14,7 +14,7 @@ RSpec.describe ScrapeBroadcasts do
     )
   end
   let(:broadcast) do
-    FactoryBot.create(
+    create(
       :broadcast,
       station:,
       title: 'Strange Babes',

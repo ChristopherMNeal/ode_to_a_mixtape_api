@@ -25,16 +25,16 @@ RSpec.describe MergeDuplicateRecords do
     end
 
     name_list.each do |name|
-      artist = FactoryBot.create(:artist)
+      artist = create(:artist)
       album1 = create(:album, artist:)
       album2 = create(:album, artist:)
       create(:song, artist:, albums: [album1])
       create(:song, artist:, albums: [album2])
 
       # Hack to update the name without triggering the normalizer
-      artist.update_column(:name, name)
+      artist.update_column(:name, name) # rubocop:disable Rails/SkipsModelValidations
     end
-    FactoryBot.create(:artist, name: 'Prince')
+    create(:artist, name: 'Prince')
   end
 
   context 'with child associations' do

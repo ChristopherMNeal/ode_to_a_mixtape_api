@@ -24,7 +24,7 @@ RSpec.describe 'FuzzyFinder' do
       'The Fantastic Aleems',
       'prince charles and the crusaders'
     ].each do |name|
-      FactoryBot.create(
+      create(
         :artist,
         name:
       )

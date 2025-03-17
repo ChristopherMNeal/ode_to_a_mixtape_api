@@ -62,7 +62,7 @@ class MergeDuplicateRecords
   end
 
   # This is redundant, but I wanted to include a sanity check for peace of mind
-  def ensure_children_have_correct_id(parent_record, new_id)
+  def ensure_children_have_correct_id(parent_record, new_id) # rubocop:disable Metrics/AbcSize
     klass.reflections.each_value do |reflection|
       next unless reflection.class.in?(WHITELISTED_REFLECTION_CLASSES)
       next if reflection.options[:through]
@@ -94,7 +94,7 @@ class MergeDuplicateRecords
     records.select { |record| record.send(column_name) == best_name }.first
   end
 
-  def merge_records(normalized_name, record_ids)
+  def merge_records(normalized_name, record_ids) # rubocop:disable Metrics/MethodLength
     records = klass.find(record_ids)
     primary_record = choose_primary_record(records)
     return unless primary_record
