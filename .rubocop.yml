@@ -268,7 +268,7 @@ Bundler/OrderedGems:
     - '**/gems.rb'
 
 FactoryBot/SyntaxMethods:
-  Enabled: false
+  Enabled: true
 
 #################### Gemspec ###############################
 

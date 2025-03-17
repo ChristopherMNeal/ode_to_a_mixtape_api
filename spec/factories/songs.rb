@@ -2,9 +2,9 @@
 
 FactoryBot.define do
   factory :song do
-    title { 'MyString' }
+    sequence(:title) { |n| "Song 2.#{n}" }
     duration { 1 }
-    album_id { 1 }
-    genre_id { 1 }
+    albums { [FactoryBot.create(:album)] }
+    genre { FactoryBot.create(:genre) }
   end
 end

@@ -5,8 +5,8 @@ class Playlist < ApplicationRecord # rubocop:disable Metrics/ClassLength
   belongs_to :broadcast
   belongs_to :original_playlist, class_name: 'Playlist', optional: true
   has_many :playlists_songs, dependent: :destroy
-  has_many :songs, through: :playlists_songs
-  has_one :playlist_import, dependent: :destroy
+  has_many :songs, through: :playlists_songs, dependent: :nullify
+  has_one :playlist_import
 
   delegate :scraped_data, to: :playlist_import, allow_nil: true
 

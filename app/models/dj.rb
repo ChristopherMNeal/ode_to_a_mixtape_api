@@ -2,5 +2,5 @@
 
 class Dj < ApplicationRecord
   has_many :djs_stations, dependent: :destroy
-  has_many :stations, through: :djs_stations
+  has_many :stations, through: :djs_stations, dependent: :nullify
 end

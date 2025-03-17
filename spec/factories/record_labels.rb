@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :record_label do
-    name { 'MyString' }
+    name { 'Ca$h Money' }
   end
 end

@@ -3,7 +3,7 @@
 class Broadcast < ApplicationRecord
   belongs_to :station
   belongs_to :dj, optional: true
-  has_many :playlists, dependent: :destroy
+  has_many :playlists, dependent: :nullify
 
   validates :title, presence: true
   # Appease rubocop by adding unique index to database:

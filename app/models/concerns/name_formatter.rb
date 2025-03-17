@@ -3,8 +3,6 @@
 # This module is used to select the best formatted name from a list of possible names.
 # It will prefer names that have the correct small word casing and already have correctly capitalized words.
 # It should be used to automate selecting the best name from a list of possible names.
-# TODO: Use this module when adding a new artist to select the best formatted name
-#   *unless* there's a spotify ID available (or some other indicator that we already have the prefered name)
 module NameFormatter
   SMALL_WORDS = %w[a an and as at but by for if in nor of on or so the to up yet].freeze
 
@@ -24,7 +22,7 @@ module NameFormatter
         SMALL_WORDS.any? { |w| titleized_name.include?(" #{w.capitalize} ") } ? 1 : 0, # Prefer correct small word case
         possible_names.include?(titleized_name) ? 1 : 0 # Prefer names that existed in the original set
       ]
-    end.last
+    end.first # returns the original_name that is the best name
   end
 
   def self.custom_titleize(name)

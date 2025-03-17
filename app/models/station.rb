@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Station < ApplicationRecord
-  has_many :broadcasts, dependent: :destroy
+  has_many :broadcasts, dependent: :nullify
   has_many :djs_stations, dependent: :destroy
-  has_many :djs, through: :djs_stations
+  has_many :djs, through: :djs_stations, dependent: :nullify
 
   # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :name, presence: true, uniqueness: true

@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :genre do
-    name { 'MyString' }
+    name { 'Electric Disco Pop Opera' }
   end
 end
