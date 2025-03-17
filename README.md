@@ -20,9 +20,25 @@
 ```
 # README
 ## Description
-This is a project to scrape playlists from radio stations and store them in a database. The goal is to have a database of playlists that can be queried to find out what songs were played on a given day, or to find out what songs were played on a given station.Ω
+This is a project to scrape playlists from radio stations and store them in a database.
+The goal is to have a database of playlists that can be queried to find out what songs were played on a given day,
+or to find out what songs were played on a given station.
+
+## Setup
+start docker
+`be docker-compose up -d`
+set up the db
+`be rake db:setup` create, load the schema and seed data into the database
+Seeding is important to load the station(s)
+run `bundle exec whenever --update-crontab` to create cronjobs to load the data
+scrape broadcast titles for stations:
+`be rake scrape:broadcast_titles STATION_ID=1`
 
 ## TO DO
+[ ] Finish implementing Normalizable (see below)
+[ ] Troubleshoot cronjobs and scheduler gem
+[X] add fuzzy finder concern
+[ ] implement fuzzy finder for artists, songs, albums, playlists, broadcasts, stations, record labels, genres
 [ ] Add station timezone to stations table
   [ ] Factor in timezone when calculating air time
 [ ] add broadcast first and last air date to broadcasts table
@@ -43,15 +59,47 @@ This is a project to scrape playlists from radio stations and store them in a da
     - artist death dates
 [ ] also incorporate my previous logic for finding the playlists from the x week of a given month.
 [ ] it might also be nice to create a calendar specific to each station
-    - station first broadcast/anniversary date
-    - fund drives
-    - special events
+  [ ] station first broadcast/anniversary date
+  [X] fund drives
+  [ ] special events
 [ ] Would it make sense to do the same for broadcasts?
     - first broadcast date and anniversary
     - ...special events?
 
+### Future Normalizable Steps
+
+Normalizable is implemented for Artists. Need to add to the following models.
+Normalized columns and uniqueness indexes are already added to these:
+- [ ] Album
+- [ ] Broadcast
+- [ ] Genre
+- [ ] Playlist
+- [ ] RecordLabel
+- [ ] Song
+
+#### Add to other normalized class models
+For example:
+```ruby
+class Song < ApplicationRecord
+  include Normalizable
+
+  normalize_column :title, :normalized_title
+end
+```
+
+#### Update queries to use normalized columns
+```ruby
+normalized_input = Normalizable.normalize_text("Beyoncé")
+artist = Artist.find_by(normalized_name: normalized_input)
+```
+
+#### Correct data
+Current data is not normalized. Some records will be invalid.
+Need to create a `normalize_all` rake task to run `merge_duplicate_records` on each model.
+If making changes to the Normalizable module, will need to do this again.
 
 ## DB Design
+This is a bit out of date. I need to update it to reflect the current schema.
 ```yaml
 Table stations {
   id integer [pk]
