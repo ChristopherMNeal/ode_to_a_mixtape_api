@@ -10,9 +10,6 @@ module NameFormatter
     return nil if possible_names.blank?
     return possible_names.first if possible_names.size == 1
 
-    # Normalize "&" to "and" to make comparisons fairer. Not sure if this is the best approach.
-    possible_names = possible_names.map { |name| name.gsub(/\s*&\s*/, ' and ') }
-
     formatted_names = possible_names.index_with { |name| custom_titleize(name) }
     # Sort to prefer the most correctly formatted version
     formatted_names.max_by do |original_name, titleized_name|

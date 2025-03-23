@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 class Broadcast < ApplicationRecord
+  include Normalizable
+
   belongs_to :station
   belongs_to :dj, optional: true
   has_many :playlists, dependent: :nullify
+
+  normalize_column :title, :normalized_title
 
   validates :title, presence: true
   # Appease rubocop by adding unique index to database:

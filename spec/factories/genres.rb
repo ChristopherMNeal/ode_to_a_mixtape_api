@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :genre do
-    name { 'Electric Disco Pop Opera' }
+    sequence(name) { |n| "Electric Disco Pop Opera #{n}" }
   end
 end

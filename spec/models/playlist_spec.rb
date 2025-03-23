@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Playlist do
+  subject { create(:playlist) }
+
   describe 'validations' do
     # This test is at odds with rubocop's redundant validation check
     # it { is_expected.to validate_presence_of(:broadcast_id) }

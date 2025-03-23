@@ -173,6 +173,9 @@ class ScrapeBroadcasts # rubocop:disable Metrics/ClassLength
     DateTime.strptime(broadcast_div.css('div.date').text, '%I:%M%p, %m-%d-%Y')
   end
 
+  # May need to rethink this. Air times change so we can be flexible and update the air times regularly.
+  # Broadcast air times should represent the current schedule. Currently, the data is only used for scraping purposes,
+  # so no big deal if it's not accurate due to a typo on the website.
   def update_air_time_end # rubocop:disable Metrics
     return unless broadcast.playlists.joins(:playlists_songs).where.not(air_date: nil).exists?
 
@@ -224,13 +227,22 @@ class ScrapeBroadcasts # rubocop:disable Metrics/ClassLength
   end
 
   def parse_air_times(air_times)
-    air_day_string = air_times.css('span.weekday').text
+    # Need to handle multiple dates/times in the air times span, like in https://xray.fm/shows/80lb-cardstock,
+    # Broadcast.find(7), which airs on Tuesday and Wednesday. TODO: change the air_day field to an array
+    # For now, I'll just take the first day:
+    air_day_string = air_times.css('span.weekday').map(&:text).first
     return if air_day_string.blank?
 
-    air_day = DayOfWeek.integer_from_day_of_week(air_day_string)
+    air_days_array = DayOfWeek.find_day_names_in_string(air_day_string)
+    air_days = air_days_array.map { |day_str| DayOfWeek.integer_from_day_of_week(day_str) }
+    # It's possible to find multiple days in the string. If so we can log it and take the first one.
+    if air_days.length > 1
+      scrape_logger "Multiple air days found for broadcast: #{broadcast.title}. Using the first one: #{air_days_array}"
+    end
+    air_day = air_days.first
 
-    start_time_string = air_times.css('span.start').text
-    end_time_string = air_times.css('span.end').text
+    start_time_string = air_times.css('span.start').map(&:text).first
+    end_time_string = air_times.css('span.end').map(&:text).first
 
     air_time_start = parse_time_string(start_time_string)
     air_time_end = parse_time_string(end_time_string)
@@ -246,6 +258,8 @@ class ScrapeBroadcasts # rubocop:disable Metrics/ClassLength
 
   def most_recent_broadcast_air_time(paginated_broadcast_index)
     broadcast_date = fetch_broadcast_dates(paginated_broadcast_index).max
+    return unless broadcast_date
+
     [broadcast_date.wday, broadcast_date, nil]
   end
 
@@ -341,7 +355,7 @@ class ScrapeBroadcasts # rubocop:disable Metrics/ClassLength
     if most_recent_dates.count > 2
       most_recent_dates.each_cons(2).map { |a, b| (a - b).to_i }.max
     else
-      123 # allows for an annual broadcast to be considered active. It's a bit arbitrary.
+      123 # allows for an annual broadcast to be considered active: when multiplied by 3 is 369 days. It's arbitrary.
     end
   end
 
@@ -354,7 +368,9 @@ class ScrapeBroadcasts # rubocop:disable Metrics/ClassLength
     if last_playlist_date
       (Time.zone.today - inactivity_threshold.days) < last_playlist_date
     else
-      true # active until proven otherwise
+      # Inactive if no playlists and broadcast data is over a year old.
+      # This is a generous threshold for inactivity and could be adjusted if we're seeing too many false positives.
+      !(broadcast.created_at < 1.year.ago && broadcast.playlists.empty?)
     end
   end
 

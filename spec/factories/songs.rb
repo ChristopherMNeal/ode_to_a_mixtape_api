@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :song do
     sequence(:title) { |n| "Song 2.#{n}" }
     duration { 1 }
-    albums { [FactoryBot.create(:album)] }
-    genre { FactoryBot.create(:genre) }
+    albums { FactoryBot.create_list(:album, 1) }
+    genre { nil }
   end
 end

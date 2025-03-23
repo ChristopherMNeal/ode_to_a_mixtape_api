@@ -5,10 +5,14 @@ require Rails.root.join('lib/tasks/merge_duplicate_records')
 
 RSpec.describe MergeDuplicateRecords do
   let(:klass) { Artist }
+  let(:normalizable_hash) do
+    { normalizable_column: 'name',
+      merge_records: true }
+  end
   let(:column_name) { 'name' }
   let(:normalized_column_name) { 'normalized_name' }
-  let(:service) { described_class.new(klass, column_name, normalized_column_name) }
-  let(:name_list) do
+  let(:service) { described_class.new(klass, normalizable_hash) }
+  let!(:name_list) do
     [
       'Sly And The Family Stone',
       'Sly and the Family Stone',
@@ -17,14 +21,15 @@ RSpec.describe MergeDuplicateRecords do
       'Sly and the family stone'
     ]
   end
-  let(:best_name) { NameFormatter.format_name(name_list) }
 
-  before do
-    unless klass.column_names.include?(column_name) && klass.column_names.include?(normalized_column_name)
-      skip "Skipping because columns don't exist on #{klass}"
-    end
-
-    name_list.each do |name|
+  let!(:similar_artists) do # rubocop:disable RSpec/LetSetup
+    [
+      'Sly And The Family Stone',
+      'Sly and the Family Stone',
+      'Sly & The Family Stone',
+      'sly and the family stone',
+      'Sly and the family stone'
+    ].map do |name|
       artist = create(:artist)
       album1 = create(:album, artist:)
       album2 = create(:album, artist:)
@@ -33,13 +38,23 @@ RSpec.describe MergeDuplicateRecords do
 
       # Hack to update the name without triggering the normalizer
       artist.update_column(:name, name) # rubocop:disable Rails/SkipsModelValidations
+      artist
     end
-    create(:artist, name: 'Prince')
+  end
+
+  let!(:unique_artist) { create(:artist, name: 'prince') }
+
+  let(:best_name) { NameFormatter.format_name(name_list) }
+
+  before do
+    unless klass.column_names.include?(column_name) && klass.column_names.include?(normalized_column_name)
+      skip "Skipping because columns don't exist on #{klass}"
+    end
   end
 
   context 'with child associations' do
     let(:duplicate_name) { name_list.excluding(best_name).first }
-    let(:unique_name) { 'Prince' }
+    let(:unique_name) { unique_artist.name }
 
     it 'merges duplicates and reassigns child records to the surviving parent' do
       artist1 = Artist.find_by(name: best_name)
@@ -66,8 +81,13 @@ RSpec.describe MergeDuplicateRecords do
 
   describe '#perform' do
     context 'when columns do not exist' do
+      let(:normalizable_hash) do
+        { normalizable_column: 'nonexistent_column',
+          merge_records: true }
+      end
+
       it 'raises an error' do
-        bad_service = described_class.new(klass, 'bogus_column', 'normalized_bogus')
+        bad_service = described_class.new(klass, normalizable_hash)
         expect { bad_service.perform }.to raise_error(
           /does not have the necessary columns:/
         )

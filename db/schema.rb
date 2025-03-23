@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_15_135950) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_22_134558) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -25,9 +25,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_15_135950) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "normalized_title"
+    t.index ["artist_id", "normalized_title"], name: "index_albums_on_artist_id_and_normalized_title", unique: true
+    t.index ["artist_id", "title"], name: "index_albums_on_artist_id_and_title", unique: true
     t.index ["artist_id"], name: "index_albums_on_artist_id"
     t.index ["genre_id"], name: "index_albums_on_genre_id"
-    t.index ["normalized_title"], name: "index_albums_on_normalized_title"
     t.index ["record_label_id"], name: "index_albums_on_record_label_id"
   end
 
@@ -66,9 +67,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_15_135950) do
     t.datetime "updated_at", null: false
     t.string "normalized_title"
     t.index ["dj_id"], name: "index_broadcasts_on_dj_id"
-    t.index ["normalized_title"], name: "index_broadcasts_on_normalized_title", unique: true
+    t.index ["normalized_title"], name: "index_broadcasts_on_normalized_title"
     t.index ["station_id"], name: "index_broadcasts_on_station_id"
     t.index ["title"], name: "index_broadcasts_on_title"
+    t.index ["url"], name: "index_broadcasts_on_url", unique: true
     t.check_constraint "air_day IS NULL OR air_day >= 0 AND air_day <= 6", name: "air_day_valid_range"
   end
 
@@ -115,7 +117,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_15_135950) do
     t.datetime "air_date"
     t.bigint "station_id"
     t.bigint "broadcast_id"
-    t.string "playlist_url"
+    t.string "playlist_url", null: false
     t.integer "original_playlist_id"
     t.string "download_url_1"
     t.string "download_url_2"
@@ -125,6 +127,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_15_135950) do
     t.string "holiday"
     t.boolean "fund_drive", default: false, null: false
     t.string "normalized_title"
+    t.index "lower((playlist_url)::text)", name: "index_playlists_on_lower_playlist_url", unique: true
     t.index ["broadcast_id"], name: "index_playlists_on_broadcast_id"
     t.index ["holiday"], name: "index_playlists_on_holiday"
     t.index ["normalized_title"], name: "index_playlists_on_normalized_title"
@@ -159,25 +162,29 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_15_135950) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "normalized_title"
+    t.index ["artist_id", "normalized_title"], name: "index_songs_on_artist_id_and_normalized_title", unique: true
+    t.index ["artist_id", "title"], name: "index_songs_on_artist_id_and_title", unique: true
     t.index ["artist_id"], name: "index_songs_on_artist_id"
     t.index ["genre_id"], name: "index_songs_on_genre_id"
-    t.index ["normalized_title"], name: "index_songs_on_normalized_title"
-    t.index ["title"], name: "index_songs_on_title"
   end
 
   create_table "stations", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.string "call_sign"
     t.string "city"
     t.string "state"
-    t.string "base_url"
-    t.string "broadcasts_index_url"
+    t.string "base_url", null: false
+    t.string "broadcasts_index_url", null: false
     t.string "phone_number"
     t.string "text_number"
     t.string "email"
     t.jsonb "frequencies"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["base_url"], name: "index_stations_on_base_url", unique: true
+    t.index ["broadcasts_index_url"], name: "index_stations_on_broadcasts_index_url", unique: true
+    t.index ["call_sign"], name: "index_stations_on_call_sign", unique: true
+    t.index ["name"], name: "index_stations_on_name", unique: true
   end
 
   add_foreign_key "albums", "artists"

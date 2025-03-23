@@ -26,7 +26,7 @@ namespace :scrape do
         - throttle_secs: #{throttle_secs}
     MSG
     unscraped_broadcasts.limit(broadcast_count).order(:created_at).each do |broadcast|
-      ScrapeBroadcasts.new.call(broadcast, throttle_secs:)
+      ScrapeBroadcasts.new(broadcast, throttle_secs:).call
     end
   end
 end

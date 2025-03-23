@@ -2,10 +2,10 @@
 
 FactoryBot.define do
   factory :album do
-    title { 'Here Come the Warm Jets' }
+    sequence(:title) { |n| "Here Come the Warm Jets #{n}" }
     release_date { '2024-01-28' }
-    artist { FactoryBot.create(:artist) }
-    genre { FactoryBot.create(:genre) }
-    record_label { FactoryBot.create(:record_label) }
+    artist
+    genre { nil }
+    record_label { nil }
   end
 end

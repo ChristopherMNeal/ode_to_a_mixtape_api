@@ -35,7 +35,12 @@ scrape broadcast titles for stations:
 `be rake scrape:broadcast_titles STATION_ID=1`
 
 ## TO DO
-[ ] Finish implementing Normalizable (see below)
+[ ] Implement API endpoints
+  [ ] Random playlist
+  [ ] Find playlists with a specific artist/song
+  [ ] Playlists from this date in previous years
+  [ ] lots more
+[X] Finish implementing Normalizable (see below)
 [ ] Troubleshoot cronjobs and scheduler gem
 [X] add fuzzy finder concern
 [ ] implement fuzzy finder for artists, songs, albums, playlists, broadcasts, stations, record labels, genres
@@ -68,31 +73,16 @@ scrape broadcast titles for stations:
     - ...special events?
 
 ### Future Normalizable Steps
+Done!
 
 Normalizable is implemented for Artists. Need to add to the following models.
 Normalized columns and uniqueness indexes are already added to these:
-- [ ] Album
-- [ ] Broadcast
-- [ ] Genre
-- [ ] Playlist
-- [ ] RecordLabel
-- [ ] Song
-
-#### Add to other normalized class models
-For example:
-```ruby
-class Song < ApplicationRecord
-  include Normalizable
-
-  normalize_column :title, :normalized_title
-end
-```
-
-#### Update queries to use normalized columns
-```ruby
-normalized_input = Normalizable.normalize_text("Beyoncé")
-artist = Artist.find_by(normalized_name: normalized_input)
-```
+- [X] Album
+- [X] Broadcast
+- [X] Genre
+- [X] Playlist
+- [X] RecordLabel
+- [X] Song
 
 #### Correct data
 Current data is not normalized. Some records will be invalid.

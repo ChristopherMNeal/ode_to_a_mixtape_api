@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Playlist < ApplicationRecord # rubocop:disable Metrics/ClassLength
+  include Normalizable
+
   belongs_to :station
   belongs_to :broadcast
   belongs_to :original_playlist, class_name: 'Playlist', optional: true
@@ -10,9 +12,10 @@ class Playlist < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   delegate :scraped_data, to: :playlist_import, allow_nil: true
 
+  normalize_column :title, :normalized_title
+
   validates :title, presence: true
-  # validates :broadcast_id, presence: true
-  validates :playlist_url, uniqueness: { case_sensitive: true }, allow_blank: false # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :playlist_url, uniqueness: { case_sensitive: false }, presence: true, allow_blank: false # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :playlist_url, format: { with: %r{\Ahttps?://.*\z}, message: 'must start with http:// or https://' } # rubocop:disable Rails/I18nLocaleTexts
 
   def to_s
@@ -98,28 +101,31 @@ class Playlist < ApplicationRecord # rubocop:disable Metrics/ClassLength
         next
       end
 
-      normalized_name = Normalizable.normalize_text(artist_name)
+      # normalized_name = Normalizable.normalize_text(artist_name)
 
       ActiveRecord::Base.transaction do
-        record_label = label_name.present? ? RecordLabel.find_or_create_by!(name: label_name) : nil
-        artist = Artist.find_or_create_by(normalized_name:)
-        if artist.new_record?
-          artist.update!(name: artist_name)
-        else
-          preferred_name = NameFormatter.format_name([artist_name, artist.name])
-          artist.update!(name: preferred_name) if artist.name != preferred_name
-        end
+        record_label =
+          if label_name.present?
+            RecordLabel.find_or_create_by_normalized_column(normalizable_column: :name, value: label_name)
+          end
 
-        song = Song.find_or_create_by!(title: song_title, artist:)
+        artist = Artist.find_or_create_by_normalized_column(normalizable_column: :name, value: artist_name)
+        song = Song.find_or_create_by_normalized_column(
+          normalizable_column: :title,
+          value: song_title,
+          group_by_value: artist.id
+        )
         find_or_create_playlists_songs(song, track_hash)
 
         next if album_title.blank?
 
-        album = Album.find_or_create_by!(
-          title: album_title,
-          artist:,
-          record_label:
+        album = Album.find_or_create_by_normalized_column(
+          normalizable_column: :title,
+          value: album_title,
+          group_by_value: artist.id
         )
+        album.update!(record_label:) if record_label.present? && album.record_label_id.blank?
+
         AlbumsSong.find_or_create_by!(album:, song:)
       rescue ActiveRecord::RecordInvalid => e
         puts "Failed to create record #{e&.record}: #{e.message}" # rubocop:disable Rails/Output

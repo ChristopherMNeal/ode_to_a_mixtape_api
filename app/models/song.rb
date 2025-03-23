@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Song < ApplicationRecord
+  include Normalizable
+
   belongs_to :genre, optional: true
   belongs_to :artist
   has_many :playlists_songs, dependent: :destroy
@@ -8,12 +10,14 @@ class Song < ApplicationRecord
   has_many :albums_songs, dependent: :destroy
   has_many :albums, through: :albums_songs, dependent: :nullify
 
-  validates :title, presence: true
-  validates :title, uniqueness: { scope: :artist_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
+  normalize_column :title, :normalized_title
+
+  validates :title, presence: true, uniqueness: { scope: :artist_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :normalized_title, presence: true, uniqueness: { scope: :artist_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   def to_s
-    if album.present?
-      "#{artist.name} - #{title} (#{album.title})"
+    if artist && albums.any?
+      "#{artist.name} - #{title} (#{albums.pluck(:title).join(', ')})"
     else
       "#{artist.name} - #{title}"
     end

@@ -11,11 +11,11 @@ class AddNormalizedColumnsToVariousTables < ActiveRecord::Migration[7.1]
     add_column :genres,      :normalized_name,  :string
     add_column :record_labels, :normalized_name, :string
 
-    add_index :albums,      :normalized_title
-    add_index :broadcasts,  :normalized_title, unique: true
+    # Comments indicate changes made in a future migration, just for reference:
+    add_index :albums,      :normalized_title # add uniqueness index by artist_id and normalized_title
+    add_index :broadcasts,  :normalized_title, unique: true # remove uniqueness index
     add_index :playlists,   :normalized_title
-    add_index :songs,       :normalized_title
-
+    add_index :songs,       :normalized_title # add uniqueness index by artist_id and normalized_title
     add_index :artists,     :normalized_name, unique: true
     add_index :genres,      :normalized_name, unique: true
     add_index :record_labels, :normalized_name, unique: true
