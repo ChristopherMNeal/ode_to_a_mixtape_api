@@ -3027,6 +3027,9 @@ RSpec/NestedGroups:
   Enabled: true
   Max: 4
 
+RSpec/LetSetup:
+  Enabled: false
+
 #################### Security ##############################
 
 Security/CompoundHash:

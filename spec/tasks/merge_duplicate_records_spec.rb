@@ -22,7 +22,7 @@ RSpec.describe MergeDuplicateRecords do
     ]
   end
 
-  let!(:similar_artists) do # rubocop:disable RSpec/LetSetup
+  let!(:similar_artists) do
     [
       'Sly And The Family Stone',
       'Sly and the Family Stone',

@@ -9,7 +9,7 @@ RSpec.describe Playlist do
     # This test is at odds with rubocop's redundant validation check
     # it { is_expected.to validate_presence_of(:broadcast_id) }
     it { is_expected.to validate_presence_of(:title) }
-    it { is_expected.to validate_uniqueness_of(:playlist_url) }
+    it { is_expected.to validate_uniqueness_of(:playlist_url).case_insensitive }
     it { is_expected.to allow_value('http://example.com').for(:playlist_url) }
     it { is_expected.to allow_value('https://example.com').for(:playlist_url) }
     it { is_expected.not_to allow_value('example.com').for(:playlist_url) }
@@ -86,7 +86,7 @@ RSpec.describe Playlist do
         ]
       end
       let(:playlist_with_missing_data) { create(:playlist) }
-      let!(:playlist_with_missing_data_import) do # rubocop:disable RSpec/LetSetup
+      let!(:playlist_with_missing_data_import) do
         create(
           :playlist_import,
           playlist: playlist_with_missing_data,
@@ -133,7 +133,7 @@ RSpec.describe Playlist do
         ]
       end
       let(:playlist_with_missing_label) { create(:playlist) }
-      let!(:playlist_with_missing_label_import) do # rubocop:disable RSpec/LetSetup
+      let!(:playlist_with_missing_label_import) do
         create(
           :playlist_import,
           playlist: playlist_with_missing_label,
@@ -188,7 +188,7 @@ RSpec.describe Playlist do
         ]
       end
       let(:playlist_with_missing_album) { create(:playlist) }
-      let!(:playlist_with_missing_album_import) do # rubocop:disable RSpec/LetSetup
+      let!(:playlist_with_missing_album_import) do
         create(
           :playlist_import,
           playlist: playlist_with_missing_album,
@@ -250,7 +250,7 @@ RSpec.describe Playlist do
         ]
       end
       let(:playlist_with_duplicate_entries) { create(:playlist) }
-      let!(:playlist_with_duplicate_entries_import) do # rubocop:disable RSpec/LetSetup
+      let!(:playlist_with_duplicate_entries_import) do
         create(
           :playlist_import,
           playlist: playlist_with_duplicate_entries,

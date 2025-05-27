@@ -11,7 +11,7 @@ class Broadcast < ApplicationRecord
 
   validates :title, presence: true
   # Appease rubocop by adding unique index to database:
-  validates :url, uniqueness: true, presence: true, # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :url, uniqueness: true, presence: true,
                   format: { with: %r{\Ahttps?://.*\z}, message: 'must start with http:// or https://' } # rubocop:disable Rails/I18nLocaleTexts
   validates :air_day, inclusion: { in: 0..6, message: '%<value>s is not a valid day' }, allow_nil: true # rubocop:disable Rails/I18nLocaleTexts
   # validates :station_id, presence: true

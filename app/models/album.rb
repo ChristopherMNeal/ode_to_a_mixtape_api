@@ -12,5 +12,5 @@ class Album < ApplicationRecord
   normalize_column :title, :normalized_title
 
   validates :title, presence: true
-  validates :normalized_title, presence: true, uniqueness: { scope: :artist_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :normalized_title, presence: true, uniqueness: { scope: :artist_id }
 end

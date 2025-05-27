@@ -226,7 +226,7 @@ class ScrapeBroadcasts # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def parse_air_times(air_times)
+  def parse_air_times(air_times) # rubocop:disable Metrics
     # Need to handle multiple dates/times in the air times span, like in https://xray.fm/shows/80lb-cardstock,
     # Broadcast.find(7), which airs on Tuesday and Wednesday. TODO: change the air_day field to an array
     # For now, I'll just take the first day:

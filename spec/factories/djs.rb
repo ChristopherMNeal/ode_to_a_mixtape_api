@@ -4,7 +4,6 @@ FactoryBot.define do
   factory :dj do
     dj_name { 'Strange Babes' }
     member_names { 'Jen O, KM Fizzy, and Magic Beans' }
-    profile_url { 'https://xray.fm/profiles/strangebabes' }
     bio do
       <<~BIO
         Strange Babes is a long time Portland DJ crew consisting of members DJ Jen O, KM Fizzy and Magic Beans established in 2010.
@@ -17,5 +16,11 @@ FactoryBot.define do
     twitter { 'strangebabes' }
     instagram { 'strangebabes' }
     facebook { 'strangebabes' }
+
+    after(:create) do |dj|
+      station = create(:station)
+      dj.stations << station
+      dj.djs_stations.find_by(station:)&.update(profile_url: 'https://xray.fm/profiles/strangebabes')
+    end
   end
 end

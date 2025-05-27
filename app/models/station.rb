@@ -7,7 +7,7 @@ class Station < ApplicationRecord
   has_many :djs_stations, dependent: :destroy
   has_many :djs, through: :djs_stations, dependent: :nullify
 
-  validates :name, presence: true, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
-  validates :base_url, uniqueness: true, presence: true # rubocop:disable Rails/UniqueValidationWithoutIndex
-  validates :broadcasts_index_url, uniqueness: true, presence: true # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :name, presence: true, uniqueness: true
+  validates :base_url, uniqueness: true, presence: true
+  validates :broadcasts_index_url, uniqueness: true, presence: true
 end

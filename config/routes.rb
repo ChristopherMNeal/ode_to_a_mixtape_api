@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
+require_relative 'routes/api'
+
 Rails.application.routes.draw do
-  namespace :api do
-    namespace :v1 do
-      # get 'playlists/index'
-      # get 'playlists/broadcast'
-      resources :playlists, only: %i[index broadcast]
-    end
-  end
+  ApiRoutes.draw(self)
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

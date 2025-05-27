@@ -15,7 +15,7 @@ class Playlist < ApplicationRecord # rubocop:disable Metrics/ClassLength
   normalize_column :title, :normalized_title
 
   validates :title, presence: true
-  validates :playlist_url, uniqueness: { case_sensitive: false }, presence: true, allow_blank: false # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :playlist_url, uniqueness: { case_sensitive: false }, presence: true, allow_blank: false
   validates :playlist_url, format: { with: %r{\Ahttps?://.*\z}, message: 'must start with http:// or https://' } # rubocop:disable Rails/I18nLocaleTexts
 
   def to_s

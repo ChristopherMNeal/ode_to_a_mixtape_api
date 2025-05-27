@@ -43,8 +43,8 @@ class MergeDuplicateRecords
       raise "Class #{klass.name} does not have the necessary columns: #{column_name} and #{normalized_column_name}"
     end
 
-    puts "Merging duplicate #{klass.name} records with column: #{column_name}" # rubocop:disable Rails/Output
-    puts "  Grouped by #{group_by}" if group_by # rubocop:disable Rails/Output
+    log "Merging duplicate #{klass.name} records with column: #{column_name}"
+    log "  Grouped by #{group_by}" if group_by
 
     id_groups = find_possible_duplicate_id_groups
     # returns a nested array of [normalized_name, [record_id_1, record_id_2, ...]]
@@ -104,7 +104,7 @@ class MergeDuplicateRecords
     raise "Primary record not found for #{klass.name} with ids: #{record_ids}" unless primary_record
 
     names = records.map { |r| r.send(column_name) }
-    puts "Merging #{klass.name} records with columns: #{names.join(', ')} into #{primary_record.send(column_name)}" # rubocop:disable Rails/Output
+    log("Merging #{klass.name} records with columns: #{names.join(', ')} into #{primary_record.send(column_name)}")
     if group_by
       group_by_klass = group_by.gsub('_id', '').camelize.constantize
       group_column_name = if group_by_klass.respond_to?('title')
@@ -114,7 +114,7 @@ class MergeDuplicateRecords
                           end
       if group_column_name
         primary_group_record = group_by_klass.where(id: primary_record.send(group_by))&.first
-        puts "  Grouped by #{group_by_klass.name}: #{primary_group_record&.send(group_column_name)}" # rubocop:disable Rails/Output
+        log "  Grouped by #{group_by_klass.name}: #{primary_group_record&.send(group_column_name)}"
       end
     end
     ActiveRecord::Base.transaction(requires_new: true) do
@@ -127,7 +127,11 @@ class MergeDuplicateRecords
       # populate the normalized column for the primary record
       primary_record.send("#{normalized_column_name}=", normalized_name)
       primary_record.save!
-      puts "  Merged #{records.size} records into #{primary_record.send(column_name)}" # rubocop:disable Rails/Output
+      log "  Merged #{records.size} records into #{primary_record.send(column_name)}"
     end
+  end
+
+  def log(message)
+    puts message unless Rails.env.test? # rubocop:disable Rails/Output
   end
 end

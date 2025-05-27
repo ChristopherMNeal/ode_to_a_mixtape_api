@@ -12,8 +12,8 @@ class Song < ApplicationRecord
 
   normalize_column :title, :normalized_title
 
-  validates :title, presence: true, uniqueness: { scope: :artist_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
-  validates :normalized_title, presence: true, uniqueness: { scope: :artist_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :title, presence: true, uniqueness: { scope: :artist_id }
+  validates :normalized_title, presence: true, uniqueness: { scope: :artist_id }
 
   def to_s
     if artist && albums.any?
