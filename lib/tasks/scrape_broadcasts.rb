@@ -112,6 +112,12 @@ class ScrapeBroadcasts # rubocop:disable Metrics/ClassLength
       open_url(
         "#{base_url}/programs/#{broadcast_name_for_url}/page:#{page_number}?url=broadcasts%2F#{broadcast_name_for_url}"
       )
+  rescue OpenURI::HTTPError => e
+    scrape_logger "Error opening broadcasts index page for #{broadcast.title} on page #{page_number}: #{e.message}"
+    nil
+  rescue StandardError => e
+    scrape_logger "Unexpected error opening broadcasts index page for #{broadcast.title} on page #{page_number}: #{e.message}"
+    nil
   end
 
   def find_start_date_page_number(base_url, broadcast_name_for_url) # rubocop:disable Metrics
@@ -120,6 +126,10 @@ class ScrapeBroadcasts # rubocop:disable Metrics/ClassLength
 
     loop do
       paginated_broadcast_index = open_broadcasts_index_page(base_url, broadcast_name_for_url, page_number)
+      unless paginated_broadcast_index
+        scrape_logger "Failed to load paginated broadcast index page for #{broadcast.title} on page #{page_number}"
+        break
+      end
 
       broadcast_dates = fetch_broadcast_dates(paginated_broadcast_index)
       break if broadcast_dates.empty?
